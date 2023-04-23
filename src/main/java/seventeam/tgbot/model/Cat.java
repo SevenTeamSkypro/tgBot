@@ -10,6 +10,7 @@ public class Cat extends Pet {
     private final String suit;
 
     public Cat(long id, String name, String breed, int age, String suit) {
+        super();
         this.id = id;
         this.name = name;
         this.breed = breed;

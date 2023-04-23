@@ -11,6 +11,7 @@ public class Dog extends Pet {
     private final String suit;
 
     public Dog(long id, String name, String breed, int age, String suit) {
+        super();
         this.id = id;
         this.name = name;
         this.breed = breed;
