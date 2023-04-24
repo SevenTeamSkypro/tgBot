@@ -11,11 +11,13 @@ import seventeam.tgbot.model.ShelterCat;
 import seventeam.tgbot.model.ShelterDog;
 
 import javax.annotation.PostConstruct;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class TelegramBotUpdatesListener implements UpdatesListener {
@@ -33,8 +35,8 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
     @Override
     public int process(List<Update> updates) {
-        ShelterDog shelterDog = new ShelterDog("address");
-        ShelterCat shelterCat = new ShelterCat("address");
+        ShelterDog shelterDog = new ShelterDog("address1");
+        ShelterCat shelterCat = new ShelterCat("address2");
         updates.stream()
                 .filter(update -> update.message() != null)
                 .forEach(update -> {
@@ -43,7 +45,12 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                     String text = message.text();
                     switch (text) {
                         case "/start" -> {
-                            sendMassage(chatId, "Бот запущен");
+                            try {
+                                sendMassage(chatId, readFile("src/main/resources/draw/greeting.txt",
+                                        StandardCharsets.UTF_8));
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
                         }
                         case "/command1" -> {
                             sendMassage(chatId, shelterDog.getAddress());
@@ -61,5 +68,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         telegramBot.execute(sendMessage);
     }
 
-
+    private String readFile(String path, Charset encoding) throws IOException {
+        return Files.readString(Paths.get(path), encoding);
+    }
 }
