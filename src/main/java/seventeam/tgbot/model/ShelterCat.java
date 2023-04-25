@@ -10,6 +10,9 @@ public class ShelterCat extends Shelter {
         super(address);
     }
 
+    public ShelterCat() {
+    }
+
     @Override
     public String getAddress() {
         try {

@@ -3,22 +3,25 @@ package seventeam.tgbot.model;
 import java.util.Objects;
 
 public class Cat extends Pet {
-    private final long id;
+    private final Long id;
     private final String name;
     private final String breed;
-    private final int age;
+    private final Integer age;
     private final String suit;
 
-    public Cat(long id, String name, String breed, int age, String suit) {
+    private final String gender;
+
+    public Cat(long id, String name, String breed, Integer age, String suit, String gender) {
         super();
         this.id = id;
         this.name = name;
         this.breed = breed;
         this.age = age;
         this.suit = suit;
+        this.gender = gender;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -33,7 +36,7 @@ public class Cat extends Pet {
     }
 
     @Override
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
@@ -43,26 +46,29 @@ public class Cat extends Pet {
     }
 
     @Override
+    public String getGender() {
+        return gender;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Cat cat = (Cat) o;
-        return id == cat.id && age == cat.age && name.equals(cat.name) && breed.equals(cat.breed) && suit.equals(cat.suit);
+        return id.equals(cat.id) && name.equals(cat.name) && breed.equals(cat.breed) && age.equals(cat.age) && suit.equals(cat.suit) && gender.equals(cat.gender);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, breed, age, suit);
+        return Objects.hash(id, name, breed, age, suit, gender);
     }
 
     @Override
     public String toString() {
-        return "Cat{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", breed='" + breed + '\'' +
-                ", age=" + age +
-                ", suit='" + suit + '\'' +
-                "} ";
+        return gender +
+                " кличка " + name +
+                ", порода " + breed +
+                ", возраст " + age +
+                ", масть " + suit;
     }
 }

@@ -35,8 +35,8 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
     @Override
     public int process(List<Update> updates) {
-        ShelterDog shelterDog = new ShelterDog("address1");
-        ShelterCat shelterCat = new ShelterCat("address2");
+        ShelterDog shelterDog = new ShelterDog();
+        ShelterCat shelterCat = new ShelterCat();
         updates.stream()
                 .filter(update -> update.message() != null)
                 .forEach(update -> {

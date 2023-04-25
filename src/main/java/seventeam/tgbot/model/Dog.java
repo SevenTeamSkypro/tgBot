@@ -4,22 +4,24 @@ import java.util.Objects;
 
 public class Dog extends Pet {
 
-    private final long id;
+    private final Long id;
     private final String name;
     private final String breed;
-    private final int age;
+    private final Integer age;
     private final String suit;
+    private final String gender;
 
-    public Dog(long id, String name, String breed, int age, String suit) {
+    public Dog(Long id, String name, String breed, Integer age, String suit, String gender) {
         super();
         this.id = id;
         this.name = name;
         this.breed = breed;
         this.age = age;
         this.suit = suit;
+        this.gender = gender;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -34,7 +36,7 @@ public class Dog extends Pet {
     }
 
     @Override
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
@@ -48,27 +50,20 @@ public class Dog extends Pet {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Dog dog = (Dog) o;
-        return id == dog.id && age == dog.age && name.equals(dog.name) && breed.equals(dog.breed) && suit.equals(dog.suit);
+        return id.equals(dog.id) && name.equals(dog.name) && breed.equals(dog.breed) && age.equals(dog.age) && suit.equals(dog.suit) && gender.equals(dog.gender);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, breed, age, suit);
+        return Objects.hash(id, name, breed, age, suit, gender);
     }
 
     @Override
     public String toString() {
-        return "Dog{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", breed='" + breed + '\'' +
-                ", age=" + age +
-                ", suit='" + suit + '\'' +
-                "} ";
-    }
-
-    public static void main(String[] args) {
-        Dog dog = new Dog(1, "Leo", "Taxe", 7, "brown leopard");
-        System.out.println(dog.getName());
+        return gender +
+                ", кличка " + name +
+                ", порода " + breed +
+                ", возраст " + age +
+                ", масть " + suit;
     }
 }

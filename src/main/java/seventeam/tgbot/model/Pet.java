@@ -2,8 +2,9 @@ package seventeam.tgbot.model;
 public abstract class Pet {
     private String name;
     private String breed;
-    private int age;
+    private Integer age;
     private String suit;
+    private String gender;
 
     public String getName() {
         return name;
@@ -21,7 +22,7 @@ public abstract class Pet {
         this.breed = breed;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
@@ -35,6 +36,14 @@ public abstract class Pet {
 
     public void setSuit(String suit) {
         this.suit = suit;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 }
 
