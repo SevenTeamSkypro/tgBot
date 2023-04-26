@@ -1,15 +1,24 @@
 package seventeam.tgbot.model;
 
+import javax.persistence.*;
 import java.util.Objects;
 
+@Entity
+@Table(name = "cats")
 public class Cat extends Pet {
-    private final Long id;
-    private final String name;
-    private final String breed;
-    private final Integer age;
-    private final String suit;
-
-    private final String gender;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(name = "name", nullable = false)
+    private String name;
+    @Column(name = "breed", nullable = false)
+    private String breed;
+    @Column(name = "age", nullable = false)
+    private Integer age;
+    @Column(name = "suit", nullable = false)
+    private String suit;
+    @Column(name = "gender", nullable = false)
+    private String gender;
 
     public Cat(long id, String name, String breed, Integer age, String suit, String gender) {
         super();
@@ -19,6 +28,9 @@ public class Cat extends Pet {
         this.age = age;
         this.suit = suit;
         this.gender = gender;
+    }
+
+    public Cat() {
     }
 
     public Long getId() {
