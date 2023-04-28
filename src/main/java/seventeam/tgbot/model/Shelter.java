@@ -1,17 +1,11 @@
 package seventeam.tgbot.model;
 
+import lombok.*;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
 public abstract class Shelter {
     private String address;
-
-    public Shelter(String address) {
-        this.address = address;
-    }
-
-    public Shelter() {
-
-    }
-
-    public String getAddress() {
-        return address;
-    }
+    public abstract String getAddress();
 }

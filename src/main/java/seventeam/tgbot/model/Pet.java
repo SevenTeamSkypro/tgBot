@@ -1,4 +1,5 @@
 package seventeam.tgbot.model;
+
 public abstract class Pet {
     private Long id;
     private String name;

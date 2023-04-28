@@ -6,14 +6,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class ShelterDog extends Shelter {
-
-    public ShelterDog(String address) {
-        super(address);
-    }
-
-    public ShelterDog() {
-    }
-
     @Override
     public String getAddress() {
         try {
