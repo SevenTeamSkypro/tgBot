@@ -9,8 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 @Service
-public class CatService implements PetService {
-
+public class CatServiceImpl implements PetService {
     private final List<Cat> cats = new ArrayList<>();
 
     @Override

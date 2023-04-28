@@ -10,9 +10,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class DogService implements PetService {
+public class DogServiceImpl implements PetService {
     private final List<Dog> dogs = new ArrayList<>();
-
     @Override
     public void createPet(Long id, String name, String breed, Integer age, String suit, String gender) {
         Dog dog = new Dog(id, name, breed, age, suit, gender);
