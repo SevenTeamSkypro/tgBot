@@ -14,6 +14,7 @@ import javax.persistence.*;
 public class Cat extends Pet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
     @Column(name = "name", nullable = false)
     private String name;
@@ -25,6 +26,9 @@ public class Cat extends Pet {
     private String suit;
     @Column(name = "gender", nullable = false)
     private String gender;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "owner_id")
+    private CatOwner catOwner;
 
     @Override
     public String toString() {

@@ -5,10 +5,10 @@ import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import com.pengrad.telegrambot.request.SendSticker;
 import org.springframework.stereotype.Component;
 import seventeam.tgbot.model.ShelterCat;
 import seventeam.tgbot.model.ShelterDog;
+import seventeam.tgbot.service.impl.DogServiceImpl;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
@@ -17,15 +17,16 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class TelegramBotUpdatesListener implements UpdatesListener {
 
     private final TelegramBot telegramBot;
+    private final DogServiceImpl dogService;
 
-    public TelegramBotUpdatesListener(TelegramBot telegramBot) {
+    public TelegramBotUpdatesListener(TelegramBot telegramBot, DogServiceImpl dogService) {
         this.telegramBot = telegramBot;
+        this.dogService = dogService;
     }
 
     @PostConstruct
@@ -54,6 +55,8 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                         }
                         case "/command1" -> {
                             sendMassage(chatId, shelterDog.getAddress());
+                            sendMassage(chatId, "Выберите питомца.");
+                            sendMassage(chatId, dogService.getAllPets().toString());
                         }
                         case "/command2" -> {
                             sendMassage(chatId, shelterCat.getAddress());

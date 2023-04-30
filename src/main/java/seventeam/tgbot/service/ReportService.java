@@ -8,12 +8,10 @@ import seventeam.tgbot.repository.ReportRepository;
 @Service
 public class ReportService {
     @Autowired
-    private ReportRepository reportRepository;
-
+    private final ReportRepository reportRepository;
     public ReportService(ReportRepository reportRepository) {
         this.reportRepository = reportRepository;
     }
-
 
     public void save(Report report) {
         if (report.getReport() == null) {
