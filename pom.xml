@@ -44,6 +44,13 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.vdurmont</groupId>
+            <artifactId>emoji-java</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+
+
         <!-- https://mvnrepository.com/artifact/com.github.pengrad/java-telegram-bot-api -->
         <dependency>
             <groupId>com.github.pengrad</groupId>
