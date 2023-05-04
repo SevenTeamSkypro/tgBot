@@ -1,4 +1,4 @@
-package seventeam.tgbot.service.impl;
+package seventeam.tgbot.service;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.request.KeyboardButton;
@@ -24,8 +24,8 @@ public class KeyBoardShelter {
     public void menu(long chatId) {
         logger.info("sendMessage: {}, {}", chatId, "Главное меню ");
 
-        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup(new KeyboardButton("информацию о приюте"));
-        replyKeyboardMarkup.addRow(new KeyboardButton("взять питомца"), new KeyboardButton("отчет"));
+        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup(new KeyboardButton("Информация о приюте"));
+        replyKeyboardMarkup.addRow(new KeyboardButton("Взять питомца"), new KeyboardButton("Отчет"));
         replyKeyboardMarkup.addRow(new KeyboardButton("Позвать волонтера"));
         returnResponseReplyKeyboard(replyKeyboardMarkup, chatId, "Главное меню");
     }
@@ -51,5 +51,13 @@ public class KeyBoardShelter {
             logger.info("Код ошибки: {}", codeError);
             logger.info("Описание -: {}", description);
         }
+    }
+    public void menuInfo(long chatId) {
+        logger.info("sendMenuInfo: {}, {}", chatId, "Информация о приюте");
+        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup(
+                new KeyboardButton("Рассказать о нашем приюте"),
+                new KeyboardButton("Правила ухода за животными"));
+        replyKeyboardMarkup.addRow(new KeyboardButton("Вернуться в главное меню"));
+        returnResponseReplyKeyboard(replyKeyboardMarkup, chatId, "Информация о приюте");
     }
 }
