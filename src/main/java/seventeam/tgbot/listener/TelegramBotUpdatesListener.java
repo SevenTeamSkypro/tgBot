@@ -8,6 +8,7 @@ import com.pengrad.telegrambot.request.SendMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import seventeam.tgbot.model.ShelterCat;
 import seventeam.tgbot.model.ShelterDog;
@@ -43,7 +44,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     private KeyBoardShelter keyBoardShelter;
 
 
-    public TelegramBotUpdatesListener(TelegramBot telegramBot, DogServiceImpl dogService, ClientServiceImpl clientService) {
+    public TelegramBotUpdatesListener(TelegramBot telegramBot, DogServiceImpl dogService) {
         this.telegramBot = telegramBot;
         this.dogService = dogService;
     }
@@ -69,71 +70,42 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                         String text = update.message().text();
                         String nameUser = update.message().chat().firstName();
                         switch (text) {
-                            case START:
+                            case START -> {
                                 sendMassage(chatId, "Приветствую тебя, " + nameUser);
                                 keyBoardShelter.chooseMenu(chatId);
-                                break;
-
-                            case "\uD83D\uDC31 CAT":
-
+                            }
+                            case "\uD83D\uDC31 CAT" -> {
                                 isCatNotDog = true;
                                 keyBoardShelter.menu(chatId);
                                 sendMassage(chatId, "Выбрана кошка");
-                                break;
-
-                            case "\uD83D\uDC36 DOG":
-
+                            }
+                            case "\uD83D\uDC36 DOG" -> {
                                 isCatNotDog = false;
                                 keyBoardShelter.menu(chatId);
                                 sendMassage(chatId, "Выбрана собака");
-                                break;
-                            case "Главное меню":
-                                keyBoardShelter.menu(chatId);
-                                break;
-                            case "Вернуться в главное меню":
-                                keyBoardShelter.menu(chatId);
-                                break;
-                            case "Информация о приюте":
-                                keyBoardShelter.menuInfo(chatId);
-                                break;
-                            case "Рассказать о нашем приюте":
+                            }
+                            case "Главное меню", "Вернуться в главное меню" -> keyBoardShelter.menu(chatId);
+                            case "Информация о приюте" -> keyBoardShelter.menuInfo(chatId);
+                            case "Рассказать о нашем приюте" -> {
                                 try {
                                     sendMassage(chatId, readFile("src/main/resources/draw/info.txt",
                                             StandardCharsets.UTF_8));
                                 } catch (IOException e) {
                                     throw new RuntimeException(e);
                                 }
-                                break;
-                            case "Взять питомца":
-                                sendMassage(chatId, "Такая возможность скоро будет добавлена");
-                                break;
-                            case "Отчет":
-                                sendMassage(chatId, "Такая возможность скоро будет добавлена");
-                                break;
-                            case "Позвать волонтера":
-                                sendMassage(chatId, "Такая возможность скоро будет добавлена");
-                                break;
-                            case "Правила ухода за животными":
+                            }
+                            case "Взять питомца" -> sendMassage(chatId, "Такая возможность скоро будет добавлена");
+                            case "Отчет" -> sendMassage(chatId, "Такая возможность скоро будет добавлена");
+                            case "Позвать волонтера" -> sendMassage(chatId, "Такая возможность скоро будет добавлена");
+                            case "Правила ухода за животными" -> {
                                 try {
                                     sendMassage(chatId, readFile("src/main/resources/draw/care_of_animals.txt",
                                             StandardCharsets.UTF_8));
                                 } catch (IOException e) {
                                     throw new RuntimeException(e);
                                 }
-                                break;
-
-                            default:
-                                replyMessage(chatId, "Такой команды нет", messageId);
-                                break;
-
-//                        case "/command1" -> {
-//                            sendMassage(chatId, shelterDog.getAddress());
-//                            sendMassage(chatId, "Выберите питомца.");
-//                            sendMassage(chatId, dogService.getAllPets().toString());
-//                        }
-//                        case "/command2" -> {
-//                            sendMassage(chatId, shelterCat.getAddress());
-//                        }
+                            }
+                            default -> replyMessage(chatId, "Такой команды нет", messageId);
                         }
                     });
         } catch (Exception e) {
@@ -155,12 +127,5 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         SendMessage sendMessage = new SendMessage(chatId, messageText);
         sendMessage.replyToMessageId(messageId);
         telegramBot.execute(sendMessage);
-
-//    private void InlineKeyboardMarkup getInlineMessageButtons() {
-//        InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
-//        List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
-//        List<InlineKeyboardButton> rowInLine = new ArrayList<>();
-//        var yesButton = new InlineKeyboardButton();
-
     }
 }
