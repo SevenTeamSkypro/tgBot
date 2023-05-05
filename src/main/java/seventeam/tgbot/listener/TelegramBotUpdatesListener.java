@@ -7,15 +7,13 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import seventeam.tgbot.model.ShelterCat;
 import seventeam.tgbot.model.ShelterDog;
 import seventeam.tgbot.repository.ShelterCatRepository;
 import seventeam.tgbot.repository.ShelterDogRepository;
-import seventeam.tgbot.service.impl.DogServiceImpl;
 import seventeam.tgbot.service.KeyBoardShelter;
+import seventeam.tgbot.service.impl.DogServiceImpl;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
@@ -27,20 +25,12 @@ import java.util.List;
 
 @Component
 public class TelegramBotUpdatesListener implements UpdatesListener {
-
     private final Logger logger = LoggerFactory.getLogger(TelegramBotUpdatesListener.class);
-
     private static final String START = "/start";
-
-    @Autowired
     private final TelegramBot telegramBot;
-    @Autowired
     private final DogServiceImpl dogService;
-    @Autowired
     private ShelterCatRepository shelterCatRepository;
-    @Autowired
     private ShelterDogRepository shelterDogRepository;
-    @Autowired
     private KeyBoardShelter keyBoardShelter;
 
 
