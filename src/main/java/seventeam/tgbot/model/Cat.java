@@ -1,68 +1,41 @@
 package seventeam.tgbot.model;
 
-import java.util.Objects;
+import lombok.*;
 
+import javax.persistence.*;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = false)
+@Entity
+@Table(name = "cats")
 public class Cat extends Pet {
-    private final long id;
-    private final String name;
-    private final String breed;
-    private final int age;
-    private final String suit;
-
-    public Cat(long id, String name, String breed, int age, String suit) {
-        super();
-        this.id = id;
-        this.name = name;
-        this.breed = breed;
-        this.age = age;
-        this.suit = suit;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public String getBreed() {
-        return breed;
-    }
-
-    @Override
-    public int getAge() {
-        return age;
-    }
-
-    @Override
-    public String getSuit() {
-        return suit;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Cat cat = (Cat) o;
-        return id == cat.id && age == cat.age && name.equals(cat.name) && breed.equals(cat.breed) && suit.equals(cat.suit);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, breed, age, suit);
-    }
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+    @Column(name = "name", nullable = false)
+    private String name;
+    @Column(name = "breed", nullable = false)
+    private String breed;
+    @Column(name = "age", nullable = false)
+    private Integer age;
+    @Column(name = "suit", nullable = false)
+    private String suit;
+    @Column(name = "gender", nullable = false)
+    private String gender;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "owner_id")
+    private CatOwner catOwner;
 
     @Override
     public String toString() {
-        return "Cat{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", breed='" + breed + '\'' +
-                ", age=" + age +
-                ", suit='" + suit + '\'' +
-                "} ";
+        return gender +
+                " кличка " + name +
+                ", порода " + breed +
+                ", возраст " + age +
+                ", масть " + suit;
     }
 }

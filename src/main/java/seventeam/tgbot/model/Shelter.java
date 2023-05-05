@@ -1,15 +1,20 @@
 package seventeam.tgbot.model;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
+import lombok.*;
 
+import java.util.List;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
 public abstract class Shelter {
-    private final String address;
-public Shelter(String address) {
-        this.address = address;
-    }
+    private String address;
+    private List<Pet> pets;
+    private List<User> users;
 
-    public String getAddress() {
-        return address;
-    }
+    public abstract String getAddress();
+
+    public abstract List<?> getPets();
+
+    public abstract List<?> getUsers();
 }
