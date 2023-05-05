@@ -1,13 +1,32 @@
 package seventeam.tgbot.model;
 
+import lombok.*;
+
+import javax.persistence.*;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
+@AllArgsConstructor
+@Getter
+@Setter
+@ToString
+@Entity
+@Table(name = "shelter_cat")
 public class ShelterCat extends Shelter {
-    private final Integer SHELTER_ID = 2;
+    @Id
+    @Column(name = "shelter_id", nullable = false)
+    private Long SHELTER_ID = 2L;
+    @Transient
+    private transient List<Cat> pets;
+    @Transient
+    private transient List<CatOwner> users;
+
+    public ShelterCat() {
+    }
+
     @Override
     public String getAddress() {
         try {
@@ -16,19 +35,5 @@ public class ShelterCat extends Shelter {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @Override
-    public List<Cat> getPets() {
-        return null;
-    }
-
-    @Override
-    public List<User> getUsers() {
-        return null;
-    }
-
-    public Integer getShelterId() {
-        return SHELTER_ID;
     }
 }

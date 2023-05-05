@@ -24,7 +24,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
-@Service
+@Component
 public class TelegramBotUpdatesListener implements UpdatesListener {
 
     private final Logger logger = LoggerFactory.getLogger(TelegramBotUpdatesListener.class);
@@ -43,7 +43,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     private KeyBoardShelter keyBoardShelter;
 
 
-    public TelegramBotUpdatesListener(TelegramBot telegramBot, DogServiceImpl dogService) {
+    public TelegramBotUpdatesListener(TelegramBot telegramBot, DogServiceImpl dogService, ClientServiceImpl clientService) {
         this.telegramBot = telegramBot;
         this.dogService = dogService;
     }

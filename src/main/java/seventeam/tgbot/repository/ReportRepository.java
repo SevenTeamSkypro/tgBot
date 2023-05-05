@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
-    public interface ReportRepository extends JpaRepository<Report, Long> {
-        List<Report> findAllByLocalDateTime(LocalDateTime localDateTime);
-    }
+public interface ReportRepository extends JpaRepository<Report, Long> {
+}
 

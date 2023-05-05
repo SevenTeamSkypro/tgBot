@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import seventeam.tgbot.model.Dog;
 import seventeam.tgbot.model.DogOwner;
 import seventeam.tgbot.model.Pet;
+import seventeam.tgbot.model.ShelterDog;
 import seventeam.tgbot.repository.ShelterDogRepository;
 import seventeam.tgbot.service.PetService;
 
@@ -21,8 +22,8 @@ public class DogServiceImpl implements PetService {
     }
 
     public void createDog(Long id, String name, String breed, Integer age, String suit, String gender,
-                        DogOwner dogOwner) {
-        Dog dog = new Dog(id, name, breed, age, suit, gender, dogOwner);
+                          DogOwner dogOwner, ShelterDog shelterDog) {
+        Dog dog = new Dog(id, name, breed, age, suit, gender, dogOwner, shelterDog);
         dogs = shelterDogRepository.findAll();
         if (!dogs.contains(dog)) {
             dogs.add(Math.toIntExact(id), dog);
