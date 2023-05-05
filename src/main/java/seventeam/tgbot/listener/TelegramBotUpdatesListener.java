@@ -8,6 +8,7 @@ import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.stereotype.Component;
 import seventeam.tgbot.model.ShelterCat;
 import seventeam.tgbot.model.ShelterDog;
+import seventeam.tgbot.service.impl.ClientServiceImpl;
 import seventeam.tgbot.service.impl.DogServiceImpl;
 
 import javax.annotation.PostConstruct;
@@ -23,10 +24,12 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
     private final TelegramBot telegramBot;
     private final DogServiceImpl dogService;
+    private final ClientServiceImpl clientService;
 
-    public TelegramBotUpdatesListener(TelegramBot telegramBot, DogServiceImpl dogService) {
+    public TelegramBotUpdatesListener(TelegramBot telegramBot, DogServiceImpl dogService, ClientServiceImpl clientService) {
         this.telegramBot = telegramBot;
         this.dogService = dogService;
+        this.clientService = clientService;
     }
 
     @PostConstruct
@@ -55,8 +58,6 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                         }
                         case "/command1" -> {
                             sendMassage(chatId, shelterDog.getAddress());
-                            sendMassage(chatId, "Выберите питомца.");
-                            sendMassage(chatId, dogService.getAllPets().toString());
                         }
                         case "/command2" -> {
                             sendMassage(chatId, shelterCat.getAddress());

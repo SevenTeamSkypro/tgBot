@@ -1,7 +1,11 @@
 package seventeam.tgbot.model;
 
+import lombok.Data;
+
+@Data
 public abstract class User {
     private Long id;
-    private String name;
-    private String passport;
+    private String firstName;
+    private String lastName;
+    private String phoneNumber;
 }

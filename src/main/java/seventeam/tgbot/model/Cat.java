@@ -1,14 +1,16 @@
 package seventeam.tgbot.model;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "cats")
 public class Cat extends Pet {
@@ -29,6 +31,21 @@ public class Cat extends Pet {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "owner_id")
     private CatOwner catOwner;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "shelter_id")
+    private ShelterCat shelterCat;
+
+    public Cat(Long id, String name, String breed, Integer age, String suit, String gender, CatOwner catOwner,
+               ShelterCat shelterCat) {
+        this.id = id;
+        this.name = name;
+        this.breed = breed;
+        this.age = age;
+        this.suit = suit;
+        this.gender = gender;
+        this.catOwner = catOwner;
+        this.shelterCat = shelterCat;
+    }
 
     @Override
     public String toString() {
@@ -37,5 +54,18 @@ public class Cat extends Pet {
                 ", порода " + breed +
                 ", возраст " + age +
                 ", масть " + suit;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Cat cat = (Cat) o;
+        return getId() != null && Objects.equals(getId(), cat.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }
