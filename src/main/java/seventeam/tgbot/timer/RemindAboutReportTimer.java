@@ -33,7 +33,6 @@ public class RemindAboutReportTimer {
                                 new SendMessage(dogOwner.getChatId(), "Составьте отчёт!")
                         );
                     } else new SendMessage(dogOwner.getChatId(), "Поздравляем, вы прошли испытательный срок!");
-
                 });
         catOwnerRepository.findAllByProbation(
                         LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES))
