@@ -14,11 +14,9 @@ import org.springframework.stereotype.Service;
 import seventeam.tgbot.listener.TelegramBotUpdatesListener;
 
 @Service
-public class KeyBoardShelter {
-
+public class KeyBoardService {
     @Autowired
     private TelegramBot telegramBot;
-
     private static final Logger logger = LoggerFactory.getLogger(TelegramBotUpdatesListener.class);
 
     public void menu(long chatId) {
@@ -52,6 +50,7 @@ public class KeyBoardShelter {
             logger.info("Описание -: {}", description);
         }
     }
+
     public void menuInfo(long chatId) {
         logger.info("sendMenuInfo: {}, {}", chatId, "Информация о приюте");
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup(
