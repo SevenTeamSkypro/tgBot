@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import seventeam.tgbot.model.ShelterCat;
 import seventeam.tgbot.model.ShelterDog;
 import seventeam.tgbot.service.KeyBoardService;
+import seventeam.tgbot.service.ReportService;
 import seventeam.tgbot.service.impl.CatServiceImpl;
 import seventeam.tgbot.service.impl.ClientServiceImpl;
 import seventeam.tgbot.service.impl.DogServiceImpl;
@@ -32,13 +33,15 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     private final CatServiceImpl catService;
     private final ClientServiceImpl clientService;
     private final KeyBoardService keyBoardService;
+    private final ReportService reportService;
 
-    public TelegramBotUpdatesListener(TelegramBot telegramBot, DogServiceImpl dogService, CatServiceImpl catService, ClientServiceImpl clientService, KeyBoardService keyBoardService) {
+    public TelegramBotUpdatesListener(TelegramBot telegramBot, DogServiceImpl dogService, CatServiceImpl catService, ClientServiceImpl clientService, KeyBoardService keyBoardService, ReportService reportService) {
         this.telegramBot = telegramBot;
         this.dogService = dogService;
         this.catService = catService;
         this.clientService = clientService;
         this.keyBoardService = keyBoardService;
+        this.reportService = reportService;
     }
 
     @PostConstruct
@@ -97,7 +100,9 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                                     sendMassage(chatId, dogService.getAllPets().toString());
                                 } else sendMassage(chatId, catService.getAllPets().toString());
                             }
-                            case "Отчет" -> sendMassage(chatId, "Такая возможность скоро будет добавлена");
+                            case "Отчет" -> {
+                                reportService.createReport(message);
+                            }
                             case "Позвать волонтера" -> sendMassage(chatId, "Такая возможность скоро будет добавлена");
                             case "Правила ухода за животными" -> {
                                 try {
