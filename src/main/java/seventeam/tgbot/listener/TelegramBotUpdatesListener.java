@@ -103,7 +103,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                                 } else sendMassage(chatId, catService.getAllPets().toString());
                             }
                             case "Отчет" -> {
-                                reportService.createReport(message);
+                                reportService.createReport(update.message());
                             }
                             case "Позвать волонтера" -> sendMassage(chatId, "Такая возможность скоро будет добавлена");
                             case "Правила ухода за животными" -> {
