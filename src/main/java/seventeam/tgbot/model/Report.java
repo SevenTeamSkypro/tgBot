@@ -20,6 +20,8 @@ public class Report {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+    @Column(name = "chat_id", nullable = false)
+    private Long chatId;
     @Column(name = "date", nullable = false)
     private LocalDateTime localDateTime;
     @Column(name = "photo", nullable = false)

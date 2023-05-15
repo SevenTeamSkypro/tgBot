@@ -4,7 +4,7 @@ import seventeam.tgbot.model.Client;
 import seventeam.tgbot.model.User;
 
 public interface UserService {
-    Client createUser(String firstName, String lastName, String phoneNumber, Long SHELTER_ID);
+    User createUser(Long id, String firstName, String lastName, String phoneNumber, Long SHELTER_ID);
 
     User getUser(Long id);
 

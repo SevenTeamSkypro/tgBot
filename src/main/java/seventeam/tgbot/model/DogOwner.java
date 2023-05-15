@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -25,16 +26,29 @@ public class DogOwner extends User {
     @Column(name = "pets", nullable = false)
     @OneToMany(mappedBy = "dogOwner", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Dog> pets;
+    @Column(name = "probation")
+    private LocalDateTime probation;
+    @Transient
+    private transient Long chatId;
 
     public DogOwner() {
     }
 
-    public DogOwner(Long id, String firstName, String lastName, String phoneNumber, List<Dog> pets) {
+    public DogOwner(Long id, String firstName, String lastName, String phoneNumber, List<Dog> pets, LocalDateTime probation) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.pets = pets;
+        this.probation = probation;
+    }
+
+    public LocalDateTime getProbation() {
+        return probation;
+    }
+
+    public Long getChatId() {
+        return chatId;
     }
 
     @Override

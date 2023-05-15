@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 public class CatServiceImpl implements PetService {
     private final ShelterCatRepository shelterCatRepository;
     private List<Cat> cats = new ArrayList<>();
-
     public CatServiceImpl(ShelterCatRepository shelterCatRepository) {
         this.shelterCatRepository = shelterCatRepository;
     }
@@ -35,7 +34,7 @@ public class CatServiceImpl implements PetService {
     public List<Cat> getAllPets() {
         return cats = shelterCatRepository.findAll();
     }
-
+    
     @Override
     public List<Pet> getPets(String breed, Integer age, String suit, String gender) {
         cats = shelterCatRepository.findAll();
