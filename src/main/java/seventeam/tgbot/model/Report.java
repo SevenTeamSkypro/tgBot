@@ -1,15 +1,16 @@
 package seventeam.tgbot.model;
 
 import com.pengrad.telegrambot.model.File;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-@NoArgsConstructor
-@AllArgsConstructor
+
 @Getter
 @Setter
 @ToString
@@ -29,16 +30,28 @@ public class Report {
     @Column(name = "report", nullable = false)
     private String report;
 
+    public Report() {
+
+    }
+
+    public Report(Long id, Long chatId, LocalDateTime localDateTime, File photo, String report) {
+        this.id = id;
+        this.chatId = chatId;
+        this.localDateTime = localDateTime;
+        this.photo = photo;
+        this.report = report;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Report report = (Report) o;
-        return getId() != null && Objects.equals(getId(), report.getId());
+        if (o == null || getClass() != o.getClass()) return false;
+        Report report1 = (Report) o;
+        return Objects.equals(chatId, report1.chatId) && localDateTime.equals(report1.localDateTime) && photo.equals(report1.photo) && report.equals(report1.report);
     }
 
     @Override
     public int hashCode() {
-        return getClass().hashCode();
+        return Objects.hash(localDateTime, photo, report);
     }
 }

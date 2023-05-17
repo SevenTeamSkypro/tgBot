@@ -2,9 +2,7 @@ package seventeam.tgbot.listener;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
-import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.Message;
-import com.pengrad.telegrambot.model.PhotoSize;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.slf4j.Logger;
@@ -12,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import seventeam.tgbot.model.ShelterCat;
 import seventeam.tgbot.model.ShelterDog;
+import seventeam.tgbot.enums.Status;
 import seventeam.tgbot.service.KeyBoardService;
 import seventeam.tgbot.service.ReportService;
 import seventeam.tgbot.service.impl.CatServiceImpl;
@@ -24,7 +23,9 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class TelegramBotUpdatesListener implements UpdatesListener {
@@ -36,6 +37,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     private final ClientServiceImpl clientService;
     private final KeyBoardService keyBoardService;
     private final ReportService reportService;
+    private final Map<Long, Status> statuses = new HashMap<>();
 
     public TelegramBotUpdatesListener(TelegramBot telegramBot, DogServiceImpl dogService, CatServiceImpl catService, ClientServiceImpl clientService, KeyBoardService keyBoardService, ReportService reportService) {
         this.telegramBot = telegramBot;
@@ -68,54 +70,63 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                         String firstName = update.message().chat().firstName();
                         String lastName = update.message().chat().lastName();
                         String phoneNumber = "333-33-33";
-                        switch (text) {
-                            case START -> {
-                                sendMassage(chatId, "Приветствую тебя, " + firstName);
-                                keyBoardService.chooseMenu(chatId);
-                            }
-                            case "\uD83D\uDC31 CAT" -> {
-                                isCatNotDog = true;
-                                keyBoardService.menu(chatId);
-                                sendMassage(chatId, "Выбрана кошка");
-                                clientService.createUser(chatId, firstName, lastName, phoneNumber,
-                                        shelterCat.getSHELTER_ID());
-                            }
-                            case "\uD83D\uDC36 DOG" -> {
-                                isCatNotDog = false;
-                                keyBoardService.menu(chatId);
-                                sendMassage(chatId, "Выбрана собака");
-                                clientService.createUser(chatId, firstName, lastName, phoneNumber,
-                                        shelterDog.getSHELTER_ID());
-                            }
-                            case "Главное меню", "Вернуться в главное меню" -> keyBoardService.menu(chatId);
-                            case "Информация о приюте" -> keyBoardService.menuInfo(chatId);
-                            case "Рассказать о нашем приюте" -> {
-                                try {
-                                    sendMassage(chatId, readFile("src/main/resources/draw/info.txt",
-                                            StandardCharsets.UTF_8));
-                                } catch (IOException e) {
-                                    throw new RuntimeException(e);
-                                }
-                            }
-                            case "Взять питомца" -> {
-                                if (isCatNotDog) {
-                                    sendMassage(chatId, dogService.getAllPets().toString());
-                                } else sendMassage(chatId, catService.getAllPets().toString());
-                            }
-                            case "Отчет" -> {
-                                reportService.createReport(update.message());
-                            }
-                            case "Позвать волонтера" -> sendMassage(chatId, "Такая возможность скоро будет добавлена");
-                            case "Правила ухода за животными" -> {
-                                try {
-                                    sendMassage(chatId, readFile("src/main/resources/draw/care_of_animals.txt",
-                                            StandardCharsets.UTF_8));
-                                } catch (IOException e) {
-                                    throw new RuntimeException(e);
-                                }
-                            }
-                            default -> replyMessage(chatId, "Такой команды нет", messageId);
+                        if (statuses.containsValue(Status.NOT_COMPILED)) {
+                            reportService.createReport(update);
+                            statuses.remove(chatId);
+                            sendMassage(chatId, "Отчёт отправлен!");
                         }
+                        if (text != null) {
+                            switch (text) {
+                                case START -> {
+                                    sendMassage(chatId, "Приветствую тебя, " + firstName);
+                                    keyBoardService.chooseMenu(chatId);
+                                }
+                                case "\uD83D\uDC31 CAT" -> {
+                                    isCatNotDog = true;
+                                    keyBoardService.menu(chatId);
+                                    sendMassage(chatId, "Выбран приют кошек");
+                                    clientService.createUser(chatId, firstName, lastName, phoneNumber,
+                                            shelterCat.getSHELTER_ID());
+                                }
+                                case "\uD83D\uDC36 DOG" -> {
+                                    isCatNotDog = false;
+                                    keyBoardService.menu(chatId);
+                                    sendMassage(chatId, "Выбран приют собак");
+                                    clientService.createUser(chatId, firstName, lastName, phoneNumber,
+                                            shelterDog.getSHELTER_ID());
+                                }
+                                case "Главное меню", "Вернуться в главное меню" -> keyBoardService.menu(chatId);
+                                case "Информация о приюте" -> keyBoardService.menuInfo(chatId);
+                                case "Рассказать о нашем приюте" -> {
+                                    try {
+                                        sendMassage(chatId, readFile("src/main/resources/draw/info.txt",
+                                                StandardCharsets.UTF_8));
+                                    } catch (IOException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                }
+                                case "Взять питомца" -> {
+                                    if (isCatNotDog) {
+                                        sendMassage(chatId, dogService.getAllPets().toString());
+                                    } else sendMassage(chatId, catService.getAllPets().toString());
+                                }
+                                case "Отчет" -> {
+                                    statuses.put(chatId, Status.NOT_COMPILED);
+                                    sendMassage(chatId, "Отправьте фото и отчёт одним сообщением");
+                                }
+                                case "Позвать волонтера" ->
+                                        sendMassage(chatId, "Такая возможность скоро будет добавлена");
+                                case "Правила ухода за животными" -> {
+                                    try {
+                                        sendMassage(chatId, readFile("src/main/resources/draw/care_of_animals.txt",
+                                                StandardCharsets.UTF_8));
+                                    } catch (IOException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                }
+                                default -> replyMessage(chatId, "Такой команды нет", messageId);
+                            }
+                        } else keyBoardService.menu(chatId);
                     });
         } catch (Exception e) {
             logger.error(e.getMessage(), e);

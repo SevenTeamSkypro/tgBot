@@ -4,8 +4,10 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.File;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.PhotoSize;
+import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.GetFile;
 import com.pengrad.telegrambot.request.SendMessage;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import seventeam.tgbot.model.Report;
 import seventeam.tgbot.repository.ReportRepository;
@@ -24,28 +26,32 @@ public class ReportService {
     }
 
     //TODO Заставить бота ждать отправки фото
-    public void createReport(Message message) {
-        PhotoSize[] photos = message.photo();
+    public void createReport(@NotNull Update update) {
+        PhotoSize[] photos = update.message().photo();
         if (photos != null) {
             for (PhotoSize photo : photos) {
                 GetFile getFile = new GetFile(photo.fileId());
                 File file = telegramBot.execute(getFile).file();
                 Report report = new Report(
-                        message.migrateFromChatId(),
-                        message.chat().id(),
+                        update.message().chat().id(),
+                        update.message().chat().id(),
                         LocalDateTime.now(),
                         file,
-                        message.text()
+                        update.message().caption()
                 );
                 if (report.getReport() == null) {
-                    telegramBot.execute(new SendMessage(message.chat().id(), "Заполните отчёт!"));
+                    telegramBot.execute(new SendMessage(update.message().chat().id(), "Заполните отчёт!"));
                 }
                 if (report.getPhoto() == null) {
-                    telegramBot.execute(new SendMessage(message.chat().id(), "Добавьте фото!"));
+                    telegramBot.execute(new SendMessage(update.message().chat().id(), "Добавьте фото!"));
                 } else {
                     reportRepository.saveAndFlush(report);
                 }
             }
-        } else telegramBot.execute(new SendMessage(message.chat().id(), "photos is empty"));
+        } else telegramBot.execute(new SendMessage(update.message().chat().id(), "photos is empty"));
+    }
+
+    public Report getReport(Long chatId) {
+        return reportRepository.getReferenceById(chatId);
     }
 }
