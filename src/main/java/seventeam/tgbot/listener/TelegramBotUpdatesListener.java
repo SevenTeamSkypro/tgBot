@@ -8,9 +8,9 @@ import com.pengrad.telegrambot.request.SendMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import seventeam.tgbot.enums.Status;
 import seventeam.tgbot.model.ShelterCat;
 import seventeam.tgbot.model.ShelterDog;
-import seventeam.tgbot.enums.Status;
 import seventeam.tgbot.service.KeyBoardService;
 import seventeam.tgbot.service.ReportService;
 import seventeam.tgbot.service.impl.CatServiceImpl;
@@ -73,7 +73,6 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                         if (statuses.containsValue(Status.NOT_COMPILED)) {
                             reportService.createReport(update);
                             statuses.remove(chatId);
-                            sendMassage(chatId, "Отчёт отправлен!");
                         }
                         if (text != null) {
                             switch (text) {
@@ -124,6 +123,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                                         throw new RuntimeException(e);
                                     }
                                 }
+                                //TODO Отловить при неправильном отчёте
                                 default -> replyMessage(chatId, "Такой команды нет", messageId);
                             }
                         } else keyBoardService.menu(chatId);
