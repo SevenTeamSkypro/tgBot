@@ -25,16 +25,16 @@ public class OwnerServiceImpl implements UserService {
     }
 
     public User createOwner(Long id, String firstName, String lastName, String phoneNumber, Long SHELTER_ID,
-                            Long petId) {
+                            Pet pet) {
         List<Dog> dogs = new ArrayList<>();
         List<Cat> cats = new ArrayList<>();
         if (SHELTER_ID == 1) {
-            Dog dog = (Dog) dogService.getPet(petId);
+            Dog dog = (Dog) dogService.getPet(pet.getId());
             dogs.add(dog);
             return dogOwnerRepository.save(new DogOwner(id, firstName, lastName, phoneNumber, dogs,
                     ReportService.reportingPeriod));
         } else {
-            Cat cat = (Cat) catService.getPet(petId);
+            Cat cat = (Cat) catService.getPet(pet.getId());
             cats.add(cat);
             return catOwnerRepository.save(new CatOwner(id, firstName, lastName, phoneNumber, cats,
                     ReportService.reportingPeriod));
