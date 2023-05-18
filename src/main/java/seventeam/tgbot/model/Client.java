@@ -24,8 +24,6 @@ public class Client extends User {
     private String lastName;
     @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
-    @Column(name = "shelter_id", nullable = false)
-    private Long SHELTER_ID;
 
     @Override
     public boolean equals(Object o) {

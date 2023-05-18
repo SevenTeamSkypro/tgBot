@@ -15,9 +15,9 @@ public class ClientServiceImpl implements UserService {
     }
 
     @Override
-    public Client createUser(Long id, String firstName, String lastName, String phoneNumber, Long SHELTER_ID) {
-        Client client = new Client(id, firstName, lastName, phoneNumber, SHELTER_ID);
-        clientRepository.save(client);
+    public Client createUser(Long id, String firstName, String lastName, String phoneNumber) {
+        Client client = new Client(id, firstName, lastName, phoneNumber);
+        clientRepository.saveAndFlush(client);
         return client;
     }
 
@@ -29,7 +29,7 @@ public class ClientServiceImpl implements UserService {
     @Override
     public User updateUser(User user) {
         clientRepository.delete((Client) user);
-        return clientRepository.save((Client) user);
+        return clientRepository.saveAndFlush((Client) user);
     }
 
     @Override

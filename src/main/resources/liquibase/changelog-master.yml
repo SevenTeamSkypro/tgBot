@@ -5,3 +5,5 @@ databaseChangeLog:
       file: liquibase/change-1.sql
   - include:
       file: liquibase/change-2.sql
+  - include:
+      file: liquibase/change-3.sql

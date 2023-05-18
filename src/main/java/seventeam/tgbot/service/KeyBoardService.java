@@ -16,7 +16,6 @@ import seventeam.tgbot.listener.TelegramBotUpdatesListener;
 public class KeyBoardService {
     private final TelegramBot telegramBot;
     private static final Logger logger = LoggerFactory.getLogger(TelegramBotUpdatesListener.class);
-
     public KeyBoardService(TelegramBot telegramBot) {
         this.telegramBot = telegramBot;
     }
@@ -41,7 +40,7 @@ public class KeyBoardService {
     public void returnResponseReplyKeyboard(ReplyKeyboardMarkup replyKeyboardMarkup, Long chatId, String text) {
         replyKeyboardMarkup.resizeKeyboard(true);
         replyKeyboardMarkup.oneTimeKeyboard(false);
-        replyKeyboardMarkup.selective(false);
+        replyKeyboardMarkup.selective(true);
         SendMessage request = new SendMessage(chatId, text).replyMarkup(replyKeyboardMarkup).parseMode(ParseMode.HTML).disableWebPagePreview(true);
         SendResponse sendResponse = telegramBot.execute(request);
         if (!sendResponse.isOk()) {
@@ -59,5 +58,12 @@ public class KeyBoardService {
                 new KeyboardButton("Правила ухода за животными"));
         replyKeyboardMarkup.addRow(new KeyboardButton("Вернуться в главное меню"));
         returnResponseReplyKeyboard(replyKeyboardMarkup, chatId, "Информация о приюте");
+    }
+
+    public void getContact(Long chatId) {
+        ReplyKeyboardMarkup keyboard = new ReplyKeyboardMarkup(
+                new KeyboardButton("Отправить >").requestContact(true)
+        );
+        returnResponseReplyKeyboard(keyboard, chatId, "Отправьте номер телефона");
     }
 }

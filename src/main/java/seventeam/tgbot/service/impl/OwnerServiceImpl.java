@@ -42,7 +42,7 @@ public class OwnerServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(Long id, String firstName, String lastName, String phoneNumber, Long SHELTER_ID) {
+    public User createUser(Long id, String firstName, String lastName, String phoneNumber) {
         return null;
     }
 

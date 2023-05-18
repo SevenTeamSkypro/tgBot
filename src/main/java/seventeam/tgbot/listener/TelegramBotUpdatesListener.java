@@ -2,6 +2,7 @@ package seventeam.tgbot.listener;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
+import com.pengrad.telegrambot.model.Contact;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
@@ -9,8 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import seventeam.tgbot.enums.Status;
-import seventeam.tgbot.model.ShelterCat;
-import seventeam.tgbot.model.ShelterDog;
 import seventeam.tgbot.service.KeyBoardService;
 import seventeam.tgbot.service.ReportService;
 import seventeam.tgbot.service.impl.CatServiceImpl;
@@ -19,13 +18,14 @@ import seventeam.tgbot.service.impl.DogServiceImpl;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Component
 public class TelegramBotUpdatesListener implements UpdatesListener {
@@ -57,49 +57,47 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
     @Override
     public int process(List<Update> updates) {
-        ShelterDog shelterDog = new ShelterDog();
-        ShelterCat shelterCat = new ShelterCat();
         try {
             updates.stream()
                     .filter(update -> update.message() != null)
                     .forEach(update -> {
                         Message message = update.message();
-                        Integer messageId = update.message().messageId();
                         Long chatId = message.chat().id();
-                        String text = update.message().text();
-                        String firstName = update.message().chat().firstName();
-                        String lastName = update.message().chat().lastName();
-                        String phoneNumber = "333-33-33";
+                        String text = message.text();
+                        String firstName = message.chat().firstName();
+                        String lastName = message.chat().lastName();
                         if (statuses.containsValue(Status.NOT_COMPILED)) {
                             reportService.createReport(update);
                             statuses.remove(chatId);
+                        }
+                        if (message.contact() != null) {
+                            Contact contact = message.contact();
+                            String phoneNumber = contact.phoneNumber();
+                            clientService.createUser(chatId, firstName, lastName, phoneNumber);
+                            keyBoardService.chooseMenu(chatId);
                         }
                         if (text != null) {
                             switch (text) {
                                 case START -> {
                                     sendMassage(chatId, "Приветствую тебя, " + firstName);
-                                    keyBoardService.chooseMenu(chatId);
+                                    keyBoardService.getContact(chatId);
                                 }
                                 case "\uD83D\uDC31 CAT" -> {
                                     isCatNotDog = true;
-                                    keyBoardService.menu(chatId);
                                     sendMassage(chatId, "Выбран приют кошек");
-                                    clientService.createUser(chatId, firstName, lastName, phoneNumber,
-                                            shelterCat.getSHELTER_ID());
+                                    keyBoardService.menu(chatId);
                                 }
                                 case "\uD83D\uDC36 DOG" -> {
                                     isCatNotDog = false;
-                                    keyBoardService.menu(chatId);
                                     sendMassage(chatId, "Выбран приют собак");
-                                    clientService.createUser(chatId, firstName, lastName, phoneNumber,
-                                            shelterDog.getSHELTER_ID());
+                                    keyBoardService.menu(chatId);
                                 }
                                 case "Главное меню", "Вернуться в главное меню" -> keyBoardService.menu(chatId);
                                 case "Информация о приюте" -> keyBoardService.menuInfo(chatId);
                                 case "Рассказать о нашем приюте" -> {
                                     try {
-                                        sendMassage(chatId, readFile("src/main/resources/draw/info.txt",
-                                                StandardCharsets.UTF_8));
+                                        sendMassage(chatId, readFile("src/main/resources/draw/info.txt"
+                                        ));
                                     } catch (IOException e) {
                                         throw new RuntimeException(e);
                                     }
@@ -117,16 +115,15 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                                         sendMassage(chatId, "Такая возможность скоро будет добавлена");
                                 case "Правила ухода за животными" -> {
                                     try {
-                                        sendMassage(chatId, readFile("src/main/resources/draw/care_of_animals.txt",
-                                                StandardCharsets.UTF_8));
+                                        sendMassage(chatId, readFile("src/main/resources/draw/care_of_animals.txt"
+                                        ));
                                     } catch (IOException e) {
                                         throw new RuntimeException(e);
                                     }
                                 }
-                                //TODO Отловить при неправильном отчёте
-                                default -> replyMessage(chatId, "Такой команды нет", messageId);
                             }
-                        } else keyBoardService.menu(chatId);
+                            //TODO Разобраться с NPE
+                        } else logger.info("Метод message.text() возвращает ожидаемый null");
                     });
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -139,8 +136,8 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         telegramBot.execute(sendMessage);
     }
 
-    private String readFile(String path, Charset encoding) throws IOException {
-        return Files.readString(Paths.get(path), encoding);
+    private String readFile(String path) throws IOException {
+        return Files.readString(Paths.get(path), StandardCharsets.UTF_8);
     }
 
     public void replyMessage(Long chatId, String messageText, Integer messageId) {

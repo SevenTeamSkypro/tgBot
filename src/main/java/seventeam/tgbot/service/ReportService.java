@@ -25,25 +25,25 @@ public class ReportService {
     }
     //TODO Выставить допустимый размер
     public void createReport(@NotNull Update update) {
-        PhotoSize[] photos = update.message().photo();
-        if (photos != null) {
-            PhotoSize photoSize = photos[0];
+        PhotoSize photoSize = update.message().photo()[0];
+        Long chatId = update.message().chat().id();
+        if (photoSize != null) {
             GetFile getFile = new GetFile(photoSize.fileId());
             File file = telegramBot.execute(getFile).file();
             Report report = new Report(
-                    update.message().chat().id(),
-                    update.message().chat().id(),
+                    chatId,
+                    chatId,
                     LocalDateTime.now(),
                     file,
                     update.message().caption()
             );
             if (report.getReport() == null) {
-                telegramBot.execute(new SendMessage(update.message().chat().id(), "Заполните отчёт!"));
+                telegramBot.execute(new SendMessage(chatId, "Заполните отчёт!"));
             } else {
                 reportRepository.saveAndFlush(report);
-                telegramBot.execute(new SendMessage(update.message().chat().id(), "Отчёт отправлен!"));
+                telegramBot.execute(new SendMessage(chatId, "Отчёт отправлен!"));
             }
-        } else telegramBot.execute(new SendMessage(update.message().chat().id(), "Добавьте фото!"));
+        } else telegramBot.execute(new SendMessage(chatId, "Добавьте фото!"));
     }
 
     public Report getReport(Long chatId) {

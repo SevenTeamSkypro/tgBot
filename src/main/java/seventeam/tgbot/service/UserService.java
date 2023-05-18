@@ -1,10 +1,9 @@
 package seventeam.tgbot.service;
 
-import seventeam.tgbot.model.Client;
 import seventeam.tgbot.model.User;
 
 public interface UserService {
-    User createUser(Long id, String firstName, String lastName, String phoneNumber, Long SHELTER_ID);
+    User createUser(Long id, String firstName, String lastName, String phoneNumber);
 
     User getUser(Long id);
 
