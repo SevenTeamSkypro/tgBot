@@ -1,4 +1,4 @@
-package seventeam.tgbot.service;
+package seventeam.tgbot.service.impl;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.File;
@@ -25,18 +25,12 @@ public class ReportService {
     }
     //TODO Выставить допустимый размер
     public void createReport(@NotNull Update update) {
-        PhotoSize photoSize = update.message().photo()[0];
         Long chatId = update.message().chat().id();
-        if (photoSize != null) {
+        if (update.message().photo() != null) {
+            PhotoSize photoSize = update.message().photo()[0];
             GetFile getFile = new GetFile(photoSize.fileId());
             File file = telegramBot.execute(getFile).file();
-            Report report = new Report(
-                    chatId,
-                    chatId,
-                    LocalDateTime.now(),
-                    file,
-                    update.message().caption()
-            );
+            Report report = new Report(chatId, chatId, LocalDateTime.now(), file, update.message().caption());
             if (report.getReport() == null) {
                 telegramBot.execute(new SendMessage(chatId, "Заполните отчёт!"));
             } else {

@@ -14,12 +14,7 @@ import seventeam.tgbot.model.Cat;
 import seventeam.tgbot.model.Dog;
 import seventeam.tgbot.model.ShelterCat;
 import seventeam.tgbot.model.ShelterDog;
-import seventeam.tgbot.service.KeyBoardService;
-import seventeam.tgbot.service.ReportService;
-import seventeam.tgbot.service.impl.CatServiceImpl;
-import seventeam.tgbot.service.impl.ClientServiceImpl;
-import seventeam.tgbot.service.impl.DogServiceImpl;
-import seventeam.tgbot.service.impl.OwnerServiceImpl;
+import seventeam.tgbot.service.impl.*;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
@@ -40,12 +35,13 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     private final ClientServiceImpl clientService;
     private final KeyBoardService keyBoardService;
     private final ReportService reportService;
-    private final OwnerServiceImpl ownerService;
+    private final OwnerService ownerService;
+    private final VolunteerService volunteerService;
     private final Map<Long, Status> statuses = new HashMap<>();
     private final ShelterDog shelterDog = new ShelterDog();
     private final ShelterCat shelterCat = new ShelterCat();
 
-    public TelegramBotUpdatesListener(TelegramBot telegramBot, DogServiceImpl dogService, CatServiceImpl catService, ClientServiceImpl clientService, KeyBoardService keyBoardService, ReportService reportService, OwnerServiceImpl ownerService) {
+    public TelegramBotUpdatesListener(TelegramBot telegramBot, DogServiceImpl dogService, CatServiceImpl catService, ClientServiceImpl clientService, KeyBoardService keyBoardService, ReportService reportService, OwnerService ownerService, VolunteerService volunteerService) {
         this.telegramBot = telegramBot;
         this.dogService = dogService;
         this.catService = catService;
@@ -53,6 +49,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         this.keyBoardService = keyBoardService;
         this.reportService = reportService;
         this.ownerService = ownerService;
+        this.volunteerService = volunteerService;
     }
 
     @PostConstruct
@@ -96,15 +93,15 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                                 case "\uD83D\uDC31 CAT" -> {
                                     isCatNotDog = true;
                                     sendMassage(chatId, "Выбран приют кошек");
-                                    keyBoardService.menu(chatId);
+                                    keyBoardService.mainMenu(chatId);
                                 }
                                 case "\uD83D\uDC36 DOG" -> {
                                     isCatNotDog = false;
                                     sendMassage(chatId, "Выбран приют собак");
-                                    keyBoardService.menu(chatId);
+                                    keyBoardService.mainMenu(chatId);
                                 }
-                                case "Главное меню", "Вернуться в главное меню" -> keyBoardService.menu(chatId);
-                                case "Информация о приюте" -> keyBoardService.menuInfo(chatId);
+                                case "Главное меню", "Вернуться в главное меню" -> keyBoardService.mainMenu(chatId);
+                                case "Информация о приюте" -> keyBoardService.infoMenu(chatId);
                                 case "Рассказать о нашем приюте" -> {
                                     try {
                                         sendMassage(chatId, readFile("src/main/resources/draw/info.txt"
@@ -119,15 +116,18 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                                     } else sendMassage(chatId, catService.getAllPets().toString());
                                     sendMassage(chatId, "Введите id питомца");
                                     statuses.put(chatId, Status.NOT_GET);
-                                    //TODO Получить petId от клиента
                                 }
                                 case "Отчет" -> {
                                     statuses.put(chatId, Status.NOT_COMPILED);
                                     sendMassage(chatId, "Отправьте фото и отчёт одним сообщением");
                                 }
-                                case "Позвать волонтера" ->
-                                    //TODO Подключить волонтёра
-                                        sendMassage(chatId, "Такая возможность скоро будет добавлена");
+                                case "Позвать волонтера" -> {
+                                    //TODO Разобраться с LAZY загрузкой
+                                    if (clientService.getUser(chatId).getPhoneNumber() != null) {
+                                        volunteerService.callVolunteer(chatId, clientService.getUser(chatId).getPhoneNumber());
+                                        sendMassage(chatId, "Скоро с вами свяжутся");
+                                    } else sendMassage(chatId, "Вы не зарегистрированы");
+                                }
                                 case "Правила ухода за животными" -> {
                                     try {
                                         sendMassage(chatId, readFile("src/main/resources/draw/care_of_animals.txt"
@@ -170,6 +170,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                         message.contact().phoneNumber(),
                         shelterDog.getShelterId(), dog);
                 sendMassage(message.chat().id(), "Вы стали владельцем питомца по имени " + dog.getName());
+                statuses.remove(message.chat().id());
             } else {
                 Cat cat = shelterCat.getPets().get(0);
                 ownerService.createOwner(Long.valueOf(petId), message.contact().firstName(),
@@ -177,11 +178,12 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                         message.contact().phoneNumber(),
                         shelterCat.getShelterId(), cat);
                 sendMassage(message.chat().id(), "Вы стали владельцем питомца по имени " + cat.getName());
+                statuses.remove(message.chat().id());
             }
         } else {
             sendMassage(message.chat().id(), "Питомца с таким id нет");
             statuses.remove(message.chat().id(), Status.NOT_GET);
         }
-        keyBoardService.menu(message.chat().id());
+        keyBoardService.mainMenu(message.chat().id());
     }
 }

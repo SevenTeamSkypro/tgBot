@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface DogOwnerRepository extends JpaRepository<DogOwner, Long> {
     List<DogOwner> findAllByProbation(LocalDateTime probation);
+    void deleteById(Long id);
 }

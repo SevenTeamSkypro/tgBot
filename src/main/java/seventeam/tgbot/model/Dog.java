@@ -49,11 +49,11 @@ public class Dog extends Pet {
 
     @Override
     public String toString() {
-        return gender +
-                ", кличка " + name +
-                ", порода " + breed +
-                ", возраст " + age +
-                ", масть " + suit;
+        return id + ", кличка: " + name +
+                ", порода: " + breed +
+                ", возраст: " + age +
+                ", масть: " + suit +
+                " " + gender;
     }
 
     @Override
