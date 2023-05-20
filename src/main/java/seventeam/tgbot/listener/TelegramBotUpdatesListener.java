@@ -10,10 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import seventeam.tgbot.enums.Status;
-import seventeam.tgbot.model.Cat;
-import seventeam.tgbot.model.Dog;
-import seventeam.tgbot.model.ShelterCat;
-import seventeam.tgbot.model.ShelterDog;
+import seventeam.tgbot.model.*;
 import seventeam.tgbot.service.impl.*;
 
 import javax.annotation.PostConstruct;
@@ -123,8 +120,9 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                                 }
                                 case "Позвать волонтера" -> {
                                     //TODO Разобраться с LAZY загрузкой
-                                    if (clientService.getUser(chatId).getPhoneNumber() != null) {
-                                        volunteerService.callVolunteer(chatId, clientService.getUser(chatId).getPhoneNumber());
+                                    if (clientService.getUser(message.contact().userId()) != null) {
+                                        Client client = clientService.getUser(message.contact().userId());
+                                        volunteerService.callVolunteer(client.getPhoneNumber());
                                         sendMassage(chatId, "Скоро с вами свяжутся");
                                     } else sendMassage(chatId, "Вы не зарегистрированы");
                                 }

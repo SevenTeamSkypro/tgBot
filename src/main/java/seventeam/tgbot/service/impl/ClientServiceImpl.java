@@ -1,6 +1,7 @@
 package seventeam.tgbot.service.impl;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import seventeam.tgbot.model.Client;
 import seventeam.tgbot.model.User;
 import seventeam.tgbot.repository.ClientRepository;
@@ -20,13 +21,14 @@ public class ClientServiceImpl implements UserService {
         clientRepository.saveAndFlush(client);
     }
 
+    @Transactional
     @Override
-    public User getUser(Long id) {
+    public Client getUser(Long id) {
         return clientRepository.getReferenceById(id);
     }
 
     @Override
-    public User updateUser(User user) {
+    public Client updateUser(User user) {
         clientRepository.delete((Client) user);
         return clientRepository.saveAndFlush((Client) user);
     }

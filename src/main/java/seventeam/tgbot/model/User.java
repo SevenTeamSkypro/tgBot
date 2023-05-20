@@ -7,6 +7,7 @@ public abstract class User {
     private String firstName;
     private String lastName;
     private String phoneNumber;
+
     public User(Long id, String firstName, String lastName, String phoneNumber) {
         this.id = id;
         this.firstName = firstName;
