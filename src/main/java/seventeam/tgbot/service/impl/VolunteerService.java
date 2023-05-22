@@ -23,14 +23,13 @@ public class VolunteerService implements UserService {
     }
 
     @Override
-    public void createUser(Long id, String firstName, String lastName, String phoneNumber) {
-        volunteerRepository.saveAndFlush(new Volunteer(id, firstName, lastName, phoneNumber));
+    public void createUser(Long id, Long chatId, String firstName, String lastName, String phoneNumber) {
+        volunteerRepository.saveAndFlush(new Volunteer(id, chatId, firstName, lastName, phoneNumber));
     }
 
-    @Transactional
     @Override
-    public Volunteer getUser(Long id) {
-        return volunteerRepository.getReferenceById(id);
+    public void createUser(Long id, String firstName, String lastName, String phoneNumber, Long chatId) {
+
     }
 
     @Override

@@ -1,5 +1,7 @@
 package seventeam.tgbot.model;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -10,6 +12,8 @@ public class Client extends User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+    @Column(name = "chat_id")
+    private Long chatId;
     @Column(name = "first_name", nullable = false)
     private String firstName;
     @Column(name = "last_name")
@@ -17,8 +21,9 @@ public class Client extends User {
     @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
 
-    public Client(Long id, String firstName, String lastName, String phoneNumber) {
+    public Client(Long id, Long chatId, String firstName, String lastName, String phoneNumber) {
         this.id = id;
+        this.chatId = chatId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
@@ -28,6 +33,7 @@ public class Client extends User {
     }
 
     @Override
+    @Transactional
     public Long getId() {
         return id;
     }
@@ -37,6 +43,13 @@ public class Client extends User {
     }
 
     @Override
+    @Transactional
+    public Long getChatId() {
+        return chatId;
+    }
+
+    @Override
+    @Transactional
     public String getFirstName() {
         return firstName;
     }
@@ -47,6 +60,7 @@ public class Client extends User {
     }
 
     @Override
+    @Transactional
     public String getLastName() {
         return lastName;
     }
@@ -57,6 +71,7 @@ public class Client extends User {
     }
 
     @Override
+    @Transactional
     public String getPhoneNumber() {
         return phoneNumber;
     }
