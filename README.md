@@ -4,7 +4,7 @@
 Взаимодействие с ботом обеспечивает библиотека Pengrad.
 
 # Backend:
-Java 17, Maven, Spring Boot, Spring Web, Spring JPA, REST, SQL.
+Java 17, Maven, Spring Boot, Spring Web, Spring JPA, Spring DATA, REST, SQL.
 
 # Frontend:
-Telegram.
+Telegram, Swagger. 
