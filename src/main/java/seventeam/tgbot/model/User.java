@@ -4,12 +4,14 @@ import java.util.Objects;
 
 public abstract class User {
     private Long id;
+    private Long chatId;
     private String firstName;
     private String lastName;
     private String phoneNumber;
 
-    public User(Long id, String firstName, String lastName, String phoneNumber) {
+    public User(Long id, Long chatId, String firstName, String lastName, String phoneNumber) {
         this.id = id;
+        this.chatId = chatId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
@@ -20,6 +22,10 @@ public abstract class User {
 
     public Long getId() {
         return id;
+    }
+
+    public Long getChatId() {
+        return chatId;
     }
 
     public String getFirstName() {
@@ -51,11 +57,11 @@ public abstract class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return firstName.equals(user.firstName) && lastName.equals(user.lastName) && phoneNumber.equals(user.phoneNumber);
+        return id.equals(user.id) && chatId.equals(user.chatId) && firstName.equals(user.firstName) && Objects.equals(lastName, user.lastName) && phoneNumber.equals(user.phoneNumber);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(firstName, lastName, phoneNumber);
+        return Objects.hash(id, chatId, firstName, lastName, phoneNumber);
     }
 }

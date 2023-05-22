@@ -17,6 +17,8 @@ public class DogOwner extends User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "owner_id")
     private Long id;
+    @Column(name = "chat_id")
+    private Long chatId;
     @Column(name = "first_name", nullable = false)
     private String firstName;
     @Column(name = "last_name")
@@ -28,14 +30,23 @@ public class DogOwner extends User {
     private List<Dog> pets;
     @Column(name = "probation")
     private LocalDateTime probation;
-    @Transient
-    private transient Long chatId;
 
     public DogOwner() {
     }
 
     public DogOwner(Long id, String firstName, String lastName, String phoneNumber, List<Dog> pets, LocalDateTime probation) {
         this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+        this.pets = pets;
+        this.probation = probation;
+    }
+
+    public DogOwner(Long id, Long chatId, String firstName, String lastName, String phoneNumber, List<Dog> pets,
+                    LocalDateTime probation) {
+        this.id = id;
+        this.chatId = chatId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;

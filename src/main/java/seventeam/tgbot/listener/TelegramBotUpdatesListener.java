@@ -10,7 +10,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import seventeam.tgbot.enums.Status;
-import seventeam.tgbot.model.*;
+import seventeam.tgbot.model.Cat;
+import seventeam.tgbot.model.Dog;
+import seventeam.tgbot.model.ShelterCat;
+import seventeam.tgbot.model.ShelterDog;
 import seventeam.tgbot.service.impl.*;
 
 import javax.annotation.PostConstruct;
@@ -74,7 +77,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                         if (message.contact() != null) {
                             Contact contact = message.contact();
                             String phoneNumber = contact.phoneNumber();
-                            clientService.createUser(chatId, firstName, lastName, phoneNumber);
+                            clientService.createUser(contact.userId(), chatId, firstName, lastName, phoneNumber);
                             keyBoardService.chooseMenu(chatId);
                         }
                         if (statuses.containsValue(Status.NOT_GET)) {
@@ -119,12 +122,8 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                                     sendMassage(chatId, "Отправьте фото и отчёт одним сообщением");
                                 }
                                 case "Позвать волонтера" -> {
-                                    //TODO Разобраться с LAZY загрузкой
-                                    if (clientService.getUser(message.contact().userId()) != null) {
-                                        Client client = clientService.getUser(message.contact().userId());
-                                        volunteerService.callVolunteer(client.getPhoneNumber());
-                                        sendMassage(chatId, "Скоро с вами свяжутся");
-                                    } else sendMassage(chatId, "Вы не зарегистрированы");
+                                    volunteerService.callVolunteer(clientService.getUserByChatId(chatId).getPhoneNumber());
+                                    sendMassage(chatId, "Скоро с вами свяжутся");
                                 }
                                 case "Правила ухода за животными" -> {
                                     try {
@@ -135,7 +134,6 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                                     }
                                 }
                             }
-                            //TODO Разобраться с NPE
                         } else logger.info("Метод message.text() возвращает ожидаемый null");
                     });
         } catch (Exception e) {
@@ -163,7 +161,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         if (shelterCat.getPets() != null && shelterDog.getPets() != null) {
             if (isCatNotDog) {
                 Dog dog = shelterDog.getPets().get(petId);
-                ownerService.createOwner(Long.valueOf(petId), message.contact().firstName(),
+                ownerService.createOwner(Long.valueOf(petId), message.chat().id(), message.contact().firstName(),
                         message.contact().lastName(),
                         message.contact().phoneNumber(),
                         shelterDog.getShelterId(), dog);
@@ -171,7 +169,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                 statuses.remove(message.chat().id());
             } else {
                 Cat cat = shelterCat.getPets().get(0);
-                ownerService.createOwner(Long.valueOf(petId), message.contact().firstName(),
+                ownerService.createOwner(Long.valueOf(petId), message.chat().id(), message.contact().firstName(),
                         message.contact().lastName(),
                         message.contact().phoneNumber(),
                         shelterCat.getShelterId(), cat);

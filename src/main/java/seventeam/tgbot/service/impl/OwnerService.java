@@ -22,14 +22,15 @@ public class OwnerService {
         this.dogService = dogService;
     }
 
-    public void createOwner(Long id, String firstName, String lastName, String phoneNumber, Long SHELTER_ID,
+    public void createOwner(Long id, Long chatId, String firstName, String lastName, String phoneNumber,
+                            Long SHELTER_ID,
                             Pet pet) {
         List<Dog> dogs = new ArrayList<>();
         List<Cat> cats = new ArrayList<>();
         if (SHELTER_ID == 1) {
             Dog dog = (Dog) dogService.getPet(pet.getId());
             dogs.add(dog);
-            dogOwnerRepository.save(new DogOwner(id, firstName, lastName, phoneNumber, dogs,
+            dogOwnerRepository.save(new DogOwner(id, chatId, firstName, lastName, phoneNumber, dogs,
                     ReportService.reportingPeriod));
         } else {
             Cat cat = (Cat) catService.getPet(pet.getId());

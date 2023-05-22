@@ -37,6 +37,14 @@ public class Volunteer extends User {
     public Volunteer() {
     }
 
+    public Volunteer(Long id, Long chatId, String firstName, String lastName, String phoneNumber) {
+        this.id = id;
+        this.chatId = chatId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+    }
+
     public Long getChatId() {
         return chatId;
     }
