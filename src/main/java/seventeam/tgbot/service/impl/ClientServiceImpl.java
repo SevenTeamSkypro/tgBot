@@ -6,6 +6,11 @@ import seventeam.tgbot.model.User;
 import seventeam.tgbot.repository.ClientRepository;
 import seventeam.tgbot.service.UserService;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 @Service
 public class ClientServiceImpl implements UserService {
     private final ClientRepository clientRepository;
@@ -38,5 +43,9 @@ public class ClientServiceImpl implements UserService {
     @Override
     public void deleteUser(User user) {
         clientRepository.delete((Client) user);
+    }
+
+    public String readFile(String path) throws IOException {
+        return Files.readString(Paths.get(path), StandardCharsets.UTF_8);
     }
 }
