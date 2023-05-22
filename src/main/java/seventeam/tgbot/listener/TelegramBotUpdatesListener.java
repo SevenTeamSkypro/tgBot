@@ -18,9 +18,6 @@ import seventeam.tgbot.service.impl.*;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -104,7 +101,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                                 case "Информация о приюте" -> keyBoardService.infoMenu(chatId);
                                 case "Рассказать о нашем приюте" -> {
                                     try {
-                                        sendMassage(chatId, readFile("src/main/resources/draw/info.txt"
+                                        sendMassage(chatId, clientService.readFile("src/main/resources/draw/info.txt"
                                         ));
                                     } catch (IOException e) {
                                         throw new RuntimeException(e);
@@ -127,7 +124,8 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                                 }
                                 case "Правила ухода за животными" -> {
                                     try {
-                                        sendMassage(chatId, readFile("src/main/resources/draw/care_of_animals.txt"
+                                        sendMassage(chatId,
+                                                clientService.readFile("src/main/resources/draw/care_of_animals.txt"
                                         ));
                                     } catch (IOException e) {
                                         throw new RuntimeException(e);
@@ -145,10 +143,6 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     private void sendMassage(Long chatId, String massage) {
         SendMessage sendMessage = new SendMessage(chatId, massage);
         telegramBot.execute(sendMessage);
-    }
-
-    private String readFile(String path) throws IOException {
-        return Files.readString(Paths.get(path), StandardCharsets.UTF_8);
     }
 
     public void replyMessage(Long chatId, String messageText, Integer messageId) {
