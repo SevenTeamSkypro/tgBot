@@ -23,8 +23,7 @@ public class OwnerService {
     }
 
     public void createOwner(Long id, Long chatId, String firstName, String lastName, String phoneNumber,
-                            Long SHELTER_ID,
-                            Pet pet) {
+                            Long SHELTER_ID, Pet pet) {
         List<Dog> dogs = new ArrayList<>();
         List<Cat> cats = new ArrayList<>();
         if (SHELTER_ID == 1) {

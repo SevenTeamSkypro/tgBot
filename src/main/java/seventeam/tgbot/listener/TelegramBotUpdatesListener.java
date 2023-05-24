@@ -3,17 +3,16 @@ package seventeam.tgbot.listener;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Contact;
+import com.pengrad.telegrambot.model.File;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import seventeam.tgbot.enums.Status;
-import seventeam.tgbot.model.Cat;
-import seventeam.tgbot.model.Dog;
-import seventeam.tgbot.model.ShelterCat;
-import seventeam.tgbot.model.ShelterDog;
+import seventeam.tgbot.model.*;
 import seventeam.tgbot.service.impl.*;
 
 import javax.annotation.PostConstruct;
@@ -26,6 +25,7 @@ import java.util.Map;
 public class TelegramBotUpdatesListener implements UpdatesListener {
     private final Logger logger = LoggerFactory.getLogger(TelegramBotUpdatesListener.class);
     private static final String START = "/start";
+    private final String PASSWORD = "пароль";
     private final TelegramBot telegramBot;
     private final DogServiceImpl dogService;
     private final CatServiceImpl catService;
@@ -67,7 +67,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                         String text = message.text();
                         String firstName = message.chat().firstName();
                         String lastName = message.chat().lastName();
-                        if (statuses.containsValue(Status.NOT_COMPILED)) {
+                        if (statuses.containsValue(Status.REPORT_NOT_COMPILED)) {
                             reportService.createReport(update);
                             statuses.remove(chatId);
                         }
@@ -77,9 +77,19 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                             clientService.createUser(contact.userId(), chatId, firstName, lastName, phoneNumber);
                             keyBoardService.chooseMenu(chatId);
                         }
-                        if (statuses.containsValue(Status.NOT_GET)) {
+                        if (statuses.containsValue(Status.PET_ID_NOT_GET)) {
                             Integer petId = Integer.valueOf(text);
-                            createOwner(petId, message);
+                            Client client = clientService.getUserByChatId(chatId);
+                            volunteerService.sendToVolunteer(client, petId);
+                        }
+                        if (statuses.containsValue(Status.SEND_WARNING)) {
+                            Long ownerChatId = Long.valueOf(text);
+                            statuses.remove(chatId, Status.SEND_WARNING);
+                            try {
+                                sendMassage(ownerChatId, clientService.readFile("src/main/resources/draw/warning.txt"));
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
                         }
                         if (text != null) {
                             switch (text) {
@@ -112,10 +122,10 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                                         sendMassage(chatId, dogService.getAllPets().toString());
                                     } else sendMassage(chatId, catService.getAllPets().toString());
                                     sendMassage(chatId, "Введите id питомца");
-                                    statuses.put(chatId, Status.NOT_GET);
+                                    statuses.put(chatId, Status.PET_ID_NOT_GET);
                                 }
                                 case "Отчет" -> {
-                                    statuses.put(chatId, Status.NOT_COMPILED);
+                                    statuses.put(chatId, Status.REPORT_NOT_COMPILED);
                                     sendMassage(chatId, "Отправьте фото и отчёт одним сообщением");
                                 }
                                 case "Позвать волонтера" -> {
@@ -126,9 +136,32 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                                     try {
                                         sendMassage(chatId,
                                                 clientService.readFile("src/main/resources/draw/care_of_animals.txt"
-                                        ));
+                                                ));
                                     } catch (IOException e) {
                                         throw new RuntimeException(e);
+                                    }
+                                }
+                                case PASSWORD -> {
+                                    if (clientService.getUserByChatId(chatId) != null) {
+                                        Client client = clientService.getUserByChatId(chatId);
+                                        volunteerService.createUser(client.getId(), chatId, client.getFirstName(),
+                                                client.getLastName(), client.getPhoneNumber());
+                                        clientService.deleteUser(client);
+                                    }
+                                    keyBoardService.volunteerMenu(chatId);
+                                }
+                                case "Отправить предупреждение" -> {
+                                    statuses.put(chatId, Status.SEND_WARNING);
+                                    sendMassage(chatId, "Введите chatId владельца!");
+                                }
+                                case "Проверить отчет" -> {
+                                    List<Report> reports = reportService.getAll();
+                                    for (Report report : reports) {
+                                        try {
+                                            sendReport(chatId, report.getPhoto(), report.getReport());
+                                        } catch (IOException e) {
+                                            throw new RuntimeException(e);
+                                        }
                                     }
                                 }
                             }
@@ -143,6 +176,11 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     private void sendMassage(Long chatId, String massage) {
         SendMessage sendMessage = new SendMessage(chatId, massage);
         telegramBot.execute(sendMessage);
+    }
+
+    private void sendReport(Long chatId, @NotNull File file, String report) throws IOException {
+        telegramBot.execute(new SendMessage(chatId, telegramBot.getFullFilePath(file)));
+        telegramBot.execute(new SendMessage(chatId, report));
     }
 
     public void replyMessage(Long chatId, String messageText, Integer messageId) {
@@ -172,7 +210,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
             }
         } else {
             sendMassage(message.chat().id(), "Питомца с таким id нет");
-            statuses.remove(message.chat().id(), Status.NOT_GET);
+            statuses.remove(message.chat().id(), Status.PET_ID_NOT_GET);
         }
         keyBoardService.mainMenu(message.chat().id());
     }

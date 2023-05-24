@@ -23,16 +23,10 @@ public class Volunteer extends User {
     private String lastName;
     @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
-    @Transient
-    private transient Long chatId;
+    @Column(name = "chat_id")
+    private Long chatId;
     @Transient
     private transient List<String> phoneNumbers = new ArrayList<>();
-    public Volunteer(Long id, String firstName, String lastName, String phoneNumber) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phoneNumber = phoneNumber;
-    }
 
     public Volunteer() {
     }

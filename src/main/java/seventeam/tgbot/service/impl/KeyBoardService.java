@@ -48,10 +48,10 @@ public class KeyBoardService {
 
     public void volunteerMenu(Long chatId) {
         logger.info("sendMessage: {}, {}", chatId, "Меню волонтёра");
-        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup(new KeyboardButton("Стать волонтёром"));
-        replyKeyboardMarkup.addRow(new KeyboardButton("Оформить владельца"), new KeyboardButton("Проверить отчет"));
-        replyKeyboardMarkup.addRow(new KeyboardButton("Отправить предупреждение"));
-        returnResponseReplyKeyboard(replyKeyboardMarkup, chatId, "Главное меню");
+        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup(
+                new KeyboardButton("Отправить предупреждение"), new KeyboardButton("Проверить отчет"));
+        replyKeyboardMarkup.addRow(new KeyboardButton("Вернуться в главное меню"));
+        returnResponseReplyKeyboard(replyKeyboardMarkup, chatId, "Вы стали волонтёром");
     }
 
     public void returnResponseReplyKeyboard(ReplyKeyboardMarkup replyKeyboardMarkup, Long chatId, String text) {

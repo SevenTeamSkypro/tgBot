@@ -5,6 +5,7 @@ import com.pengrad.telegrambot.request.SendMessage;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import seventeam.tgbot.model.Client;
 import seventeam.tgbot.model.User;
 import seventeam.tgbot.model.Volunteer;
 import seventeam.tgbot.repository.VolunteerRepository;
@@ -27,9 +28,17 @@ public class VolunteerService implements UserService {
         volunteerRepository.saveAndFlush(new Volunteer(id, chatId, firstName, lastName, phoneNumber));
     }
 
-    @Override
-    public void createUser(Long id, String firstName, String lastName, String phoneNumber, Long chatId) {
+    public void getVolunteer(String phoneNumber) {
+        List<Volunteer> volunteers = volunteerRepository.findAll();
+        for (Volunteer volunteer : volunteers) {
+            if (volunteer.getPhoneNumber().equals(phoneNumber)) {
+                return;
+            }
+        }
+    }
 
+    public Volunteer getVolunteer(Long chatId) {
+        return volunteerRepository.getByChatId(chatId);
     }
 
     @Override
@@ -49,6 +58,14 @@ public class VolunteerService implements UserService {
         List<Volunteer> volunteers = volunteerRepository.findAll();
         for (Volunteer v : volunteers) {
             SendMessage sendMessage = new SendMessage(v.getChatId(), phoneNumber);
+            telegramBot.execute(sendMessage);
+        }
+    }
+
+    public void sendToVolunteer(Client client, Integer petId) {
+        List<Volunteer> volunteers = volunteerRepository.findAll();
+        for (Volunteer v : volunteers) {
+            SendMessage sendMessage = new SendMessage(v.getChatId(), client.toString() + petId.toString());
             telegramBot.execute(sendMessage);
         }
     }

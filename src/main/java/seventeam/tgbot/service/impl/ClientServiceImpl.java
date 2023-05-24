@@ -25,11 +25,6 @@ public class ClientServiceImpl implements UserService {
         clientRepository.saveAndFlush(client);
     }
 
-    @Override
-    public void createUser(Long id, String firstName, String lastName, String phoneNumber, Long chatId) {
-
-    }
-
     public Client getUserByChatId(Long chatId) {
         return clientRepository.getByChatId(chatId);
     }

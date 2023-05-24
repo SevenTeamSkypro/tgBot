@@ -12,6 +12,7 @@ import seventeam.tgbot.model.Report;
 import seventeam.tgbot.repository.ReportRepository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class ReportService {
@@ -23,7 +24,6 @@ public class ReportService {
         this.telegramBot = telegramBot;
         this.reportRepository = reportRepository;
     }
-    //TODO Выставить допустимый размер
     public void createReport(@NotNull Update update) {
         Long chatId = update.message().chat().id();
         if (update.message().photo() != null) {
@@ -42,5 +42,9 @@ public class ReportService {
 
     public Report getReport(Long chatId) {
         return reportRepository.getReferenceById(chatId);
+    }
+
+    public List<Report> getAll() {
+        return reportRepository.findAll();
     }
 }

@@ -1,8 +1,7 @@
 package seventeam.tgbot.enums;
 
 public enum Status {
-    COMPILED,
-    NOT_COMPILED,
-    GET,
-    NOT_GET
+    REPORT_NOT_COMPILED,
+    PET_ID_NOT_GET,
+    SEND_WARNING
 }
