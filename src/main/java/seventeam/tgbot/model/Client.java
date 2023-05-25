@@ -97,11 +97,10 @@ public class Client extends User {
 
     @Override
     public String toString() {
-        return "Client{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                "} " + super.toString();
+        return "Клиент: " +
+                "id " + id +
+                ", Имя " + firstName +
+                ", Фамилия " + lastName +
+                ", номер телефона +" + phoneNumber;
     }
 }

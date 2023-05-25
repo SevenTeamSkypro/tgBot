@@ -3,7 +3,7 @@ package seventeam.tgbot.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.Hibernate;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -30,12 +30,13 @@ public class Dog extends Pet {
     private String gender;
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "owner_id")
+    @Nullable
     private DogOwner dogOwner;
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "shelter_id")
     private ShelterDog shelterDog;
 
-    public Dog(Long id, String name, String breed, Integer age, String suit, String gender, DogOwner dogOwner,
+    public Dog(Long id, String name, String breed, Integer age, String suit, String gender, @org.jetbrains.annotations.Nullable DogOwner dogOwner,
                ShelterDog shelterDog) {
         this.id = id;
         this.name = name;
@@ -59,13 +60,13 @@ public class Dog extends Pet {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Dog dog = (Dog) o;
-        return getId() != null && Objects.equals(getId(), dog.getId());
+        return id.equals(dog.id) && name.equals(dog.name) && breed.equals(dog.breed) && age.equals(dog.age) && suit.equals(dog.suit) && gender.equals(dog.gender) && Objects.equals(dogOwner, dog.dogOwner) && Objects.equals(shelterDog, dog.shelterDog);
     }
 
     @Override
     public int hashCode() {
-        return getClass().hashCode();
+        return Objects.hash(id, name, breed, age, suit, gender, dogOwner, shelterDog);
     }
 }

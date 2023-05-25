@@ -37,10 +37,10 @@ public class DogServiceImpl implements PetService {
     }
 
     @Override
-    public List<Pet> getPets(String breed, Integer age, String suit, String gender) {
+    public List<Pet> getEqualsPets(String breed, Integer age, String suit, String gender) {
         dogs = shelterDogRepository.findAll();
         return dogs.stream().filter(dog -> dog.getBreed().equals(breed)
-                && dog.getAge().equals(age)
+                && dog.getAge() <= age
                 && dog.getSuit().equals(suit)
                 && dog.getGender().equals(gender)).collect(Collectors.toList());
     }

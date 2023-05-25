@@ -6,7 +6,7 @@ public interface UserService {
 
     void createUser(Long id, Long chatId, String firstName, String lastName, String phoneNumber);
 
-    User updateUser(User user);
+    void updateUser(User user);
 
-    void deleteUser(User user);
+    void deleteUser(Long id);
 }

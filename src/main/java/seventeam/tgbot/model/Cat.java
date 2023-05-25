@@ -1,14 +1,12 @@
 package seventeam.tgbot.model;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.Hibernate;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.util.Objects;
 
-@NoArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -30,12 +28,13 @@ public class Cat extends Pet {
     private String gender;
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "owner_id")
+    @Nullable
     private CatOwner catOwner;
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "shelter_id")
     private ShelterCat shelterCat;
 
-    public Cat(Long id, String name, String breed, Integer age, String suit, String gender, CatOwner catOwner,
+    public Cat(Long id, String name, String breed, Integer age, String suit, String gender, @org.jetbrains.annotations.Nullable CatOwner catOwner,
                ShelterCat shelterCat) {
         this.id = id;
         this.name = name;
@@ -45,6 +44,9 @@ public class Cat extends Pet {
         this.gender = gender;
         this.catOwner = catOwner;
         this.shelterCat = shelterCat;
+    }
+
+    public Cat() {
     }
 
     @Override
@@ -59,13 +61,13 @@ public class Cat extends Pet {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Cat cat = (Cat) o;
-        return getId() != null && Objects.equals(getId(), cat.getId());
+        return Objects.equals(id, cat.id) && name.equals(cat.name) && breed.equals(cat.breed) && age.equals(cat.age) && suit.equals(cat.suit) && gender.equals(cat.gender) && Objects.equals(catOwner, cat.catOwner) && Objects.equals(shelterCat, cat.shelterCat);
     }
 
     @Override
     public int hashCode() {
-        return getClass().hashCode();
+        return Objects.hash(id, name, breed, age, suit, gender, catOwner, shelterCat);
     }
 }

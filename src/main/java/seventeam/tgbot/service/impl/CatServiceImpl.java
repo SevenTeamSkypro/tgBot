@@ -32,35 +32,32 @@ public class CatServiceImpl implements PetService {
 
     @Override
     public List<Cat> getAllPets() {
-        return cats = shelterCatRepository.findAll();
+        return shelterCatRepository.findAll();
     }
     
     @Override
-    public List<Pet> getPets(String breed, Integer age, String suit, String gender) {
+    public List<Pet> getEqualsPets(String breed, Integer age, String suit, String gender) {
         cats = shelterCatRepository.findAll();
         return cats.stream().filter(cat -> cat.getBreed().equals(breed)
-                && cat.getAge().equals(age)
+                && cat.getAge() <= age
                 && cat.getSuit().equals(suit)
                 && cat.getGender().equals(gender)).collect(Collectors.toList());
     }
 
     @Override
     public Pet getPet(Long id) {
-        cats = shelterCatRepository.findAll();
-        return cats.get(Math.toIntExact(id));
+        return shelterCatRepository.getReferenceById(id);
     }
 
     @Override
     public void update(Pet pet) {
-        cats = shelterCatRepository.findAll();
-        cats.remove(Math.toIntExact(pet.getId()));
-        cats.add(Math.toIntExact(pet.getId()), (Cat) pet);
-        shelterCatRepository.saveAndFlush((Cat) pet);
+        Cat toUpdate = shelterCatRepository.getReferenceById(pet.getId());
+        toUpdate.setAge(pet.getAge());
+        shelterCatRepository.saveAndFlush(toUpdate);
     }
 
     @Override
     public void deletePet(Long id) {
-        cats = shelterCatRepository.findAll();
-        cats.remove(Math.toIntExact(id));
+        shelterCatRepository.deleteById(id);
     }
 }

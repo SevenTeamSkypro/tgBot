@@ -20,6 +20,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Component
 public class TelegramBotUpdatesListener implements UpdatesListener {
@@ -78,9 +80,18 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                             keyBoardService.chooseMenu(chatId);
                         }
                         if (statuses.containsValue(Status.PET_ID_NOT_GET)) {
-                            Integer petId = Integer.valueOf(text);
-                            Client client = clientService.getUserByChatId(chatId);
-                            volunteerService.sendToVolunteer(client, petId);
+                            Pattern pattern = Pattern.compile("\\d+");
+                            Matcher matcher = pattern.matcher(text);
+                            if (matcher.find()) {
+                                Client client = clientService.getUserByChatId(chatId);
+                                volunteerService.sendToVolunteer(client, Integer.parseInt(matcher.group()));
+                                sendMassage(chatId, "Заявка отправлена!");
+                                statuses.remove(chatId);
+                            } else {
+                                sendMassage(chatId, "Вы не ввели id!");
+                                keyBoardService.mainMenu(chatId);
+                                statuses.remove(chatId);
+                            }
                         }
                         if (statuses.containsValue(Status.SEND_WARNING)) {
                             Long ownerChatId = Long.valueOf(text);
@@ -146,7 +157,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                                         Client client = clientService.getUserByChatId(chatId);
                                         volunteerService.createUser(client.getId(), chatId, client.getFirstName(),
                                                 client.getLastName(), client.getPhoneNumber());
-                                        clientService.deleteUser(client);
+                                        clientService.deleteUser(client.getId());
                                     }
                                     keyBoardService.volunteerMenu(chatId);
                                 }

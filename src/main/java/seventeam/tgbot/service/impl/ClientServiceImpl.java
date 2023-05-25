@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 
 @Service
 public class ClientServiceImpl implements UserService {
@@ -29,15 +30,22 @@ public class ClientServiceImpl implements UserService {
         return clientRepository.getByChatId(chatId);
     }
 
-    @Override
-    public Client updateUser(User user) {
-        clientRepository.delete((Client) user);
-        return clientRepository.saveAndFlush((Client) user);
+    public List<Client> getAll() {
+        return clientRepository.findAll();
     }
 
     @Override
-    public void deleteUser(User user) {
-        clientRepository.delete((Client) user);
+    public void updateUser(User user) {
+        Client toUpdate = clientRepository.getReferenceById(user.getId());
+        toUpdate.setFirstName(user.getFirstName());
+        toUpdate.setLastName(user.getLastName());
+        toUpdate.setPhoneNumber(user.getPhoneNumber());
+        clientRepository.saveAndFlush(toUpdate);
+    }
+
+    @Override
+    public void deleteUser(Long id) {
+        clientRepository.deleteById(id);
     }
 
     public String readFile(String path) throws IOException {

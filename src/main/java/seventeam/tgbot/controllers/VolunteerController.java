@@ -25,7 +25,7 @@ public class VolunteerController {
         return volunteerService.getAll();
     }
 
-    @PutMapping
+    @PutMapping("/put")
     public void updateVolunteer(@RequestParam(required = false, name = "id") Long id,
                                 @RequestParam(required = false, name = "chatId") Long chatId,
                                 @RequestParam(required = false, name = "firstName") String firstName,
@@ -34,12 +34,8 @@ public class VolunteerController {
         volunteerService.updateUser(new Volunteer(id, chatId, firstName, lastName, phoneNumber));
     }
 
-    @DeleteMapping
-    public void deleteVolunteer(@RequestParam(required = false, name = "id") Long id,
-                                @RequestParam(required = false, name = "chatId") Long chatId,
-                                @RequestParam(required = false, name = "firstName") String firstName,
-                                @RequestParam(required = false, name = "lastName") String lastName,
-                                @RequestParam(required = false, name = "phoneNumber") String phoneNumber) {
-        volunteerService.deleteUser(new Volunteer(id, chatId, firstName, lastName, phoneNumber));
+    @DeleteMapping("/del")
+    public void deleteVolunteer(@RequestParam(required = false, name = "id") Long id) {
+        volunteerService.deleteUser(id);
     }
 }

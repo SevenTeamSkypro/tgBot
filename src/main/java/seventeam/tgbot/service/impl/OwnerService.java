@@ -22,20 +22,21 @@ public class OwnerService {
         this.dogService = dogService;
     }
 
-    public void createOwner(Long id, Long chatId, String firstName, String lastName, String phoneNumber,
-                            Long SHELTER_ID, Pet pet) {
+    public void createOwner(Long id, Long chatId, String firstName, String lastName, String phoneNumber, Long SHELTER_ID, Pet pet) {
         List<Dog> dogs = new ArrayList<>();
         List<Cat> cats = new ArrayList<>();
         if (SHELTER_ID == 1) {
             Dog dog = (Dog) dogService.getPet(pet.getId());
             dogs.add(dog);
-            dogOwnerRepository.save(new DogOwner(id, chatId, firstName, lastName, phoneNumber, dogs,
-                    ReportService.reportingPeriod));
+            DogOwner dogOwner = new DogOwner(id, chatId, firstName, lastName, phoneNumber, dogs, ReportService.reportingPeriod);
+            dogOwnerRepository.save(dogOwner);
+            dog.setDogOwner(dogOwner);
         } else {
             Cat cat = (Cat) catService.getPet(pet.getId());
             cats.add(cat);
-            catOwnerRepository.save(new CatOwner(id, firstName, lastName, phoneNumber, cats,
-                    ReportService.reportingPeriod));
+            CatOwner catOwner = new CatOwner(id, firstName, lastName, phoneNumber, cats, ReportService.reportingPeriod);
+            catOwnerRepository.save(catOwner);
+            cat.setCatOwner(catOwner);
         }
     }
 

@@ -41,17 +41,17 @@ public class VolunteerService implements UserService {
     }
 
     @Override
-    public Volunteer updateUser(@NotNull User user) {
+    public void updateUser(@NotNull User user) {
         Volunteer toUpdate = volunteerRepository.getById(user.getId());
         toUpdate.setFirstName(user.getFirstName());
         toUpdate.setLastName(user.getLastName());
         toUpdate.setPhoneNumber(user.getPhoneNumber());
-        return volunteerRepository.saveAndFlush(toUpdate);
+        volunteerRepository.saveAndFlush(toUpdate);
     }
 
     @Override
-    public void deleteUser(User user) {
-        volunteerRepository.delete((Volunteer) user);
+    public void deleteUser(Long id) {
+        volunteerRepository.deleteById(id);
     }
 
     @Transactional
@@ -66,7 +66,8 @@ public class VolunteerService implements UserService {
     public void sendToVolunteer(Client client, Integer petId) {
         List<Volunteer> volunteers = volunteerRepository.findAll();
         for (Volunteer v : volunteers) {
-            SendMessage sendMessage = new SendMessage(v.getChatId(), client.toString() + petId.toString());
+            SendMessage sendMessage = new SendMessage(v.getChatId(),
+                    client.toString() + ", id питомца " + petId.toString());
             telegramBot.execute(sendMessage);
         }
     }
