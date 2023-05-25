@@ -28,13 +28,12 @@ public class VolunteerService implements UserService {
         volunteerRepository.saveAndFlush(new Volunteer(id, chatId, firstName, lastName, phoneNumber));
     }
 
-    public void getVolunteer(String phoneNumber) {
-        List<Volunteer> volunteers = volunteerRepository.findAll();
-        for (Volunteer volunteer : volunteers) {
-            if (volunteer.getPhoneNumber().equals(phoneNumber)) {
-                return;
-            }
-        }
+    public List<Volunteer> getAll() {
+        return volunteerRepository.findAll();
+    }
+
+    public Volunteer getVolunteer(String phoneNumber) {
+        return volunteerRepository.findFirstByPhoneNumber(phoneNumber);
     }
 
     public Volunteer getVolunteer(Long chatId) {
@@ -43,9 +42,11 @@ public class VolunteerService implements UserService {
 
     @Override
     public Volunteer updateUser(@NotNull User user) {
-        Volunteer volunteer = volunteerRepository.getReferenceById(user.getId());
-        volunteerRepository.delete(volunteer);
-        return volunteerRepository.saveAndFlush((Volunteer) user);
+        Volunteer toUpdate = volunteerRepository.getById(user.getId());
+        toUpdate.setFirstName(user.getFirstName());
+        toUpdate.setLastName(user.getLastName());
+        toUpdate.setPhoneNumber(user.getPhoneNumber());
+        return volunteerRepository.saveAndFlush(toUpdate);
     }
 
     @Override

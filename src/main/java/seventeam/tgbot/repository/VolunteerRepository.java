@@ -14,7 +14,13 @@ public interface VolunteerRepository extends JpaRepository<Volunteer, Long> {
     @Override
     @Transactional
     List<Volunteer> findAll();
+
     void deleteById(@NotNull Long id);
 
     Volunteer getByChatId(Long catId);
+
+    Volunteer findFirstByPhoneNumber(String phoneNumber);
+
+    @NotNull
+    Volunteer getById(@NotNull Long id);
 }
