@@ -32,10 +32,11 @@ public class Cat extends Pet {
     private CatOwner catOwner;
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "shelter_id")
+    @Nullable
     private ShelterCat shelterCat;
 
     public Cat(Long id, String name, String breed, Integer age, String suit, String gender, @org.jetbrains.annotations.Nullable CatOwner catOwner,
-               ShelterCat shelterCat) {
+               @org.jetbrains.annotations.Nullable ShelterCat shelterCat) {
         this.id = id;
         this.name = name;
         this.breed = breed;

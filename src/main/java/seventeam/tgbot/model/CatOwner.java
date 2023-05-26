@@ -25,7 +25,7 @@ public class CatOwner extends User {
     private String lastName;
     @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
-    @Column(name = "pets", nullable = false)
+    @Column(name = "pets")
     @OneToMany(mappedBy = "catOwner", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Cat> pets;
     @Column(name = "probation")

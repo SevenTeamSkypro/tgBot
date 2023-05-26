@@ -30,13 +30,11 @@ public class OwnerService {
             dogs.add(dog);
             DogOwner dogOwner = new DogOwner(id, chatId, firstName, lastName, phoneNumber, dogs, ReportService.reportingPeriod);
             dogOwnerRepository.save(dogOwner);
-            dog.setDogOwner(dogOwner);
         } else {
             Cat cat = (Cat) catService.getPet(pet.getId());
             cats.add(cat);
             CatOwner catOwner = new CatOwner(id, firstName, lastName, phoneNumber, cats, ReportService.reportingPeriod);
             catOwnerRepository.save(catOwner);
-            cat.setCatOwner(catOwner);
         }
     }
 

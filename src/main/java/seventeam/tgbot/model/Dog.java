@@ -6,7 +6,6 @@ import lombok.Setter;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @NoArgsConstructor
 @Getter
@@ -34,10 +33,11 @@ public class Dog extends Pet {
     private DogOwner dogOwner;
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "shelter_id")
+    @Nullable
     private ShelterDog shelterDog;
 
     public Dog(Long id, String name, String breed, Integer age, String suit, String gender, @org.jetbrains.annotations.Nullable DogOwner dogOwner,
-               ShelterDog shelterDog) {
+               @org.jetbrains.annotations.Nullable ShelterDog shelterDog) {
         this.id = id;
         this.name = name;
         this.breed = breed;
@@ -55,18 +55,5 @@ public class Dog extends Pet {
                 ", возраст: " + age +
                 ", масть: " + suit +
                 " " + gender;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Dog dog = (Dog) o;
-        return id.equals(dog.id) && name.equals(dog.name) && breed.equals(dog.breed) && age.equals(dog.age) && suit.equals(dog.suit) && gender.equals(dog.gender) && Objects.equals(dogOwner, dog.dogOwner) && Objects.equals(shelterDog, dog.shelterDog);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, breed, age, suit, gender, dogOwner, shelterDog);
     }
 }

@@ -23,10 +23,8 @@ public class CatController {
                           @RequestParam(required = false, name = "breed") String breed,
                           @RequestParam(required = false, name = "age") Integer age,
                           @RequestParam(required = false, name = "suit") String suit,
-                          @RequestParam(required = false, name = "gender") String gender,
-                          @RequestParam(required = false, name = "catOwner") CatOwner catOwner,
-                          @RequestParam(required = false, name = "shelterCat") ShelterCat shelterCat) {
-        catService.createCat(id, name, breed, age, suit, gender, catOwner, shelterCat);
+                          @RequestParam(required = false, name = "gender") String gender) {
+        catService.createCat(id, name, breed, age, suit, gender);
     }
 
     @GetMapping("/get")
