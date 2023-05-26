@@ -2,7 +2,7 @@ package seventeam.tgbot.dto;
 
 import seventeam.tgbot.model.Pet;
 
-public class CatDto extends Pet {
+public class DogDto extends Pet {
     private Long id;
     private String name;
     private String breed;
@@ -10,7 +10,7 @@ public class CatDto extends Pet {
     private String suit;
     private String gender;
 
-    public CatDto(Long id, String name, String breed, Integer age, String suit, String gender) {
+    public DogDto(Long id, String name, String breed, Integer age, String suit, String gender) {
         this.id = id;
         this.name = name;
         this.breed = breed;
@@ -19,9 +19,11 @@ public class CatDto extends Pet {
         this.gender = gender;
     }
 
-    public CatDto() {
+    public DogDto() {
+
     }
 
+    @Override
     public Long getId() {
         return id;
     }
@@ -30,22 +32,27 @@ public class CatDto extends Pet {
         this.id = id;
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public void setName(String name) {
         this.name = name;
     }
 
+    @Override
     public String getBreed() {
         return breed;
     }
 
+    @Override
     public void setBreed(String breed) {
         this.breed = breed;
     }
 
+    @Override
     public Integer getAge() {
         return age;
     }
@@ -54,31 +61,35 @@ public class CatDto extends Pet {
         this.age = age;
     }
 
+    @Override
     public String getSuit() {
         return suit;
     }
 
+    @Override
     public void setSuit(String suit) {
         this.suit = suit;
     }
 
+    @Override
     public String getGender() {
         return gender;
     }
 
+    @Override
     public void setGender(String gender) {
         this.gender = gender;
     }
 
     @Override
     public String toString() {
-        return "CatDto{" +
+        return "DogDto{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", breed='" + breed + '\'' +
                 ", age=" + age +
                 ", suit='" + suit + '\'' +
                 ", gender='" + gender + '\'' +
-                '}';
+                "} ";
     }
 }

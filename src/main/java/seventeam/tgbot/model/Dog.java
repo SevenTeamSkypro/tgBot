@@ -48,6 +48,15 @@ public class Dog extends Pet {
         this.shelterDog = shelterDog;
     }
 
+    public Dog(Long id, String name, String breed, Integer age, String suit, String gender) {
+        this.id = id;
+        this.name = name;
+        this.breed = breed;
+        this.age = age;
+        this.suit = suit;
+        this.gender = gender;
+    }
+
     @Override
     public String toString() {
         return id + ", кличка: " + name +

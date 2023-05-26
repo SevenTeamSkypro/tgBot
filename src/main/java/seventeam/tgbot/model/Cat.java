@@ -50,6 +50,15 @@ public class Cat extends Pet {
     public Cat() {
     }
 
+    public Cat(Long id, String name, String breed, Integer age, String suit, String gender) {
+        this.id = id;
+        this.name = name;
+        this.breed = breed;
+        this.age = age;
+        this.suit = suit;
+        this.gender = gender;
+    }
+
     @Override
     public String toString() {
         return id + ", кличка: " + name +

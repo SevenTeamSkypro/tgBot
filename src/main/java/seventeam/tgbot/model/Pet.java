@@ -8,7 +8,7 @@ public abstract class Pet {
     private String suit;
     private String gender;
 
-    protected Pet() {
+    public Pet() {
     }
 
     public Pet(Long id, String name, String breed, Integer age, String suit, String gender) {
