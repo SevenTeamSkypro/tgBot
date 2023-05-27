@@ -1,5 +1,7 @@
 package seventeam.tgbot.service.impl;
 
+import com.pengrad.telegrambot.TelegramBot;
+import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.stereotype.Service;
 import seventeam.tgbot.exceptions.ClientNotFoundException;
 import seventeam.tgbot.exceptions.NothingToReadException;
@@ -17,15 +19,21 @@ import java.util.List;
 @Service
 public class ClientServiceImpl implements UserService {
     private final ClientRepository clientRepository;
+    private final TelegramBot telegramBot;
+    private final VolunteerService volunteerService;
 
-    public ClientServiceImpl(ClientRepository clientRepository) {
+    public ClientServiceImpl(ClientRepository clientRepository, TelegramBot telegramBot, VolunteerService volunteerService) {
         this.clientRepository = clientRepository;
+        this.telegramBot = telegramBot;
+        this.volunteerService = volunteerService;
     }
 
     @Override
     public void createUser(Long id, Long chatId, String firstName, String lastName, String phoneNumber) {
         Client client = new Client(id, chatId, firstName, lastName, phoneNumber);
-        clientRepository.saveAndFlush(client);
+        if (clientRepository.getByChatId(chatId) == null && volunteerService.getVolunteer(chatId) == null) {
+            clientRepository.saveAndFlush(client);
+        } else telegramBot.execute(new SendMessage(chatId, "Вы уже зарегистрированы!"));
     }
 
     public Client getUserByChatId(Long chatId) {

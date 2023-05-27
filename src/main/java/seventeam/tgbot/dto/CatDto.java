@@ -72,13 +72,11 @@ public class CatDto extends Pet {
 
     @Override
     public String toString() {
-        return "CatDto{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", breed='" + breed + '\'' +
-                ", age=" + age +
-                ", suit='" + suit + '\'' +
-                ", gender='" + gender + '\'' +
-                '}';
+        return " " + gender +
+                " id " + id +
+                ", кличка " + name +
+                ", порода " + breed +
+                ", возраст " + age +
+                ", окрас " + suit;
     }
 }

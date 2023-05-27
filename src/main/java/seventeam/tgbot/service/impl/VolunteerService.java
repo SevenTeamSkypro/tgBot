@@ -70,10 +70,12 @@ public class VolunteerService implements UserService {
 
     public void sendToVolunteer(Client client, Integer petId) {
         List<Volunteer> volunteers = volunteerRepository.findAll();
-        for (Volunteer v : volunteers) {
-            SendMessage sendMessage = new SendMessage(v.getChatId(),
-                    client.toString() + ", id питомца " + petId.toString());
-            telegramBot.execute(sendMessage);
-        }
+        if (client != null) {
+            for (Volunteer v : volunteers) {
+                SendMessage sendMessage = new SendMessage(v.getChatId(),
+                        client + ", id питомца " + petId.toString());
+                telegramBot.execute(sendMessage);
+            }
+        } //TODO Добавить возможность взять питомца волонтёром
     }
 }
