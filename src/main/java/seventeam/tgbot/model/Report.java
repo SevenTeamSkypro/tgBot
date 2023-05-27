@@ -4,12 +4,10 @@ import com.pengrad.telegrambot.model.File;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
-
 
 @Getter
 @Setter

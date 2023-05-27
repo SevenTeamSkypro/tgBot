@@ -6,5 +6,4 @@ import seventeam.tgbot.model.Cat;
 
 @Repository
 public interface ShelterCatRepository extends JpaRepository<Cat, Long> {
-
 }

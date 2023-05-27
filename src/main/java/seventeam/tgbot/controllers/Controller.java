@@ -4,8 +4,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import seventeam.tgbot.service.impl.ClientServiceImpl;
 
-import java.io.IOException;
-
 @RestController
 public class Controller {
     private final ClientServiceImpl clientService;
@@ -19,8 +17,8 @@ public class Controller {
         return "Бот запущен!";
     }
 
-    @GetMapping("src/main/resources/draw/info.txt")
-    public String info() throws IOException {
+    @GetMapping("/")
+    public String info() {
         return clientService.readFile("src/main/resources/draw/info.txt");
     }
 }

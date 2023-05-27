@@ -20,7 +20,6 @@ public class DogDto extends Pet {
     }
 
     public DogDto() {
-
     }
 
     @Override
@@ -57,6 +56,7 @@ public class DogDto extends Pet {
         return age;
     }
 
+    @Override
     public void setAge(Integer age) {
         this.age = age;
     }
