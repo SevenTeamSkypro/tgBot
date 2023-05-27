@@ -1,6 +1,7 @@
 package seventeam.tgbot.service.impl;
 
 import org.springframework.stereotype.Service;
+import seventeam.tgbot.exceptions.OwnerNotFoundException;
 import seventeam.tgbot.model.*;
 import seventeam.tgbot.repository.CatOwnerRepository;
 import seventeam.tgbot.repository.DogOwnerRepository;
@@ -45,16 +46,23 @@ public class OwnerService {
             return catOwnerRepository.getReferenceById(id);
     }
 
-
     public User updateOwner(User user, Long shelterId) {
         if (shelterId == 1) {
-            DogOwner dogOwner = dogOwnerRepository.getReferenceById(user.getId());
-            dogOwnerRepository.delete(dogOwner);
-            return dogOwnerRepository.saveAndFlush((DogOwner) user);
+            try {
+                DogOwner dogOwner = dogOwnerRepository.getReferenceById(user.getId());
+                dogOwnerRepository.delete(dogOwner);
+                return dogOwnerRepository.saveAndFlush((DogOwner) user);
+            } catch (RuntimeException e) {
+                throw new OwnerNotFoundException("Владельца с таким id нет!");
+            }
         } else {
-            CatOwner catOwner = catOwnerRepository.getReferenceById(user.getId());
-            catOwnerRepository.delete(catOwner);
-            return catOwnerRepository.saveAndFlush((CatOwner) user);
+            try {
+                CatOwner catOwner = catOwnerRepository.getReferenceById(user.getId());
+                catOwnerRepository.delete(catOwner);
+                return catOwnerRepository.saveAndFlush((CatOwner) user);
+            } catch (RuntimeException e) {
+                throw new OwnerNotFoundException("Владельца с таким id нет!");
+            }
         }
     }
 

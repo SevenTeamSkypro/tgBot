@@ -1,7 +1,7 @@
 package seventeam.tgbot.exceptions;
 
 public class PetNotFoundException extends RuntimeException {
-    public PetNotFoundException() {
-        super("Питомца с таким id нет!");
+    public PetNotFoundException(String message) {
+        super(message);
     }
 }

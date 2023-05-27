@@ -16,7 +16,6 @@ import seventeam.tgbot.model.*;
 import seventeam.tgbot.service.impl.*;
 
 import javax.annotation.PostConstruct;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -96,11 +95,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                         if (statuses.containsValue(Status.SEND_WARNING)) {
                             Long ownerChatId = Long.valueOf(text);
                             statuses.remove(chatId, Status.SEND_WARNING);
-                            try {
-                                sendMassage(ownerChatId, clientService.readFile("src/main/resources/draw/warning.txt"));
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
+                            sendMassage(ownerChatId, clientService.readFile("src/main/resources/draw/warning.txt"));
                         }
                         if (text != null) {
                             switch (text) {
@@ -120,14 +115,8 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                                 }
                                 case "Главное меню", "Вернуться в главное меню" -> keyBoardService.mainMenu(chatId);
                                 case "Информация о приюте" -> keyBoardService.infoMenu(chatId);
-                                case "Рассказать о нашем приюте" -> {
-                                    try {
-                                        sendMassage(chatId, clientService.readFile("src/main/resources/draw/info.txt"
-                                        ));
-                                    } catch (IOException e) {
-                                        throw new RuntimeException(e);
-                                    }
-                                }
+                                case "Рассказать о нашем приюте" ->
+                                        sendMassage(chatId, clientService.readFile("src/main/resources/draw/info.txt"));
                                 case "Взять питомца" -> {
                                     if (isCatNotDog) {
                                         sendMassage(chatId, dogService.getAllPets().toString());
@@ -143,15 +132,8 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                                     volunteerService.callVolunteer(clientService.getUserByChatId(chatId).getPhoneNumber());
                                     sendMassage(chatId, "Скоро с вами свяжутся");
                                 }
-                                case "Правила ухода за животными" -> {
-                                    try {
-                                        sendMassage(chatId,
-                                                clientService.readFile("src/main/resources/draw/care_of_animals.txt"
-                                                ));
-                                    } catch (IOException e) {
-                                        throw new RuntimeException(e);
-                                    }
-                                }
+                                case "Правила ухода за животными" -> sendMassage(chatId,
+                                        clientService.readFile("src/main/resources/draw/care_of_animals.txt"));
                                 case PASSWORD -> {
                                     if (clientService.getUserByChatId(chatId) != null) {
                                         Client client = clientService.getUserByChatId(chatId);
@@ -168,11 +150,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                                 case "Проверить отчет" -> {
                                     List<Report> reports = reportService.getAll();
                                     for (Report report : reports) {
-                                        try {
-                                            sendReport(chatId, report.getPhoto(), report.getReport());
-                                        } catch (IOException e) {
-                                            throw new RuntimeException(e);
-                                        }
+                                        sendReport(chatId, report.getPhoto(), report.getReport());
                                     }
                                 }
                             }
@@ -189,7 +167,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         telegramBot.execute(sendMessage);
     }
 
-    private void sendReport(Long chatId, @NotNull File file, String report) throws IOException {
+    private void sendReport(Long chatId, @NotNull File file, String report) {
         telegramBot.execute(new SendMessage(chatId, telegramBot.getFullFilePath(file)));
         telegramBot.execute(new SendMessage(chatId, report));
     }
@@ -204,7 +182,10 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         if (shelterCat.getPets() != null && shelterDog.getPets() != null) {
             if (isCatNotDog) {
                 Dog dog = shelterDog.getPets().get(petId);
-                ownerService.createOwner(Long.valueOf(petId), message.chat().id(), message.contact().firstName(),
+                ownerService.createOwner(
+                        Long.valueOf(petId),
+                        message.chat().id(),
+                        message.contact().firstName(),
                         message.contact().lastName(),
                         message.contact().phoneNumber(),
                         shelterDog.getShelterId(), dog);
@@ -212,7 +193,10 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                 statuses.remove(message.chat().id());
             } else {
                 Cat cat = shelterCat.getPets().get(0);
-                ownerService.createOwner(Long.valueOf(petId), message.chat().id(), message.contact().firstName(),
+                ownerService.createOwner(
+                        Long.valueOf(petId),
+                        message.chat().id(),
+                        message.contact().firstName(),
                         message.contact().lastName(),
                         message.contact().phoneNumber(),
                         shelterCat.getShelterId(), cat);

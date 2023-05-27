@@ -5,6 +5,7 @@ import com.pengrad.telegrambot.request.SendMessage;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import seventeam.tgbot.exceptions.VolunteerNotFoundException;
 import seventeam.tgbot.model.Client;
 import seventeam.tgbot.model.User;
 import seventeam.tgbot.model.Volunteer;
@@ -42,11 +43,15 @@ public class VolunteerService implements UserService {
 
     @Override
     public void updateUser(@NotNull User user) {
-        Volunteer toUpdate = volunteerRepository.getById(user.getId());
-        toUpdate.setFirstName(user.getFirstName());
-        toUpdate.setLastName(user.getLastName());
-        toUpdate.setPhoneNumber(user.getPhoneNumber());
-        volunteerRepository.saveAndFlush(toUpdate);
+        try {
+            Volunteer toUpdate = volunteerRepository.getById(user.getId());
+            toUpdate.setFirstName(user.getFirstName());
+            toUpdate.setLastName(user.getLastName());
+            toUpdate.setPhoneNumber(user.getPhoneNumber());
+            volunteerRepository.saveAndFlush(toUpdate);
+        } catch (RuntimeException e) {
+            throw new VolunteerNotFoundException("Волонтёра с таким id нет!");
+        }
     }
 
     @Override

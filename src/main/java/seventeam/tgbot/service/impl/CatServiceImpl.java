@@ -50,10 +50,9 @@ public class CatServiceImpl implements PetService {
             Cat toUpdate = shelterCatRepository.getReferenceById(pet.getId());
             toUpdate.setAge(pet.getAge());
             shelterCatRepository.saveAndFlush(toUpdate);
-        } catch (Exception e) {
-            throw new PetNotFoundException();
+        } catch (RuntimeException e) {
+            throw new PetNotFoundException("Питомца с таким id нет!");
         }
-
     }
 
     @Override

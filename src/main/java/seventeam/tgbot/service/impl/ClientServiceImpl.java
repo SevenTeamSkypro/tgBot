@@ -1,6 +1,8 @@
 package seventeam.tgbot.service.impl;
 
 import org.springframework.stereotype.Service;
+import seventeam.tgbot.exceptions.ClientNotFoundException;
+import seventeam.tgbot.exceptions.NothingToReadException;
 import seventeam.tgbot.model.Client;
 import seventeam.tgbot.model.User;
 import seventeam.tgbot.repository.ClientRepository;
@@ -36,11 +38,15 @@ public class ClientServiceImpl implements UserService {
 
     @Override
     public void updateUser(User user) {
-        Client toUpdate = clientRepository.getReferenceById(user.getId());
-        toUpdate.setFirstName(user.getFirstName());
-        toUpdate.setLastName(user.getLastName());
-        toUpdate.setPhoneNumber(user.getPhoneNumber());
-        clientRepository.saveAndFlush(toUpdate);
+        try {
+            Client toUpdate = clientRepository.getReferenceById(user.getId());
+            toUpdate.setFirstName(user.getFirstName());
+            toUpdate.setLastName(user.getLastName());
+            toUpdate.setPhoneNumber(user.getPhoneNumber());
+            clientRepository.saveAndFlush(toUpdate);
+        } catch (RuntimeException e) {
+            throw new ClientNotFoundException("Клиента с таким id нет!");
+        }
     }
 
     @Override
@@ -48,7 +54,11 @@ public class ClientServiceImpl implements UserService {
         clientRepository.deleteById(id);
     }
 
-    public String readFile(String path) throws IOException {
-        return Files.readString(Paths.get(path), StandardCharsets.UTF_8);
+    public String readFile(String path) {
+        try {
+            return Files.readString(Paths.get(path), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new NothingToReadException("Такого файла нет!");
+        }
     }
 }

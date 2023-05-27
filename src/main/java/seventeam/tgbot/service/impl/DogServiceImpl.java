@@ -51,8 +51,8 @@ public class DogServiceImpl implements PetService {
             Dog toUpdate = shelterDogRepository.getReferenceById(pet.getId());
             toUpdate.setAge(pet.getAge());
             shelterDogRepository.saveAndFlush(toUpdate);
-        } catch (Exception e) {
-            throw new PetNotFoundException();
+        } catch (RuntimeException e) {
+            throw new PetNotFoundException("Питомца с таким id нет!");
         }
     }
 
