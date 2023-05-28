@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Getter
@@ -20,8 +21,8 @@ public class Cat extends Pet {
     private String name;
     @Column(name = "breed", nullable = false)
     private String breed;
-    @Column(name = "age", nullable = false)
-    private Integer age;
+    @Column(name = "date_of_birth", nullable = false)
+    private LocalDate dateOfBirth;
     @Column(name = "suit", nullable = false)
     private String suit;
     @Column(name = "gender", nullable = false)
@@ -35,12 +36,13 @@ public class Cat extends Pet {
     @Nullable
     private ShelterCat shelterCat;
 
-    public Cat(Long id, String name, String breed, Integer age, String suit, String gender, @org.jetbrains.annotations.Nullable CatOwner catOwner,
+    public Cat(Long id, String name, String breed, LocalDate dateOfBirth, String suit, String gender,
+               @org.jetbrains.annotations.Nullable CatOwner catOwner,
                @org.jetbrains.annotations.Nullable ShelterCat shelterCat) {
         this.id = id;
         this.name = name;
         this.breed = breed;
-        this.age = age;
+        this.dateOfBirth = dateOfBirth;
         this.suit = suit;
         this.gender = gender;
         this.catOwner = catOwner;
@@ -50,22 +52,13 @@ public class Cat extends Pet {
     public Cat() {
     }
 
-    public Cat(Long id, String name, String breed, Integer age, String suit, String gender) {
+    public Cat(Long id, String name, String breed, LocalDate dateOfBirth, String suit, String gender) {
         this.id = id;
         this.name = name;
         this.breed = breed;
-        this.age = age;
+        this.dateOfBirth = dateOfBirth;
         this.suit = suit;
         this.gender = gender;
-    }
-
-    @Override
-    public String toString() {
-        return id + ", кличка: " + name +
-                ", порода: " + breed +
-                ", возраст: " + age +
-                ", масть: " + suit +
-                " " + gender;
     }
 
     @Override
@@ -73,11 +66,20 @@ public class Cat extends Pet {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Cat cat = (Cat) o;
-        return Objects.equals(id, cat.id) && name.equals(cat.name) && breed.equals(cat.breed) && age.equals(cat.age) && suit.equals(cat.suit) && gender.equals(cat.gender) && Objects.equals(catOwner, cat.catOwner) && Objects.equals(shelterCat, cat.shelterCat);
+        return Objects.equals(id, cat.id) && Objects.equals(name, cat.name) && Objects.equals(breed, cat.breed) && Objects.equals(dateOfBirth, cat.dateOfBirth) && Objects.equals(suit, cat.suit) && Objects.equals(gender, cat.gender) && Objects.equals(catOwner, cat.catOwner) && Objects.equals(shelterCat, cat.shelterCat);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, breed, age, suit, gender, catOwner, shelterCat);
+        return Objects.hash(id, name, breed, dateOfBirth, suit, gender, catOwner, shelterCat);
+    }
+
+    @Override
+    public String toString() {
+        return id + ", кличка: " + name +
+                ", порода: " + breed +
+                ", дата рождения: " + dateOfBirth +
+                ", масть: " + suit +
+                " " + gender;
     }
 }

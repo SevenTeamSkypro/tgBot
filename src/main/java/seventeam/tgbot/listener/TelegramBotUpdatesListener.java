@@ -67,16 +67,19 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                         String text = message.text();
                         String firstName = message.chat().firstName();
                         String lastName = message.chat().lastName();
+                        //Проверка статуса отчёта
                         if (statuses.containsValue(Status.REPORT_NOT_COMPILED)) {
                             reportService.createReport(update);
                             statuses.remove(chatId);
                         }
+                        //Проверка наличия контакта
                         if (message.contact() != null) {
                             Contact contact = message.contact();
                             String phoneNumber = contact.phoneNumber();
                             clientService.createUser(contact.userId(), chatId, firstName, lastName, phoneNumber);
                             keyBoardService.chooseMenu(chatId);
                         }
+                        //Валидация введения целого числа
                         if (statuses.containsValue(Status.PET_ID_NOT_GET)) {
                             Pattern pattern = Pattern.compile("\\d+");
                             Matcher matcher = pattern.matcher(text);
@@ -91,6 +94,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                                 statuses.remove(chatId);
                             }
                         }
+                        //Проверка статуса отправки предупреждения
                         if (statuses.containsValue(Status.SEND_WARNING)) {
                             Long ownerChatId = Long.valueOf(text);
                             statuses.remove(chatId, Status.SEND_WARNING);
@@ -114,8 +118,12 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                                 }
                                 case "Главное меню", "Вернуться в главное меню" -> keyBoardService.mainMenu(chatId);
                                 case "Информация о приюте" -> keyBoardService.infoMenu(chatId);
-                                case "Рассказать о нашем приюте" ->
-                                        sendMassage(chatId, clientService.readFile("src/main/resources/draw/info.txt"));
+                                case "Рассказать о нашем приюте" ->{
+                                    if (isCat) {
+                                        sendMassage(chatId, clientService.readFile("src/main/resources/draw/info_shelter_cat.txt"));
+                                    } else sendMassage(chatId, clientService.readFile("src/main/resources/draw/info_shelter_dog.txt"));
+                                }
+
                                 case "Взять питомца" -> {
                                     if (isCat) {
                                         sendMassage(chatId, catService.getAllPets().toString());
@@ -135,7 +143,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                                 }
                                 case "Правила ухода за животными" -> sendMassage(chatId,
                                         clientService.readFile("src/main/resources/draw/care_of_animals.txt"));
-                                case PASSWORD -> {
+                                case PASSWORD -> { //Сюда попадают желающие стать волонтёром
                                     if (clientService.getUserByChatId(chatId) != null && volunteerService.getVolunteer(chatId) == null) {
                                         Client client = clientService.getUserByChatId(chatId);
                                         volunteerService.createUser(client.getId(), chatId, client.getFirstName(),
@@ -155,6 +163,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                                     }
                                 }
                             }
+                            //Сообщения не содержащие текста кидают null сюда
                         } else logger.info("Метод message.text() возвращает ожидаемый null");
                     });
         } catch (Exception e) {

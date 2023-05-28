@@ -2,7 +2,6 @@ package seventeam.tgbot.controllers;
 
 import org.springframework.web.bind.annotation.*;
 import seventeam.tgbot.dto.DogDto;
-import seventeam.tgbot.model.Dog;
 import seventeam.tgbot.service.impl.DogServiceImpl;
 
 import java.util.List;
@@ -34,16 +33,6 @@ public class DogController {
     @GetMapping("/all")
     public List<DogDto> getAll() {
         return dogService.getAllPets();
-    }
-
-    @PutMapping("/put")
-    public void updateDog(@RequestParam(required = false, name = "id") Long id,
-                          @RequestParam(required = false, name = "name") String name,
-                          @RequestParam(required = false, name = "breed") String breed,
-                          @RequestParam(required = false, name = "age") Integer age,
-                          @RequestParam(required = false, name = "suit") String suit,
-                          @RequestParam(required = false, name = "gender") String gender) {
-        dogService.update(new Dog(id, name, breed, age, suit, gender));
     }
 
     @DeleteMapping("/del")

@@ -17,8 +17,13 @@ public class Controller {
         return "Бот запущен!";
     }
 
-    @GetMapping("/")
-    public String info() {
-        return clientService.readFile("src/main/resources/draw/info.txt");
+    @GetMapping("/info/shelter/cat")
+    public String infoShelterCat() {
+        return clientService.readFile("src/main/resources/draw/info_shelter_cat.txt");
+    }
+
+    @GetMapping("/info/shelter/dog")
+    public String infoShelterDog() {
+        return clientService.readFile("src/main/resources/draw/info_shelter_dog.txt");
     }
 }

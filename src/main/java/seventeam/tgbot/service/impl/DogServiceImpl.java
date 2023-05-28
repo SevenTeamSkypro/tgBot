@@ -2,7 +2,6 @@ package seventeam.tgbot.service.impl;
 
 import org.springframework.stereotype.Service;
 import seventeam.tgbot.dto.DogDto;
-import seventeam.tgbot.exceptions.PetNotFoundException;
 import seventeam.tgbot.model.Dog;
 import seventeam.tgbot.model.Pet;
 import seventeam.tgbot.repository.ShelterDogRepository;
@@ -43,17 +42,6 @@ public class DogServiceImpl implements PetService {
     @Override
     public Pet getPet(Long id) {
         return mappingUtils.mapToDogDto(shelterDogRepository.getReferenceById(id));
-    }
-
-    @Override
-    public void update(Pet pet) {
-        try {
-            Dog toUpdate = shelterDogRepository.getReferenceById(pet.getId());
-            toUpdate.setAge(pet.getAge());
-            shelterDogRepository.saveAndFlush(toUpdate);
-        } catch (RuntimeException e) {
-            throw new PetNotFoundException("Питомца с таким id нет!");
-        }
     }
 
     @Override
