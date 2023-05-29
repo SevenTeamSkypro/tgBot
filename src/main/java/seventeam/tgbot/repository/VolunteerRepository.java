@@ -4,16 +4,19 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import seventeam.tgbot.model.Client;
+import seventeam.tgbot.model.Volunteer;
 
 import java.util.List;
 
 @Repository
-public interface ClientRepository extends JpaRepository<Client, Long> {
+public interface VolunteerRepository extends JpaRepository<Volunteer, Long> {
     @NotNull
     @Override
     @Transactional
-    List<Client> findAll();
-    @Transactional
-    Client getByChatId(Long chatId);
+    List<Volunteer> findAll();
+    void deleteById(@NotNull Long id);
+    Volunteer getByChatId(Long catId);
+    Volunteer findFirstByPhoneNumber(String phoneNumber);
+    @NotNull
+    Volunteer getById(@NotNull Long id);
 }

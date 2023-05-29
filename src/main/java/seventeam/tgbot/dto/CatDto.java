@@ -1,8 +1,10 @@
-package seventeam.tgbot.model;
+package seventeam.tgbot.dto;
+
+import seventeam.tgbot.model.Pet;
 
 import java.time.LocalDate;
 
-public abstract class Pet {
+public class CatDto extends Pet {
     private Long id;
     private String name;
     private String breed;
@@ -10,16 +12,23 @@ public abstract class Pet {
     private String suit;
     private String gender;
 
-    public Pet() {
-    }
-
-    public Pet(Long id, String name, String breed, LocalDate dateOfBirth, String suit, String gender) {
-        this.id = id;
+    public CatDto(String name, String breed, LocalDate dateOfBirth, String suit, String gender) {
         this.name = name;
         this.breed = breed;
         this.dateOfBirth = dateOfBirth;
         this.suit = suit;
         this.gender = gender;
+    }
+
+    public CatDto() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -38,10 +47,12 @@ public abstract class Pet {
         this.breed = breed;
     }
 
+    @Override
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
+    @Override
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
@@ -62,7 +73,13 @@ public abstract class Pet {
         this.gender = gender;
     }
 
-    public Long getId() {
-        return id;
+    @Override
+    public String toString() {
+        return " " + gender +
+                " id: " + id +
+                ", кличка: " + name +
+                ", порода: " + breed +
+                ", дата рождения: " + dateOfBirth +
+                ", окрас: " + suit;
     }
 }

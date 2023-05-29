@@ -1,4 +1,4 @@
-package seventeam.tgbot.service;
+package seventeam.tgbot.service.impl;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.request.KeyboardButton;
@@ -9,26 +9,26 @@ import com.pengrad.telegrambot.response.SendResponse;
 import com.vdurmont.emoji.EmojiParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import seventeam.tgbot.listener.TelegramBotUpdatesListener;
 
 @Service
 public class KeyBoardService {
-    @Autowired
-    private TelegramBot telegramBot;
+    private final TelegramBot telegramBot;
     private static final Logger logger = LoggerFactory.getLogger(TelegramBotUpdatesListener.class);
+    public KeyBoardService(TelegramBot telegramBot) {
+        this.telegramBot = telegramBot;
+    }
 
-    public void menu(long chatId) {
+    public void mainMenu(Long chatId) {
         logger.info("sendMessage: {}, {}", chatId, "Главное меню ");
-
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup(new KeyboardButton("Информация о приюте"));
         replyKeyboardMarkup.addRow(new KeyboardButton("Взять питомца"), new KeyboardButton("Отчет"));
         replyKeyboardMarkup.addRow(new KeyboardButton("Позвать волонтера"));
         returnResponseReplyKeyboard(replyKeyboardMarkup, chatId, "Главное меню");
     }
 
-    public void chooseMenu(long chatId) {
+    public void chooseMenu(Long chatId) {
         logger.info("Method sendMessage has been run: {}, {}", chatId, "меню выбора ");
         String emoji_cat = EmojiParser.parseToUnicode(":cat:");
         String emoji_dog = EmojiParser.parseToUnicode(":dog:");
@@ -37,10 +37,27 @@ public class KeyBoardService {
         returnResponseReplyKeyboard(replyKeyboardMarkup, chatId, "Скорее выбирай питомца");
     }
 
+    public void infoMenu(Long chatId) {
+        logger.info("sendMenuInfo: {}, {}", chatId, "Информация о приюте");
+        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup(
+                new KeyboardButton("Рассказать о нашем приюте"),
+                new KeyboardButton("Правила ухода за животными"));
+        replyKeyboardMarkup.addRow(new KeyboardButton("Вернуться в главное меню"));
+        returnResponseReplyKeyboard(replyKeyboardMarkup, chatId, "Информация о приюте");
+    }
+
+    public void volunteerMenu(Long chatId) {
+        logger.info("sendMessage: {}, {}", chatId, "Меню волонтёра");
+        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup(
+                new KeyboardButton("Отправить предупреждение"), new KeyboardButton("Проверить отчет"));
+        replyKeyboardMarkup.addRow(new KeyboardButton("Вернуться в главное меню"));
+        returnResponseReplyKeyboard(replyKeyboardMarkup, chatId, "Вы стали волонтёром");
+    }
+
     public void returnResponseReplyKeyboard(ReplyKeyboardMarkup replyKeyboardMarkup, Long chatId, String text) {
         replyKeyboardMarkup.resizeKeyboard(true);
         replyKeyboardMarkup.oneTimeKeyboard(false);
-        replyKeyboardMarkup.selective(false);
+        replyKeyboardMarkup.selective(true);
         SendMessage request = new SendMessage(chatId, text).replyMarkup(replyKeyboardMarkup).parseMode(ParseMode.HTML).disableWebPagePreview(true);
         SendResponse sendResponse = telegramBot.execute(request);
         if (!sendResponse.isOk()) {
@@ -51,12 +68,11 @@ public class KeyBoardService {
         }
     }
 
-    public void menuInfo(long chatId) {
-        logger.info("sendMenuInfo: {}, {}", chatId, "Информация о приюте");
-        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup(
-                new KeyboardButton("Рассказать о нашем приюте"),
-                new KeyboardButton("Правила ухода за животными"));
-        replyKeyboardMarkup.addRow(new KeyboardButton("Вернуться в главное меню"));
-        returnResponseReplyKeyboard(replyKeyboardMarkup, chatId, "Информация о приюте");
+    public void getContact(Long chatId) {
+        logger.info("sendMessage: {}, {}", chatId, "Отправка номера телефона клиентом");
+        ReplyKeyboardMarkup keyboard = new ReplyKeyboardMarkup(
+                new KeyboardButton("Отправить >").requestContact(true)
+        );
+        returnResponseReplyKeyboard(keyboard, chatId, "Отправьте номер телефона");
     }
 }

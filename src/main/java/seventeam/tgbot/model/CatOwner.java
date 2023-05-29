@@ -17,19 +17,19 @@ public class CatOwner extends User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "owner_id")
     private Long id;
+    @Column(name = "chat_id")
+    private Long chatId;
     @Column(name = "first_name", nullable = false)
     private String firstName;
-    @Column(name = "last_name", nullable = false)
+    @Column(name = "last_name")
     private String lastName;
     @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
-    @Column(name = "pets", nullable = false)
+    @Column(name = "pets")
     @OneToMany(mappedBy = "catOwner", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Cat> pets;
     @Column(name = "probation")
     private LocalDateTime probation;
-    @Transient
-    private transient Long chatId;
 
     public CatOwner() {
     }
@@ -39,6 +39,17 @@ public class CatOwner extends User {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
+        this.pets = pets;
+        this.probation = probation;
+    }
+
+    public CatOwner(Long id, Long chatId, String firstName, String lastName, String phoneNumber, Long id1, Long chatId1, String firstName1, String lastName1, String phoneNumber1, List<Cat> pets, LocalDateTime probation) {
+        super(id, chatId, firstName, lastName, phoneNumber);
+        this.id = id1;
+        this.chatId = chatId1;
+        this.firstName = firstName1;
+        this.lastName = lastName1;
+        this.phoneNumber = phoneNumber1;
         this.pets = pets;
         this.probation = probation;
     }

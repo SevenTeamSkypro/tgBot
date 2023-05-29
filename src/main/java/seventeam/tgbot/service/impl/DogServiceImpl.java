@@ -1,13 +1,14 @@
 package seventeam.tgbot.service.impl;
 
 import org.springframework.stereotype.Service;
+import seventeam.tgbot.dto.DogDto;
 import seventeam.tgbot.model.Dog;
-import seventeam.tgbot.model.DogOwner;
 import seventeam.tgbot.model.Pet;
-import seventeam.tgbot.model.ShelterDog;
 import seventeam.tgbot.repository.ShelterDogRepository;
 import seventeam.tgbot.service.PetService;
+import seventeam.tgbot.utils.MappingUtils;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,51 +16,36 @@ import java.util.stream.Collectors;
 @Service
 public class DogServiceImpl implements PetService {
     private final ShelterDogRepository shelterDogRepository;
+    private final MappingUtils mappingUtils;
     private List<Dog> dogs = new ArrayList<>();
 
-    public DogServiceImpl(ShelterDogRepository shelterDogRepository) {
+    public DogServiceImpl(ShelterDogRepository shelterDogRepository, MappingUtils mappingUtils) {
         this.shelterDogRepository = shelterDogRepository;
+        this.mappingUtils = mappingUtils;
     }
 
-    public void createDog(Long id, String name, String breed, Integer age, String suit, String gender,
-                          DogOwner dogOwner, ShelterDog shelterDog) {
-        Dog dog = new Dog(id, name, breed, age, suit, gender, dogOwner, shelterDog);
+    public void createDog(String name, String breed, LocalDate dateOfBirth, String suit, String gender) {
+        DogDto dto = new DogDto(name, breed, dateOfBirth, suit, gender);
+        Dog dog = mappingUtils.mapToDog(dto);
         dogs = shelterDogRepository.findAll();
         if (!dogs.contains(dog)) {
-            dogs.add(Math.toIntExact(id), dog);
             shelterDogRepository.saveAndFlush(dog);
         }
     }
 
     @Override
-    public List<Dog> getAllPets() {
-        return dogs = shelterDogRepository.findAll();
-    }
-
-    @Override
-    public List<Pet> getPets(String breed, Integer age, String suit, String gender) {
+    public List<DogDto> getAllPets() {
         dogs = shelterDogRepository.findAll();
-        return dogs.stream().filter(dog -> dog.getBreed().equals(breed)
-                && dog.getAge().equals(age)
-                && dog.getSuit().equals(suit)
-                && dog.getGender().equals(gender)).collect(Collectors.toList());
+        return dogs.stream().map(mappingUtils::mapToDogDto).collect(Collectors.toList());
     }
 
     @Override
     public Pet getPet(Long id) {
-        dogs = shelterDogRepository.findAll();
-        return dogs.get(Math.toIntExact(id));
-    }
-
-    @Override
-    public void update(Pet pet) {
-        dogs = shelterDogRepository.findAll();
-        dogs.remove(Math.toIntExact(pet.getId()));
-        dogs.add(Math.toIntExact(pet.getId()), (Dog) pet);
+        return mappingUtils.mapToDogDto(shelterDogRepository.getReferenceById(id));
     }
 
     @Override
     public void deletePet(Long id) {
-        dogs.remove(Math.toIntExact(id));
+        shelterDogRepository.deleteById(id);
     }
 }
