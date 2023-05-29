@@ -2,19 +2,20 @@ package seventeam.tgbot.dto;
 
 import seventeam.tgbot.model.Pet;
 
+import java.time.LocalDate;
+
 public class DogDto extends Pet {
     private Long id;
     private String name;
     private String breed;
-    private Integer age;
+    private LocalDate dateOfBirth;
     private String suit;
     private String gender;
 
-    public DogDto(Long id, String name, String breed, Integer age, String suit, String gender) {
-        this.id = id;
+    public DogDto(String name, String breed, LocalDate dateOfBirth, String suit, String gender) {
         this.name = name;
         this.breed = breed;
-        this.age = age;
+        this.dateOfBirth = dateOfBirth;
         this.suit = suit;
         this.gender = gender;
     }
@@ -52,13 +53,13 @@ public class DogDto extends Pet {
     }
 
     @Override
-    public Integer getAge() {
-        return age;
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
     }
 
     @Override
-    public void setAge(Integer age) {
-        this.age = age;
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     @Override
@@ -84,10 +85,10 @@ public class DogDto extends Pet {
     @Override
     public String toString() {
         return " " + gender +
-                " id " + id +
-                ", кличка " + name +
-                ", порода " + breed +
-                ", возраст " + age +
-                ", окрас " + suit;
+                " id: " + id +
+                ", кличка: " + name +
+                ", порода: " + breed +
+                ", дата рождения: " + dateOfBirth +
+                ", окрас: " + suit;
     }
 }

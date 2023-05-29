@@ -52,8 +52,7 @@ public class Cat extends Pet {
     public Cat() {
     }
 
-    public Cat(Long id, String name, String breed, LocalDate dateOfBirth, String suit, String gender) {
-        this.id = id;
+    public Cat(String name, String breed, LocalDate dateOfBirth, String suit, String gender) {
         this.name = name;
         this.breed = breed;
         this.dateOfBirth = dateOfBirth;

@@ -8,6 +8,7 @@ import seventeam.tgbot.repository.ShelterCatRepository;
 import seventeam.tgbot.service.PetService;
 import seventeam.tgbot.utils.MappingUtils;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,12 +23,11 @@ public class CatServiceImpl implements PetService {
         this.mappingUtils = mappingUtils;
     }
 
-    public void createCat(Long id, String name, String breed, Integer age, String suit, String gender) {
-        CatDto dto = new CatDto(id, name, breed, age, suit, gender);
+    public void createCat(String name, String breed, LocalDate dateOfBirth, String suit, String gender) {
+        CatDto dto = new CatDto(name, breed, dateOfBirth, suit, gender);
         Cat cat = mappingUtils.mapToCat(dto);
         cats = shelterCatRepository.findAll();
         if (!cats.contains(cat)) {
-            cats.add(Math.toIntExact(id), cat);
             shelterCatRepository.saveAndFlush(cat);
         }
     }

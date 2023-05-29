@@ -8,6 +8,7 @@ import seventeam.tgbot.repository.ShelterDogRepository;
 import seventeam.tgbot.service.PetService;
 import seventeam.tgbot.utils.MappingUtils;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,12 +24,11 @@ public class DogServiceImpl implements PetService {
         this.mappingUtils = mappingUtils;
     }
 
-    public void createDog(Long id, String name, String breed, Integer age, String suit, String gender) {
-        DogDto dto = new DogDto(id, name, breed, age, suit, gender);
+    public void createDog(String name, String breed, LocalDate dateOfBirth, String suit, String gender) {
+        DogDto dto = new DogDto(name, breed, dateOfBirth, suit, gender);
         Dog dog = mappingUtils.mapToDog(dto);
         dogs = shelterDogRepository.findAll();
         if (!dogs.contains(dog)) {
-            dogs.add(Math.toIntExact(id), dog);
             shelterDogRepository.saveAndFlush(dog);
         }
     }

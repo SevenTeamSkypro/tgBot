@@ -17,7 +17,7 @@ public class MappingUtils {
         dto.setId(entity.getId());
         dto.setName(entity.getName());
         dto.setBreed(entity.getBreed());
-        dto.setAge(entity.getAge());
+        dto.setDateOfBirth(entity.getDateOfBirth());
         dto.setSuit(entity.getSuit());
         dto.setGender(entity.getGender());
         return dto;
@@ -25,10 +25,9 @@ public class MappingUtils {
 
     public Cat mapToCat(CatDto dto) {
         Cat entity = new Cat();
-        entity.setId(dto.getId());
         entity.setName(dto.getName());
         entity.setBreed(dto.getBreed());
-        entity.setAge(dto.getAge());
+        entity.setDateOfBirth(dto.getDateOfBirth());
         entity.setSuit(dto.getSuit());
         entity.setGender(dto.getGender());
         entity.setShelterCat(shelterCat);
@@ -41,7 +40,7 @@ public class MappingUtils {
         dto.setId(entity.getId());
         dto.setName(entity.getName());
         dto.setBreed(entity.getBreed());
-        dto.setAge(entity.getAge());
+        dto.setDateOfBirth(entity.getDateOfBirth());
         dto.setSuit(entity.getSuit());
         dto.setGender(entity.getGender());
         return dto;
@@ -49,10 +48,9 @@ public class MappingUtils {
 
     public Dog mapToDog(DogDto dto) {
         Dog entity = new Dog();
-        entity.setId(dto.getId());
         entity.setName(dto.getName());
         entity.setBreed(dto.getBreed());
-        entity.setAge(dto.getAge());
+        entity.setDateOfBirth(dto.getDateOfBirth());
         entity.setSuit(dto.getSuit());
         entity.setGender(dto.getGender());
         entity.setShelterDog(shelterDog);
