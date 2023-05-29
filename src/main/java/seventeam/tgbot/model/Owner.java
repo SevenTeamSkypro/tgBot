@@ -1,46 +1,19 @@
 package seventeam.tgbot.model;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
-@Entity
-@Table(name = "dog_owners")
-public class DogOwner extends Owner {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "owner_id")
+public abstract class Owner extends User{
     private Long id;
-    @Column(name = "chat_id")
     private Long chatId;
-    @Column(name = "first_name", nullable = false)
     private String firstName;
-    @Column(name = "last_name")
     private String lastName;
-    @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
-    @Column(name = "pets", nullable = false)
-    @OneToMany(mappedBy = "dogOwner", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Dog> pets;
-    @Column(name = "probation")
+    private List<Pet> pets;
     private LocalDateTime probation;
 
-    public DogOwner() {
-    }
-
-    public DogOwner(Long id, String firstName, String lastName, String phoneNumber, List<Dog> pets, LocalDateTime probation) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phoneNumber = phoneNumber;
-        this.pets = pets;
-        this.probation = probation;
-    }
-
-    public DogOwner(Long id, Long chatId, String firstName, String lastName, String phoneNumber, List<Dog> pets,
-                    LocalDateTime probation) {
+    public Owner(Long id, Long chatId, String firstName, String lastName, String phoneNumber, List<Pet> pets,
+                 LocalDateTime probation) {
         this.id = id;
         this.chatId = chatId;
         this.firstName = firstName;
@@ -48,6 +21,19 @@ public class DogOwner extends Owner {
         this.phoneNumber = phoneNumber;
         this.pets = pets;
         this.probation = probation;
+    }
+
+    public Owner(Long chatId, String firstName, String lastName, String phoneNumber, List<Pet> pets,
+                 LocalDateTime probation) {
+        this.chatId = chatId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+        this.pets = pets;
+        this.probation = probation;
+    }
+
+    public Owner() {
     }
 
     @Override
@@ -64,7 +50,6 @@ public class DogOwner extends Owner {
         return chatId;
     }
 
-    @Override
     public void setChatId(Long chatId) {
         this.chatId = chatId;
     }
@@ -99,36 +84,19 @@ public class DogOwner extends Owner {
         this.phoneNumber = phoneNumber;
     }
 
-    @Override
     public List<Pet> getPets() {
-        return Collections.singletonList((Dog) pets);
+        return pets;
     }
 
     public void setPets(List<Pet> pets) {
-        this.pets = Collections.singletonList((Dog) pets);
+        this.pets = pets;
     }
 
-    @Override
     public LocalDateTime getProbation() {
         return probation;
     }
 
-    @Override
     public void setProbation(LocalDateTime probation) {
         this.probation = probation;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        DogOwner dogOwner = (DogOwner) o;
-        return Objects.equals(id, dogOwner.id) && firstName.equals(dogOwner.firstName) && lastName.equals(dogOwner.lastName) && phoneNumber.equals(dogOwner.phoneNumber) && pets.equals(dogOwner.pets);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), id, firstName, lastName, phoneNumber, pets);
     }
 }

@@ -1,18 +1,14 @@
 package seventeam.tgbot.model;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "cat_owners")
-public class CatOwner extends User {
+public class CatOwner extends Owner {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "owner_id")
@@ -43,23 +39,83 @@ public class CatOwner extends User {
         this.probation = probation;
     }
 
-    public CatOwner(Long id, Long chatId, String firstName, String lastName, String phoneNumber, Long id1, Long chatId1, String firstName1, String lastName1, String phoneNumber1, List<Cat> pets, LocalDateTime probation) {
-        super(id, chatId, firstName, lastName, phoneNumber);
-        this.id = id1;
-        this.chatId = chatId1;
-        this.firstName = firstName1;
-        this.lastName = lastName1;
-        this.phoneNumber = phoneNumber1;
+    public CatOwner(Long id, Long chatId, String firstName, String lastName, String phoneNumber, List<Cat> pets, LocalDateTime probation) {
+        this.id = id;
+        this.chatId = chatId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
         this.pets = pets;
         this.probation = probation;
     }
 
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Override
+    public Long getChatId() {
+        return chatId;
+    }
+
+    @Override
+    public void setChatId(Long chatId) {
+        this.chatId = chatId;
+    }
+
+    @Override
+    public String getFirstName() {
+        return firstName;
+    }
+
+    @Override
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    @Override
+    public String getLastName() {
+        return lastName;
+    }
+
+    @Override
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    @Override
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    @Override
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    @Override
+    public List<Pet> getPets() {
+        return Collections.singletonList((Cat) pets);
+    }
+
+    public void setPets(List<Pet> pets) {
+        this.pets = Collections.singletonList((Cat) pets);
+    }
+
+    @Override
     public LocalDateTime getProbation() {
         return probation;
     }
 
-    public Long getChatId() {
-        return chatId;
+    @Override
+    public void setProbation(LocalDateTime probation) {
+        this.probation = probation;
     }
 
     @Override

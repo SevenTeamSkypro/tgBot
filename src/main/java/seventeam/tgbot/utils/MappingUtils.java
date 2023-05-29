@@ -3,10 +3,8 @@ package seventeam.tgbot.utils;
 import org.springframework.stereotype.Service;
 import seventeam.tgbot.dto.CatDto;
 import seventeam.tgbot.dto.DogDto;
-import seventeam.tgbot.model.Cat;
-import seventeam.tgbot.model.Dog;
-import seventeam.tgbot.model.ShelterCat;
-import seventeam.tgbot.model.ShelterDog;
+import seventeam.tgbot.dto.OwnerDto;
+import seventeam.tgbot.model.*;
 
 @Service
 public class MappingUtils {
@@ -56,5 +54,39 @@ public class MappingUtils {
         entity.setShelterDog(shelterDog);
         entity.setDogOwner(null);
         return entity;
+    }
+
+    public OwnerDto mapToOwnerDto(Owner entity) {
+        OwnerDto dto = new OwnerDto();
+        dto.setChatId(entity.getChatId());
+        dto.setFirstName(entity.getFirstName());
+        dto.setLastName(entity.getLastName());
+        dto.setPhoneNumber(entity.getPhoneNumber());
+        dto.setPets(entity.getPets());
+        dto.setProbation(entity.getProbation());
+        return dto;
+    }
+
+    public Owner mapToOwner(OwnerDto dto) {
+        if (dto.getPets() != null && dto.getPets().contains(Cat.class)){
+            CatOwner entity = new CatOwner();
+            entity.setId(dto.getId());
+            entity.setFirstName(dto.getFirstName());
+            entity.setLastName(dto.getLastName());
+            entity.setPhoneNumber(dto.getPhoneNumber());
+            entity.setPets(dto.getPets());
+            entity.setProbation(dto.getProbation());
+            return entity;
+        } else if (dto.getPets() != null && dto.getPets().contains(Dog.class)) {
+            DogOwner entity = new DogOwner();
+            entity.setId(dto.getId());
+            entity.setFirstName(dto.getFirstName());
+            entity.setLastName(dto.getLastName());
+            entity.setPhoneNumber(dto.getPhoneNumber());
+            entity.setPets(dto.getPets());
+            entity.setProbation(dto.getProbation());
+            return entity;
+        }
+        return null;
     }
 }
