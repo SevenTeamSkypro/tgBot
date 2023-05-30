@@ -79,7 +79,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                             clientService.createUser(contact.userId(), chatId, firstName, lastName, phoneNumber);
                             keyBoardService.chooseMenu(chatId);
                         }
-                        //Валидация введения целого числа
+                        //Проверка статуса отправки id питомца и валидация ввода целого числа
                         if (statuses.containsValue(Status.PET_ID_NOT_GET)) {
                             Pattern pattern = Pattern.compile("\\d+");
                             Matcher matcher = pattern.matcher(text);
@@ -94,11 +94,19 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                                 statuses.remove(chatId);
                             }
                         }
-                        //Проверка статуса отправки предупреждения
+                        //Проверка статуса отправки предупреждения и валидация ввода целого числа
                         if (statuses.containsValue(Status.SEND_WARNING)) {
-                            Long ownerChatId = Long.valueOf(text);
-                            statuses.remove(chatId, Status.SEND_WARNING);
-                            sendMassage(ownerChatId, clientService.readFile("src/main/resources/draw/warning.txt"));
+                            Pattern pattern = Pattern.compile("\\d+");
+                            Matcher matcher = pattern.matcher(text);
+                            if (matcher.find()) {
+                                Long ownerChatId = Long.valueOf(text);
+                                statuses.remove(chatId);
+                                sendMassage(ownerChatId, clientService.readFile("src/main/resources/draw/warning.txt"));
+                            } else {
+                                sendMassage(chatId, "Вы не ввели chatId владельца!");
+                                keyBoardService.volunteerMenu(chatId);
+                                statuses.remove(chatId);
+                            }
                         }
                         if (text != null) {
                             switch (text) {
