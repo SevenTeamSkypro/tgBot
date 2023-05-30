@@ -15,16 +15,28 @@ public class VolunteerController {
         this.volunteerService = volunteerService;
     }
 
+    /**
+     * Получение экземпляра класса Volunteer
+     * @param phoneNumber номер телефона
+     * @return Volunteer instance
+     */
     @GetMapping("/get")
     public Volunteer getVolunteer(String phoneNumber) {
         return volunteerService.getVolunteer(phoneNumber);
     }
 
+    /**
+     * Получение списка волонтёров
+     * @return List of Volunteer
+     */
     @GetMapping("/all")
     public List<Volunteer> getAll() {
         return volunteerService.getAll();
     }
 
+    /**
+     * Изменение экземпляра класса Volunteer
+     */
     @PutMapping("/put")
     public void updateVolunteer(@RequestParam(required = false, name = "id") Long id,
                                 @RequestParam(required = false, name = "chatId") Long chatId,
@@ -34,6 +46,9 @@ public class VolunteerController {
         volunteerService.updateUser(new Volunteer(id, chatId, firstName, lastName, phoneNumber));
     }
 
+    /**
+     * Удаление экземпляра класса Volunteer
+     */
     @DeleteMapping("/del")
     public void deleteVolunteer(@RequestParam(required = false, name = "id") Long id) {
         volunteerService.deleteUser(id);
