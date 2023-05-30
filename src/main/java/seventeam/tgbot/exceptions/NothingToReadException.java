@@ -1,7 +1,7 @@
 package seventeam.tgbot.exceptions;
 
 public class NothingToReadException extends RuntimeException {
-    public NothingToReadException(String message) {
-        super(message);
+    public NothingToReadException() {
+        super("Такого файла нет!");
     }
 }

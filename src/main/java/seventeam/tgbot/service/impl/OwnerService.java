@@ -36,20 +36,25 @@ public class OwnerService {
             dogs.add(dog);
             DogOwner dogOwner = new DogOwner(id, chatId, firstName, lastName, phoneNumber, dogs, ReportService.reportingPeriod);
             dogOwnerRepository.save(dogOwner);
+            dogService.deletePet(pet.getId());
         } else {
             Cat cat = (Cat) catService.getPet(pet.getId());
             cats.add(cat);
-            CatOwner catOwner = new CatOwner(id, chatId, firstName, lastName, phoneNumber, cats,
-                    ReportService.reportingPeriod);
+            CatOwner catOwner = new CatOwner(id, chatId, firstName, lastName, phoneNumber, cats, ReportService.reportingPeriod);
             catOwnerRepository.save(catOwner);
+            catService.deletePet(pet.getId());
         }
     }
 
     public OwnerDto getOwner(Long id, Long shelterId) {
-        if (shelterId == 1) {
-            return mappingUtils.mapToOwnerDto(dogOwnerRepository.getReferenceById(id));
-        } else {
-            return mappingUtils.mapToOwnerDto(catOwnerRepository.getReferenceById(id));
+        try {
+            if (shelterId == 1) {
+                return mappingUtils.mapToOwnerDto(dogOwnerRepository.getReferenceById(id));
+            } else {
+                return mappingUtils.mapToOwnerDto(catOwnerRepository.getReferenceById(id));
+            }
+        } catch (RuntimeException e) {
+            throw new OwnerNotFoundException();
         }
     }
 
@@ -65,7 +70,7 @@ public class OwnerService {
                 toUpdate.setProbation(probation);
                 dogOwnerRepository.saveAndFlush(toUpdate);
             } catch (RuntimeException e) {
-                throw new OwnerNotFoundException("Владельца с таким id нет!");
+                throw new OwnerNotFoundException();
             }
         } else {
             try {
@@ -77,16 +82,20 @@ public class OwnerService {
                 toUpdate.setProbation(probation);
                 catOwnerRepository.saveAndFlush(toUpdate);
             } catch (RuntimeException e) {
-                throw new OwnerNotFoundException("Владельца с таким id нет!");
+                throw new OwnerNotFoundException();
             }
         }
     }
 
     public void deleteOwner(Long id, Long shelterId) {
-        if (shelterId == 1) {
-            dogOwnerRepository.deleteById(id);
-        } else {
-            catOwnerRepository.deleteById(id);
+        try {
+            if (shelterId == 1) {
+                dogOwnerRepository.deleteById(id);
+            } else {
+                catOwnerRepository.deleteById(id);
+            }
+        } catch (RuntimeException e) {
+            throw new OwnerNotFoundException();
         }
     }
 }
