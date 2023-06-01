@@ -7,6 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import seventeam.tgbot.dto.CatDto;
+import seventeam.tgbot.model.Cat;
 import seventeam.tgbot.repository.ShelterCatRepository;
 import seventeam.tgbot.utils.MappingUtils;
 
@@ -34,9 +35,13 @@ class CatServiceImplTest {
     @DisplayName("Проверка получения всех питомцев")
     void getAllPetsTest() {
         List<CatDto> dtoList = new ArrayList<>();
-        CatDto cat = new CatDto("Мурка", "русская", LocalDate.of(2022, 10, 25), "полосатая", "кошка");
-        dtoList.add(0, cat);
-        when(catService.getAllPets()).thenReturn(dtoList);
+        List<Cat> list = new ArrayList<>();
+        CatDto catDto = new CatDto("Мурка", "русская", LocalDate.of(2022, 10, 25), "полосатая", "кошка");
+        Cat cat = new Cat("Мурка", "русская", LocalDate.of(2022, 10, 25), "полосатая", "кошка");
+        dtoList.add(0, catDto);
+        list.add(0, cat);
+        when(mappingUtils.mapToCatDto(cat)).thenReturn(catDto);
+        when(shelterCatRepository.findAll()).thenReturn(list);
         assertEquals(dtoList, catService.getAllPets());
     }
 
