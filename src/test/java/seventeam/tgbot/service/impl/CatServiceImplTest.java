@@ -21,11 +21,11 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class CatServiceImplTest {
     @InjectMocks
-    CatServiceImpl catService;
+    private CatServiceImpl catService;
     @Mock
-    ShelterCatRepository shelterCatRepository;
+    private ShelterCatRepository shelterCatRepository;
     @Mock
-    MappingUtils mappingUtils;
+    private MappingUtils mappingUtils;
 
     @Test
     void createCat() {
@@ -46,7 +46,13 @@ class CatServiceImplTest {
     }
 
     @Test
+    @DisplayName("Проверка получения питомца по id")
     void getPet() {
+        CatDto catDto = new CatDto("Мурка", "русская", LocalDate.of(2022, 10, 25), "полосатая", "кошка");
+        Cat cat = new Cat("Мурка", "русская", LocalDate.of(2022, 10, 25), "полосатая", "кошка");
+        when(mappingUtils.mapToCatDto(cat)).thenReturn(catDto);
+        when(shelterCatRepository.getReferenceById(0L)).thenReturn(cat);
+        assertEquals(catDto, catService.getPet(0L));
     }
 
     @Test
