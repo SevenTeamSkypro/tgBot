@@ -1,22 +1,43 @@
 package seventeam.tgbot.service.impl;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import seventeam.tgbot.dto.CatDto;
 import seventeam.tgbot.repository.ShelterCatRepository;
+import seventeam.tgbot.utils.MappingUtils;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class CatServiceImplTest {
     @Mock
     ShelterCatRepository shelterCatRepository;
+    @InjectMocks
+    CatServiceImpl catService;
+    @Mock
+    MappingUtils mappingUtils;
 
     @Test
     void createCat() {
     }
 
     @Test
-    void getAllPets() {
+    @DisplayName("Проверка получения всех питомцев")
+    void getAllPetsTest() {
+        List<CatDto> dtoList = new ArrayList<>();
+        CatDto cat = new CatDto("Мурка", "русская", LocalDate.of(2022, 10, 25), "полосатая", "кошка");
+        dtoList.add(0, cat);
+        when(catService.getAllPets()).thenReturn(dtoList);
+        assertEquals(dtoList, catService.getAllPets());
     }
 
     @Test
