@@ -20,10 +20,10 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class CatServiceImplTest {
-    @Mock
-    ShelterCatRepository shelterCatRepository;
     @InjectMocks
     CatServiceImpl catService;
+    @Mock
+    ShelterCatRepository shelterCatRepository;
     @Mock
     MappingUtils mappingUtils;
 
