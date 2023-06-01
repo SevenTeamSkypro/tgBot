@@ -53,7 +53,7 @@ public class ClientServiceImpl implements UserService {
             toUpdate.setPhoneNumber(user.getPhoneNumber());
             clientRepository.saveAndFlush(toUpdate);
         } catch (RuntimeException e) {
-            throw new ClientNotFoundException("Клиента с таким id нет!");
+            throw new ClientNotFoundException();
         }
     }
 
@@ -66,7 +66,7 @@ public class ClientServiceImpl implements UserService {
         try {
             return Files.readString(Paths.get(path), StandardCharsets.UTF_8);
         } catch (IOException e) {
-            throw new NothingToReadException("Такого файла нет!");
+            throw new NothingToReadException();
         }
     }
 }

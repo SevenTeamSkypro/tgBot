@@ -2,6 +2,7 @@ package seventeam.tgbot.service.impl;
 
 import org.springframework.stereotype.Service;
 import seventeam.tgbot.dto.CatDto;
+import seventeam.tgbot.exceptions.PetNotFoundException;
 import seventeam.tgbot.model.Cat;
 import seventeam.tgbot.model.Pet;
 import seventeam.tgbot.repository.ShelterCatRepository;
@@ -40,11 +41,19 @@ public class CatServiceImpl implements PetService {
 
     @Override
     public Pet getPet(Long id) {
-        return mappingUtils.mapToCatDto(shelterCatRepository.getReferenceById(id));
+        try {
+            return mappingUtils.mapToCatDto(shelterCatRepository.getReferenceById(id));
+        } catch (RuntimeException e) {
+            throw new PetNotFoundException();
+        }
     }
 
     @Override
     public void deletePet(Long id) {
-        shelterCatRepository.deleteById(id);
+        try {
+            shelterCatRepository.deleteById(id);
+        } catch (RuntimeException e) {
+            throw new PetNotFoundException();
+        }
     }
 }

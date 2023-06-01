@@ -1,45 +1,22 @@
-package seventeam.tgbot.model;
+package seventeam.tgbot.dto;
 
-import javax.persistence.*;
+import seventeam.tgbot.model.Pet;
+import seventeam.tgbot.model.User;
+
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-@Entity
-@Table(name = "dog_owners")
-public class DogOwner extends Owner {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "owner_id")
+public class OwnerDto extends User {
     private Long id;
-    @Column(name = "chat_id")
     private Long chatId;
-    @Column(name = "first_name", nullable = false)
     private String firstName;
-    @Column(name = "last_name")
     private String lastName;
-    @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
-    @Column(name = "pets", nullable = false)
-    @OneToMany(mappedBy = "dogOwner", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Dog> pets;
-    @Column(name = "probation")
+    private List<Pet> pets;
     private LocalDateTime probation;
 
-    public DogOwner() {
-    }
-
-    public DogOwner(Long id, String firstName, String lastName, String phoneNumber, List<Dog> pets, LocalDateTime probation) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phoneNumber = phoneNumber;
-        this.pets = pets;
-        this.probation = probation;
-    }
-
-    public DogOwner(Long id, Long chatId, String firstName, String lastName, String phoneNumber, List<Dog> pets,
+    public OwnerDto(Long id, Long chatId, String firstName, String lastName, String phoneNumber, List<Pet> pets,
                     LocalDateTime probation) {
         this.id = id;
         this.chatId = chatId;
@@ -48,6 +25,19 @@ public class DogOwner extends Owner {
         this.phoneNumber = phoneNumber;
         this.pets = pets;
         this.probation = probation;
+    }
+
+    public OwnerDto(Long chatId, String firstName, String lastName, String phoneNumber, List<Pet> pets,
+                    LocalDateTime probation) {
+        this.chatId = chatId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+        this.pets = pets;
+        this.probation = probation;
+    }
+
+    public OwnerDto() {
     }
 
     @Override
@@ -64,7 +54,6 @@ public class DogOwner extends Owner {
         return chatId;
     }
 
-    @Override
     public void setChatId(Long chatId) {
         this.chatId = chatId;
     }
@@ -99,21 +88,18 @@ public class DogOwner extends Owner {
         this.phoneNumber = phoneNumber;
     }
 
-    @Override
     public List<Pet> getPets() {
-        return Collections.singletonList((Dog) pets);
+        return pets;
     }
 
     public void setPets(List<Pet> pets) {
-        this.pets = Collections.singletonList((Dog) pets);
+        this.pets = pets;
     }
 
-    @Override
     public LocalDateTime getProbation() {
         return probation;
     }
 
-    @Override
     public void setProbation(LocalDateTime probation) {
         this.probation = probation;
     }
@@ -123,12 +109,24 @@ public class DogOwner extends Owner {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        DogOwner dogOwner = (DogOwner) o;
-        return Objects.equals(id, dogOwner.id) && firstName.equals(dogOwner.firstName) && lastName.equals(dogOwner.lastName) && phoneNumber.equals(dogOwner.phoneNumber) && pets.equals(dogOwner.pets);
+        OwnerDto ownerDto = (OwnerDto) o;
+        return Objects.equals(id, ownerDto.id) && Objects.equals(chatId, ownerDto.chatId) && Objects.equals(firstName, ownerDto.firstName) && Objects.equals(lastName, ownerDto.lastName) && Objects.equals(phoneNumber, ownerDto.phoneNumber) && Objects.equals(pets, ownerDto.pets) && Objects.equals(probation, ownerDto.probation);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), id, firstName, lastName, phoneNumber, pets);
+        return Objects.hash(super.hashCode(), id, chatId, firstName, lastName, phoneNumber, pets, probation);
+    }
+
+    @Override
+    public String toString() {
+        return "OwnerDto{" +
+                "id=" + id +
+                ", chatId=" + chatId +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", pets=" + pets +
+                ", probation=" + probation;
     }
 }

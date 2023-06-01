@@ -3,6 +3,7 @@ package seventeam.tgbot.dto;
 import seventeam.tgbot.model.Pet;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class DogDto extends Pet {
     private Long id;
@@ -80,6 +81,19 @@ public class DogDto extends Pet {
     @Override
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DogDto dogDto = (DogDto) o;
+        return Objects.equals(id, dogDto.id) && Objects.equals(name, dogDto.name) && Objects.equals(breed, dogDto.breed) && Objects.equals(dateOfBirth, dogDto.dateOfBirth) && Objects.equals(suit, dogDto.suit) && Objects.equals(gender, dogDto.gender);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, breed, dateOfBirth, suit, gender);
     }
 
     @Override

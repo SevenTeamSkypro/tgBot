@@ -27,7 +27,7 @@ public class ReportService {
     public void createReport(@NotNull Update update) {
         Long chatId = update.message().chat().id();
         if (update.message().photo() != null) {
-            PhotoSize photoSize = update.message().photo()[0];
+            PhotoSize photoSize = update.message().photo()[3];
             GetFile getFile = new GetFile(photoSize.fileId());
             File file = telegramBot.execute(getFile).file();
             Report report = new Report(chatId, chatId, LocalDateTime.now(), file, update.message().caption());

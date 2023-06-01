@@ -60,6 +60,15 @@ public class Cat extends Pet {
         this.gender = gender;
     }
 
+    public Cat(Long id, String name, String breed, LocalDate dateOfBirth, String suit, String gender) {
+        this.id = id;
+        this.name = name;
+        this.breed = breed;
+        this.dateOfBirth = dateOfBirth;
+        this.suit = suit;
+        this.gender = gender;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

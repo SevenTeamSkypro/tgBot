@@ -38,7 +38,11 @@ public class VolunteerService implements UserService {
     }
 
     public Volunteer getVolunteer(Long chatId) {
-        return volunteerRepository.getByChatId(chatId);
+        try {
+            return volunteerRepository.getByChatId(chatId);
+        } catch (RuntimeException e) {
+            throw new VolunteerNotFoundException();
+        }
     }
 
     @Override
@@ -50,13 +54,17 @@ public class VolunteerService implements UserService {
             toUpdate.setPhoneNumber(user.getPhoneNumber());
             volunteerRepository.saveAndFlush(toUpdate);
         } catch (RuntimeException e) {
-            throw new VolunteerNotFoundException("Волонтёра с таким id нет!");
+            throw new VolunteerNotFoundException();
         }
     }
 
     @Override
     public void deleteUser(Long id) {
-        volunteerRepository.deleteById(id);
+        try {
+            volunteerRepository.deleteById(id);
+        }catch (RuntimeException e) {
+            throw new VolunteerNotFoundException();
+        }
     }
 
     @Transactional
