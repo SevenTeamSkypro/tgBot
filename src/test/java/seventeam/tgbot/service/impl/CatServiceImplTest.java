@@ -7,6 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import seventeam.tgbot.dto.CatDto;
+import seventeam.tgbot.exceptions.PetNotFoundException;
 import seventeam.tgbot.model.Cat;
 import seventeam.tgbot.repository.ShelterCatRepository;
 import seventeam.tgbot.utils.MappingUtils;
@@ -16,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -28,7 +31,19 @@ class CatServiceImplTest {
     private MappingUtils mappingUtils;
 
     @Test
+    @DisplayName("Проверка создания питомца")
     void createCat() {
+        Cat cat = new Cat("Мурка", "русская", LocalDate.of(2022, 10, 25), "полосатая", "кошка");
+        verify(shelterCatRepository, verificationData -> catService.createCat("Мурка", "русская", LocalDate.of(2022,
+                10, 25), "полосатая", "кошка")).saveAndFlush(cat);
+    }
+
+    @Test
+    @DisplayName("Проверка исключения при получении несуществующего питомца")
+    void getPetNotFoundExceptionTest() {
+        when(catService.getPet(0L)).thenThrow(PetNotFoundException.class);
+        assertThrows(PetNotFoundException.class,
+                () -> when(catService.getPet(0L)).thenThrow(PetNotFoundException.class));
     }
 
     @Test
@@ -56,6 +71,8 @@ class CatServiceImplTest {
     }
 
     @Test
+    @DisplayName("Проверка удаления питомца")
     void deletePet() {
+        verify(shelterCatRepository, verificationData -> catService.deletePet(0L)).deleteById(0L);
     }
 }
