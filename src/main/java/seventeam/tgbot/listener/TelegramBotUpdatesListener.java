@@ -33,21 +33,17 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     private final ClientServiceImpl clientService;
     private final KeyBoardService keyBoardService;
     private final ReportService reportService;
-    private final OwnerService ownerService;
     private final VolunteerService volunteerService;
     private final Map<Long, Status> statuses = new HashMap<>();
-    private final ShelterDog shelterDog = new ShelterDog();
-    private final ShelterCat shelterCat = new ShelterCat();
     private boolean isCat = true;
 
-    public TelegramBotUpdatesListener(TelegramBot telegramBot, DogServiceImpl dogService, CatServiceImpl catService, ClientServiceImpl clientService, KeyBoardService keyBoardService, ReportService reportService, OwnerService ownerService, VolunteerService volunteerService) {
+    public TelegramBotUpdatesListener(TelegramBot telegramBot, DogServiceImpl dogService, CatServiceImpl catService, ClientServiceImpl clientService, KeyBoardService keyBoardService, ReportService reportService, VolunteerService volunteerService) {
         this.telegramBot = telegramBot;
         this.dogService = dogService;
         this.catService = catService;
         this.clientService = clientService;
         this.keyBoardService = keyBoardService;
         this.reportService = reportService;
-        this.ownerService = ownerService;
         this.volunteerService = volunteerService;
     }
 
@@ -188,43 +184,5 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     private void sendReport(Long chatId, @NotNull File file, String report) {
         telegramBot.execute(new SendMessage(chatId, telegramBot.getFullFilePath(file)));
         telegramBot.execute(new SendMessage(chatId, report));
-    }
-
-    public void replyMessage(Long chatId, String messageText, Integer messageId) {
-        SendMessage sendMessage = new SendMessage(chatId, messageText);
-        sendMessage.replyToMessageId(messageId);
-        telegramBot.execute(sendMessage);
-    }
-
-    private void createOwner(Integer petId, Message message) {
-        if (shelterCat.getPets() != null && shelterDog.getPets() != null) {
-            if (isCat) {
-                Cat cat = shelterCat.getPets().get(0);
-                ownerService.createOwner(
-                        Long.valueOf(petId),
-                        message.chat().id(),
-                        message.contact().firstName(),
-                        message.contact().lastName(),
-                        message.contact().phoneNumber(),
-                        shelterCat.getShelterId(), cat);
-                sendMassage(message.chat().id(), "Вы стали владельцем питомца по имени " + cat.getName());
-                statuses.remove(message.chat().id());
-            } else {
-                Dog dog = shelterDog.getPets().get(petId);
-                ownerService.createOwner(
-                        Long.valueOf(petId),
-                        message.chat().id(),
-                        message.contact().firstName(),
-                        message.contact().lastName(),
-                        message.contact().phoneNumber(),
-                        shelterDog.getShelterId(), dog);
-                sendMassage(message.chat().id(), "Вы стали владельцем питомца по имени " + dog.getName());
-                statuses.remove(message.chat().id());
-            }
-        } else {
-            sendMassage(message.chat().id(), "Питомца с таким id нет");
-            statuses.remove(message.chat().id(), Status.PET_ID_NOT_GET);
-        }
-        keyBoardService.mainMenu(message.chat().id());
     }
 }
