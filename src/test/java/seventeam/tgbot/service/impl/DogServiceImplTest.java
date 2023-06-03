@@ -7,15 +7,17 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import seventeam.tgbot.dto.DogDto;
+import seventeam.tgbot.exceptions.PetNotFoundException;
 import seventeam.tgbot.model.Dog;
 import seventeam.tgbot.repository.ShelterDogRepository;
 import seventeam.tgbot.utils.MappingUtils;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -25,29 +27,46 @@ class DogServiceImplTest {
     @Mock
     private ShelterDogRepository shelterDogRepository;
     @Mock
-    MappingUtils mappingUtils;
+    private MappingUtils mappingUtils;
+    @Mock
+    Dog dog = new Dog("Name", "breed", LocalDate.of(2000, 12, 31), "suit", "gender");
+    @Mock
+    DogDto dogDto = new DogDto("Name", "breed", LocalDate.of(2000, 12, 31), "suit", "gender");
+
+    @Test
+    @DisplayName("Проверка создания питомца")
+    void createDog() {
+        verify(shelterDogRepository, verificationData -> dogService.createDog(dog.getName(), dog.getBreed(),
+                dog.getDateOfBirth(), dog.getSuit(), dog.getGender())).saveAndFlush(dog);
+    }
+
+    @Test
+    @DisplayName("Проверка исключения при получении несуществующего питомца")
+    void getPetNotFoundExceptionTest() {
+        when(dogService.getPet(0L)).thenThrow(PetNotFoundException.class);
+        assertThrows(PetNotFoundException.class,
+                () -> when(dogService.getPet(0L)).thenThrow(PetNotFoundException.class));
+    }
 
     @Test
     @DisplayName("Проверка получения всех питомцев")
     void getAllPets() {
-        List<DogDto> dtoList = new ArrayList<>();
-        List<Dog> list = new ArrayList<>();
-        DogDto dogDto = new DogDto("Лео", "такса", LocalDate.of(2016, 10, 25), "леопард", "кобель");
-        Dog dog = new Dog("Лео", "такса", LocalDate.of(2016, 10, 25), "леопард", "кобель");
-        dtoList.add(0, dogDto);
-        list.add(0, dog);
         when(mappingUtils.mapToDogDto(dog)).thenReturn(dogDto);
-        when(shelterDogRepository.findAll()).thenReturn(list);
-        assertEquals(dtoList, dogService.getAllPets());
+        when(shelterDogRepository.findAll()).thenReturn(List.of(dog));
+        assertEquals(List.of(dogDto), dogService.getAllPets());
     }
 
     @Test
     @DisplayName("Проверка получения питомца по id")
     void getPet() {
-        DogDto dogDto = new DogDto("Лео", "такса", LocalDate.of(2016, 10, 25), "леопард", "кобель");
-        Dog dog = new Dog("Лео", "такса", LocalDate.of(2016, 10, 25), "леопард", "кобель");
         when(mappingUtils.mapToDogDto(dog)).thenReturn(dogDto);
         when(shelterDogRepository.getReferenceById(0L)).thenReturn(dog);
         assertEquals(dogDto, dogService.getPet(0L));
+    }
+
+    @Test
+    @DisplayName("Проверка удаления питомца")
+    void deletePet() {
+        verify(shelterDogRepository, verificationData -> dogService.deletePet(0L)).deleteById(0L);
     }
 }

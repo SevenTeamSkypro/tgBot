@@ -13,7 +13,6 @@ import seventeam.tgbot.repository.ShelterCatRepository;
 import seventeam.tgbot.utils.MappingUtils;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -29,13 +28,16 @@ class CatServiceImplTest {
     private ShelterCatRepository shelterCatRepository;
     @Mock
     private MappingUtils mappingUtils;
+    @Mock
+    Cat cat = new Cat("Name", "breed", LocalDate.of(2000, 12, 31), "suit", "gender");
+    @Mock
+    CatDto catDto = new CatDto("Name", "breed", LocalDate.of(2000, 12, 31), "suit", "gender");
 
     @Test
     @DisplayName("Проверка создания питомца")
     void createCat() {
-        Cat cat = new Cat("Мурка", "русская", LocalDate.of(2022, 10, 25), "полосатая", "кошка");
-        verify(shelterCatRepository, verificationData -> catService.createCat("Мурка", "русская", LocalDate.of(2022,
-                10, 25), "полосатая", "кошка")).saveAndFlush(cat);
+        verify(shelterCatRepository, verificationData -> catService.createCat(cat.getName(), cat.getBreed(),
+                cat.getDateOfBirth(), cat.getSuit(), cat.getGender())).saveAndFlush(cat);
     }
 
     @Test
@@ -49,22 +51,14 @@ class CatServiceImplTest {
     @Test
     @DisplayName("Проверка получения всех питомцев")
     void getAllPetsTest() {
-        List<CatDto> dtoList = new ArrayList<>();
-        List<Cat> list = new ArrayList<>();
-        CatDto catDto = new CatDto("Мурка", "русская", LocalDate.of(2022, 10, 25), "полосатая", "кошка");
-        Cat cat = new Cat("Мурка", "русская", LocalDate.of(2022, 10, 25), "полосатая", "кошка");
-        dtoList.add(0, catDto);
-        list.add(0, cat);
         when(mappingUtils.mapToCatDto(cat)).thenReturn(catDto);
-        when(shelterCatRepository.findAll()).thenReturn(list);
-        assertEquals(dtoList, catService.getAllPets());
+        when(shelterCatRepository.findAll()).thenReturn(List.of(cat));
+        assertEquals(List.of(catDto), catService.getAllPets());
     }
 
     @Test
     @DisplayName("Проверка получения питомца по id")
     void getPet() {
-        CatDto catDto = new CatDto("Мурка", "русская", LocalDate.of(2022, 10, 25), "полосатая", "кошка");
-        Cat cat = new Cat("Мурка", "русская", LocalDate.of(2022, 10, 25), "полосатая", "кошка");
         when(mappingUtils.mapToCatDto(cat)).thenReturn(catDto);
         when(shelterCatRepository.getReferenceById(0L)).thenReturn(cat);
         assertEquals(catDto, catService.getPet(0L));
