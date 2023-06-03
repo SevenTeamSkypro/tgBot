@@ -77,7 +77,7 @@ class ClientServiceImplTest {
     @Test
     @DisplayName("Проверка удаления клиента")
     void deleteUser() {
-        verify(clientRepository, verification -> clientService.deleteUser(0L)).deleteById(0L);
+        verify(clientRepository, verificationData -> clientService.deleteUser(0L)).deleteById(0L);
     }
 
     @Test

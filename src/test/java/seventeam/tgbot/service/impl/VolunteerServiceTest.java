@@ -35,7 +35,8 @@ class VolunteerServiceTest {
     @Test
     @DisplayName("Проверка создания волонтёра")
     void createUser() {
-        verify(volunteerRepository, verification -> volunteerService.createUser(volunteer.getId(), volunteer.getChatId(),
+        verify(volunteerRepository, verificationData -> volunteerService.createUser(volunteer.getId(),
+                volunteer.getChatId(),
                 volunteer.getFirstName(), volunteer.getLastName(), volunteer.getPhoneNumber())).saveAndFlush(volunteer);
     }
 
@@ -64,24 +65,25 @@ class VolunteerServiceTest {
     @DisplayName("Проверка обновления волонтёра")
     void updateUser() {
         when(volunteerRepository.getById(0L)).thenReturn(volunteer);
-        verify(volunteerRepository, verification -> volunteerService.updateUser(volunteer)).saveAndFlush(volunteer);
+        verify(volunteerRepository, verificationData -> volunteerService.updateUser(volunteer)).saveAndFlush(volunteer);
     }
 
     @Test
     @DisplayName("Проверка удаления волонтёра")
     void deleteUser() {
-        verify(volunteerRepository, verification -> volunteerService.deleteUser(0L)).deleteById(volunteer.getId());
+        verify(volunteerRepository, verificationData -> volunteerService.deleteUser(0L)).deleteById(volunteer.getId());
     }
 
     @Test
     @DisplayName("Проверка вызова волонтёра")
     void callVolunteer() {
-        verify(telegramBot, verification -> volunteerService.callVolunteer(volunteer.getPhoneNumber())).execute(new SendMessage(0L, "test"));
+        verify(telegramBot, verificationData -> volunteerService.callVolunteer(volunteer.getPhoneNumber())).execute(new SendMessage(0L, "test"));
     }
 
     @Test
     @DisplayName("Проверка отправки заявки волонтёру")
     void sendToVolunteer() {
-        verify(telegramBot, verification -> volunteerService.sendToVolunteer(client, 0)).execute(new SendMessage(0L, "test"));
+        verify(telegramBot, verificationData -> volunteerService.sendToVolunteer(client, 0)).execute(new SendMessage(0L,
+                "test"));
     }
 }
