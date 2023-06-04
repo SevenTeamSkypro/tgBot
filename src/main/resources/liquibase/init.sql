@@ -1,11 +1,11 @@
 CREATE TABLE shelter_dog
 (
-    shelter_id BIGINT NOT NULL PRIMARY KEY
+    shelter_id BIGINT NOT NULL
 );
 
 CREATE TABLE shelter_cat
 (
-    shelter_id BIGINT NOT NULL PRIMARY KEY
+    shelter_id BIGINT NOT NULL
 );
 
 CREATE TABLE dogs

@@ -40,10 +40,6 @@ public class ReportService {
         } else telegramBot.execute(new SendMessage(chatId, "Добавьте фото!"));
     }
 
-    public Report getReport(Long chatId) {
-        return reportRepository.getReferenceById(chatId);
-    }
-
     public List<Report> getAll() {
         return reportRepository.findAll();
     }
