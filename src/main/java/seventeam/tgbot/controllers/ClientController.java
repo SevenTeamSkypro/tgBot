@@ -20,7 +20,7 @@ public class ClientController {
      * @return Client instance
      */
     @GetMapping("/get")
-    public Client getClient(Long chatId) {
+    public Client getClient(@RequestParam Long chatId) {
         return clientService.getUserByChatId(chatId);
     }
 

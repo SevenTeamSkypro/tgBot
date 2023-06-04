@@ -9,7 +9,6 @@ import seventeam.tgbot.repository.DogOwnerRepository;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.concurrent.TimeUnit;
 
 @Component
 public class RemindAboutReportTimer {
@@ -23,7 +22,7 @@ public class RemindAboutReportTimer {
         this.telegramBot = telegramBot;
     }
 
-    @Scheduled(fixedDelay = 1, timeUnit = TimeUnit.DAYS)
+    @Scheduled(cron = "0 0 21 * * *")
     public void remind() {
         dogOwnerRepository.findAllByProbation(
                         LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES))
