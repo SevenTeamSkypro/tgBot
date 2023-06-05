@@ -8,7 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import seventeam.tgbot.model.Client;
-import seventeam.tgbot.repository.ClientRepository;
 import seventeam.tgbot.service.impl.ClientServiceImpl;
 
 import java.util.List;
@@ -27,9 +26,6 @@ class ClientControllerTest {
     private MockMvc mockMvc;
     @MockBean
     private ClientServiceImpl clientService;
-    @MockBean
-    private ClientRepository clientRepository;
-    @MockBean
     Client client = new Client(0L, 0L, "FirstName", "LastName", "7_xxx_xxx_xx_xx");
 
     @Test
@@ -52,8 +48,9 @@ class ClientControllerTest {
     }
 
     @Test
+    @DisplayName("Проверка обновления клиента")
     void updateClient() throws Exception {
-
+        when(clientService.getUserByChatId(0L)).thenReturn(client);
         mockMvc.perform(put("/c/put")
                         .param("id", "0")
                         .param("chatId", "0")

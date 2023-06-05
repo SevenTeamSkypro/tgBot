@@ -8,7 +8,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "cat_owners")
-public class CatOwner extends Owner {
+public class CatOwner implements Owner {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "owner_id")
@@ -54,7 +54,6 @@ public class CatOwner extends Owner {
         return id;
     }
 
-    @Override
     public void setId(Long id) {
         this.id = id;
     }
@@ -64,7 +63,6 @@ public class CatOwner extends Owner {
         return chatId;
     }
 
-    @Override
     public void setChatId(Long chatId) {
         this.chatId = chatId;
     }
@@ -99,7 +97,6 @@ public class CatOwner extends Owner {
         this.phoneNumber = phoneNumber;
     }
 
-    @Override
     public List<Pet> getPets() {
         return Collections.singletonList((Cat) pets);
     }
@@ -108,12 +105,10 @@ public class CatOwner extends Owner {
         this.pets = Collections.singletonList((Cat) pets);
     }
 
-    @Override
     public LocalDateTime getProbation() {
         return probation;
     }
 
-    @Override
     public void setProbation(LocalDateTime probation) {
         this.probation = probation;
     }
@@ -122,13 +117,12 @@ public class CatOwner extends Owner {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
         CatOwner catOwner = (CatOwner) o;
-        return Objects.equals(id, catOwner.id) && firstName.equals(catOwner.firstName) && lastName.equals(catOwner.lastName) && phoneNumber.equals(catOwner.phoneNumber) && pets.equals(catOwner.pets);
+        return Objects.equals(id, catOwner.id) && Objects.equals(chatId, catOwner.chatId) && Objects.equals(firstName, catOwner.firstName) && Objects.equals(lastName, catOwner.lastName) && Objects.equals(phoneNumber, catOwner.phoneNumber) && Objects.equals(pets, catOwner.pets) && Objects.equals(probation, catOwner.probation);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), id, firstName, lastName, phoneNumber, pets);
+        return Objects.hash(id, chatId, firstName, lastName, phoneNumber, pets, probation);
     }
 }

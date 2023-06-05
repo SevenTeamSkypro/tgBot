@@ -5,7 +5,7 @@ import seventeam.tgbot.model.Pet;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class DogDto extends Pet {
+public class DogDto implements Pet {
     private Long id;
     private String name;
     private String breed;
@@ -38,7 +38,6 @@ public class DogDto extends Pet {
         return name;
     }
 
-    @Override
     public void setName(String name) {
         this.name = name;
     }
@@ -48,7 +47,6 @@ public class DogDto extends Pet {
         return breed;
     }
 
-    @Override
     public void setBreed(String breed) {
         this.breed = breed;
     }
@@ -58,7 +56,6 @@ public class DogDto extends Pet {
         return dateOfBirth;
     }
 
-    @Override
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
@@ -68,7 +65,6 @@ public class DogDto extends Pet {
         return suit;
     }
 
-    @Override
     public void setSuit(String suit) {
         this.suit = suit;
     }
@@ -78,7 +74,6 @@ public class DogDto extends Pet {
         return gender;
     }
 
-    @Override
     public void setGender(String gender) {
         this.gender = gender;
     }

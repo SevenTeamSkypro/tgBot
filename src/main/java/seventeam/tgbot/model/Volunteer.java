@@ -12,7 +12,7 @@ import java.util.Objects;
 @Setter
 @Entity
 @Table(name = "volunteers")
-public class Volunteer extends User {
+public class Volunteer implements User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -47,14 +47,13 @@ public class Volunteer extends User {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
         Volunteer volunteer = (Volunteer) o;
-        return Objects.equals(firstName, volunteer.firstName) && Objects.equals(lastName, volunteer.lastName) && Objects.equals(phoneNumber, volunteer.phoneNumber) && Objects.equals(chatId, volunteer.chatId);
+        return Objects.equals(id, volunteer.id) && Objects.equals(firstName, volunteer.firstName) && Objects.equals(lastName, volunteer.lastName) && Objects.equals(phoneNumber, volunteer.phoneNumber) && Objects.equals(chatId, volunteer.chatId) && Objects.equals(phoneNumbers, volunteer.phoneNumbers);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), firstName, lastName, phoneNumber, chatId);
+        return Objects.hash(id, firstName, lastName, phoneNumber, chatId, phoneNumbers);
     }
 
     @Override
@@ -65,6 +64,7 @@ public class Volunteer extends User {
                 ", lastName='" + lastName + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", chatId=" + chatId +
-                "} " + super.toString();
+                ", phoneNumbers=" + phoneNumbers +
+                '}';
     }
 }

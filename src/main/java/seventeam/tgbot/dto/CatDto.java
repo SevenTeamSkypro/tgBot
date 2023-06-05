@@ -5,7 +5,7 @@ import seventeam.tgbot.model.Pet;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class CatDto extends Pet {
+public class CatDto implements Pet {
     private Long id;
     private String name;
     private String breed;
@@ -48,12 +48,10 @@ public class CatDto extends Pet {
         this.breed = breed;
     }
 
-    @Override
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    @Override
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }

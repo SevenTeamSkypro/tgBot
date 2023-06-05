@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
-public class OwnerDto extends User {
+public class OwnerDto implements User {
     private Long id;
     private Long chatId;
     private String firstName;

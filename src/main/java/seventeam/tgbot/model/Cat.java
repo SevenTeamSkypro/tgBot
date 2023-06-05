@@ -12,7 +12,7 @@ import java.util.Objects;
 @Setter
 @Entity
 @Table(name = "cats")
-public class Cat extends Pet {
+public class Cat implements Pet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

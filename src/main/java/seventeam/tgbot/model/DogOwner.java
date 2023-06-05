@@ -8,7 +8,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "dog_owners")
-public class DogOwner extends Owner {
+public class DogOwner implements Owner {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "owner_id")
@@ -64,7 +64,6 @@ public class DogOwner extends Owner {
         return chatId;
     }
 
-    @Override
     public void setChatId(Long chatId) {
         this.chatId = chatId;
     }
@@ -99,7 +98,6 @@ public class DogOwner extends Owner {
         this.phoneNumber = phoneNumber;
     }
 
-    @Override
     public List<Pet> getPets() {
         return Collections.singletonList((Dog) pets);
     }
@@ -108,12 +106,10 @@ public class DogOwner extends Owner {
         this.pets = Collections.singletonList((Dog) pets);
     }
 
-    @Override
     public LocalDateTime getProbation() {
         return probation;
     }
 
-    @Override
     public void setProbation(LocalDateTime probation) {
         this.probation = probation;
     }
@@ -122,13 +118,12 @@ public class DogOwner extends Owner {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
         DogOwner dogOwner = (DogOwner) o;
-        return Objects.equals(id, dogOwner.id) && firstName.equals(dogOwner.firstName) && lastName.equals(dogOwner.lastName) && phoneNumber.equals(dogOwner.phoneNumber) && pets.equals(dogOwner.pets);
+        return Objects.equals(id, dogOwner.id) && Objects.equals(chatId, dogOwner.chatId) && Objects.equals(firstName, dogOwner.firstName) && Objects.equals(lastName, dogOwner.lastName) && Objects.equals(phoneNumber, dogOwner.phoneNumber) && Objects.equals(pets, dogOwner.pets) && Objects.equals(probation, dogOwner.probation);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), id, firstName, lastName, phoneNumber, pets);
+        return Objects.hash(id, chatId, firstName, lastName, phoneNumber, pets, probation);
     }
 }

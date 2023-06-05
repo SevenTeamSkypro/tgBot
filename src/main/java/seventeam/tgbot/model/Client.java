@@ -7,7 +7,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "clients")
-public class Client extends User {
+public class Client implements User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -85,14 +85,13 @@ public class Client extends User {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
         Client client = (Client) o;
-        return id.equals(client.id) && firstName.equals(client.firstName) && Objects.equals(lastName, client.lastName) && phoneNumber.equals(client.phoneNumber);
+        return Objects.equals(id, client.id) && Objects.equals(chatId, client.chatId) && Objects.equals(firstName, client.firstName) && Objects.equals(lastName, client.lastName) && Objects.equals(phoneNumber, client.phoneNumber);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), id, firstName, lastName, phoneNumber);
+        return Objects.hash(id, chatId, firstName, lastName, phoneNumber);
     }
 
     @Override
