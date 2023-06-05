@@ -14,8 +14,7 @@ import java.util.List;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -27,7 +26,6 @@ class ClientControllerTest {
     @MockBean
     private ClientServiceImpl clientService;
     Client client = new Client(0L, 0L, "FirstName", "LastName", "7_xxx_xxx_xx_xx");
-
     @Test
     @DisplayName("Проверка получения клиента по chatId")
     void getClient() throws Exception {
@@ -62,6 +60,11 @@ class ClientControllerTest {
     }
 
     @Test
-    void deleteClient() {
+    @DisplayName("Проверка удаления клиента")
+    void deleteClient() throws Exception {
+        mockMvc.perform(delete("/c/del")
+                        .param("id", "0"))
+                .andExpect(status().isOk());
+        verify(clientService).deleteUser(0L);
     }
 }
