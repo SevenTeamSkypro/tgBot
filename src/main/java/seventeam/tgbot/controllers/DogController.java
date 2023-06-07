@@ -1,5 +1,6 @@
 package seventeam.tgbot.controllers;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import seventeam.tgbot.dto.DogDto;
 import seventeam.tgbot.service.impl.DogServiceImpl;
@@ -22,7 +23,7 @@ public class DogController {
     @PostMapping("/new")
     public void createDog(@RequestParam(required = false, name = "name") String name,
                           @RequestParam(required = false, name = "breed") String breed,
-                          @RequestParam(required = false, name = "dateOfBirth") LocalDate dateOfBirth,
+                          @RequestParam(required = false, name = "dateOfBirth") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateOfBirth,
                           @RequestParam(required = false, name = "suit") String suit,
                           @RequestParam(required = false, name = "gender") String gender) {
         dogService.createDog(name, breed, dateOfBirth, suit, gender);
