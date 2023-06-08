@@ -78,8 +78,7 @@ class OwnerServiceTest {
                 dogOwner.getFirstName(), dogOwner.getLastName(), dogOwner.getPhoneNumber(),
                 dogOwner.getProbation())).saveAndFlush(dogOwner);
         when(catOwnerRepository.getReferenceById(0L)).thenReturn(catOwner);
-        verify(catOwnerRepository, verificationData -> ownerService.updateCatOwner(catOwner.getId(),
-                catOwner.getChatId(),
+        verify(catOwnerRepository, verificationData -> ownerService.updateCatOwner(catOwner.getId(), catOwner.getChatId(),
                 catOwner.getFirstName(), catOwner.getLastName(), catOwner.getPhoneNumber(),
                 catOwner.getProbation())).saveAndFlush(catOwner);
     }

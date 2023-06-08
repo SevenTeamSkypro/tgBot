@@ -66,7 +66,7 @@ public class OwnerController {
      */
     @PutMapping("/cat/put")
     public void updateCatOwner(@RequestBody CatOwner catOwner) {
-        ownerService.updateDogOwner(catOwner.getId(), catOwner.getChatId(), catOwner.getFirstName(),
+        ownerService.updateCatOwner(catOwner.getId(), catOwner.getChatId(), catOwner.getFirstName(),
                 catOwner.getLastName(), catOwner.getPhoneNumber(), catOwner.getProbation());
     }
 
@@ -85,5 +85,4 @@ public class OwnerController {
     public void deleteCatOwner(Long id) {
         ownerService.deleteCatOwner(id);
     }
-
 }

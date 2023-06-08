@@ -16,7 +16,6 @@ import java.util.List;
 @Setter
 @ToString
 public class ShelterCat {
-    private Long shelterId;
     private transient List<Cat> cats;
     private transient List<CatOwner> catOwners;
 

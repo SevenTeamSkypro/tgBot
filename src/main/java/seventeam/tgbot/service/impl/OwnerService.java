@@ -41,6 +41,7 @@ public class OwnerService {
         dog.setDogOwner(dogOwner);
         dogOwnerRepository.saveAndFlush(dogOwner);
         dogService.deleteDog(dogId);
+        clientService.deleteClient(client.getId());
         return dogOwner;
     }
 
@@ -54,6 +55,7 @@ public class OwnerService {
         cat.setCatOwner(catOwner);
         catOwnerRepository.saveAndFlush(catOwner);
         catService.deleteCat(catId);
+        clientService.deleteClient(client.getId());
         return catOwner;
     }
 

@@ -17,7 +17,6 @@ import java.util.List;
 @Setter
 @ToString
 public class ShelterDog {
-    private Long shelterId;
     @Transient
     private transient List<Dog> dogs;
     @Transient
