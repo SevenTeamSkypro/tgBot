@@ -64,8 +64,7 @@ class ClientControllerTest {
     @Test
     @DisplayName("Проверка удаления клиента")
     void deleteClient() throws Exception {
-        mockMvc.perform(delete("/c/del")
-                        .param("id", "0"))
+        mockMvc.perform(delete("/c/del").param("id", "0"))
                 .andExpect(status().isOk());
         verify(clientService).deleteClient(0L);
     }

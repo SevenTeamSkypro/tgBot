@@ -134,8 +134,7 @@ class OwnerControllerTest {
     @Test
     @DisplayName("Проверка удаления владельца кошки")
     void deleteCatOwner() throws Exception {
-        mockMvc.perform(delete("/owner/cat/del")
-                .param("id", "0"))
+        mockMvc.perform(delete("/owner/cat/del").param("id", "0"))
                 .andExpect(status().isOk());
         verify(ownerService).deleteCatOwner(0L);
     }
