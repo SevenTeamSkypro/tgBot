@@ -7,15 +7,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import seventeam.tgbot.exceptions.VolunteerNotFoundException;
 import seventeam.tgbot.model.Client;
-import seventeam.tgbot.model.User;
 import seventeam.tgbot.model.Volunteer;
 import seventeam.tgbot.repository.VolunteerRepository;
-import seventeam.tgbot.service.UserService;
 
 import java.util.List;
 
 @Service
-public class VolunteerService implements UserService {
+public class VolunteerService {
     private final TelegramBot telegramBot;
     private final VolunteerRepository volunteerRepository;
 
@@ -24,8 +22,7 @@ public class VolunteerService implements UserService {
         this.volunteerRepository = volunteerRepository;
     }
 
-    @Override
-    public void createUser(Long id, Long chatId, String firstName, String lastName, String phoneNumber) {
+    public void createVolunteer(Long id, Long chatId, String firstName, String lastName, String phoneNumber) {
         volunteerRepository.saveAndFlush(new Volunteer(id, chatId, firstName, lastName, phoneNumber));
     }
 
@@ -45,21 +42,20 @@ public class VolunteerService implements UserService {
         }
     }
 
-    @Override
-    public void updateUser(@NotNull User user) {
+    public Volunteer updateVolunteer(@NotNull Volunteer volunteer) {
         try {
-            Volunteer toUpdate = volunteerRepository.getById(user.getId());
-            toUpdate.setFirstName(user.getFirstName());
-            toUpdate.setLastName(user.getLastName());
-            toUpdate.setPhoneNumber(user.getPhoneNumber());
+            Volunteer toUpdate = volunteerRepository.getById(volunteer.getId());
+            toUpdate.setFirstName(volunteer.getFirstName());
+            toUpdate.setLastName(volunteer.getLastName());
+            toUpdate.setPhoneNumber(volunteer.getPhoneNumber());
             volunteerRepository.saveAndFlush(toUpdate);
+            return toUpdate;
         } catch (RuntimeException e) {
             throw new VolunteerNotFoundException();
         }
     }
 
-    @Override
-    public void deleteUser(Long id) {
+    public void deleteVolunteer(Long id) {
         try {
             volunteerRepository.deleteById(id);
         }catch (RuntimeException e) {
@@ -84,6 +80,6 @@ public class VolunteerService implements UserService {
                         client + ", id питомца " + petId.toString());
                 telegramBot.execute(sendMessage);
             }
-        } //TODO Добавить возможность взять питомца волонтёром
+        }
     }
 }

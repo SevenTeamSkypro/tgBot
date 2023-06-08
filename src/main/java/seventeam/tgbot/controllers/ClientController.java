@@ -21,7 +21,7 @@ public class ClientController {
      */
     @GetMapping("/get")
     public Client getClient(@RequestParam Long chatId) {
-        return clientService.getUserByChatId(chatId);
+        return clientService.getClientByChatId(chatId);
     }
 
     /**
@@ -37,12 +37,8 @@ public class ClientController {
      * Изменение экземпляра класса Client
      */
     @PutMapping("/put")
-    public void updateClient(@RequestParam(required = false, name = "id") Long id,
-                             @RequestParam(required = false, name = "chatId") Long chatId,
-                             @RequestParam(required = false, name = "firstName") String firstName,
-                             @RequestParam(required = false, name = "lastName") String lastName,
-                             @RequestParam(required = false, name = "phoneNumber") String phoneNumber) {
-        clientService.updateUser(new Client(id, chatId, firstName, lastName, phoneNumber));
+    public void updateClient(@RequestBody Client client) {
+        clientService.updateClient(client);
     }
 
     /**
@@ -50,6 +46,6 @@ public class ClientController {
      */
     @DeleteMapping("/del")
     public void deleteClient(@RequestParam(required = false, name = "id") Long id) {
-        clientService.deleteUser(id);
+        clientService.deleteClient(id);
     }
 }

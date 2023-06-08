@@ -1,11 +1,11 @@
 package seventeam.tgbot.controllers;
 
 import org.springframework.web.bind.annotation.*;
-import seventeam.tgbot.dto.OwnerDto;
-import seventeam.tgbot.model.Pet;
+import seventeam.tgbot.dto.OwnerCatDto;
+import seventeam.tgbot.dto.OwnerDogDto;
+import seventeam.tgbot.model.CatOwner;
+import seventeam.tgbot.model.DogOwner;
 import seventeam.tgbot.service.impl.OwnerService;
-
-import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/owner")
@@ -17,52 +17,73 @@ public class OwnerController {
     }
 
     /**
-     * Создание потомка абстрактного класса Owner
-     * @param SHELTER_ID указывает объект какого класса-потомка нужно создать DogOwner или CatOwner
+     * Создание DogOwner
      */
-    @PostMapping("/new")
-    public void createOwner(@RequestParam(required = false, name = "id") Long id,
-                            @RequestParam(required = false, name = "chatId") Long chatId,
-                            @RequestParam(required = false, name = "firstName") String firstName,
-                            @RequestParam(required = false, name = "lastName") String lastName,
-                            @RequestParam(required = false, name = "phoneNumber") String phoneNumber,
-                            @RequestParam(required = false, name = "SHELTER_ID") Long SHELTER_ID,
-                            @RequestParam(required = false, name = "pets") Pet pet) {
-        ownerService.createOwner(id, chatId, firstName, lastName, phoneNumber, SHELTER_ID, pet);
+    @PostMapping("/dog/new")
+    public void createDogOwner(@RequestParam Long clientChatId, @RequestParam Long dogId) {
+        ownerService.createDogOwner(clientChatId, dogId);
     }
 
     /**
-     * Получение потомка абстрактного класса Owner
-     * @param shelterId указывает объект какого класса-потомка нужно получить
-     * @return DogOwner или CatOwner
+     * Создание CatOwner
      */
-    @GetMapping("/get")
-    public OwnerDto getOwner(@RequestParam(required = false, name = "id") Long id,
-                             @RequestParam(required = false, name = "shelterId") Long shelterId) {
-        return ownerService.getOwner(id, shelterId);
+    @PostMapping("/cat/new")
+    public void createCatOwner(@RequestParam Long clientChatId, @RequestParam Long catId) {
+        ownerService.createCatOwner(clientChatId, catId);
     }
 
     /**
-     * Изменение потомка абстрактного класса Owner
-     * @param SHELTER_ID указывает объект какого класса-потомка нужно изменить
+     * Получение DogOwner
+     *
+     * @return DogOwner
      */
-    @PutMapping("/put")
-    public void updateOwner(@RequestParam(required = false, name = "id") Long id,
-                            @RequestParam(required = false, name = "chatId") Long chatId,
-                            @RequestParam(required = false, name = "firstName") String firstName,
-                            @RequestParam(required = false, name = "lastName") String lastName,
-                            @RequestParam(required = false, name = "phoneNumber") String phoneNumber,
-                            @RequestParam(required = false, name = "SHELTER_ID") Long SHELTER_ID,
-                            @RequestParam(required = false, name = "probation") LocalDateTime probation) {
-        ownerService.updateOwner(id, chatId, firstName, lastName, phoneNumber, SHELTER_ID, probation);
+    @GetMapping("/dog/get")
+    public OwnerDogDto getDogOwner(@RequestParam(required = false, name = "id") Long id) {
+        return ownerService.getDogOwner(id);
     }
 
     /**
-     * Удаление потомка абстрактного класса Owner
-     * @param shelterId указывает объект какого класса-потомка нужно удалить
+     * Получение CatOwner
+     *
+     * @return CatOwner
      */
-    @DeleteMapping("/del")
-    public void deleteOwner(Long id, Long shelterId) {
-        ownerService.deleteOwner(id, shelterId);
+    @GetMapping("/cat/get")
+    public OwnerCatDto getCatOwner(@RequestParam(required = false, name = "id") Long id) {
+        return ownerService.getCatOwner(id);
     }
+
+    /**
+     * Изменение DogOwner
+     */
+    @PutMapping("/dog/put")
+    public void updateDogOwner(@RequestBody DogOwner dogOwner) {
+        ownerService.updateDogOwner(dogOwner.getId(), dogOwner.getChatId(), dogOwner.getFirstName(),
+                dogOwner.getLastName(), dogOwner.getPhoneNumber(), dogOwner.getProbation());
+    }
+
+    /**
+     * Изменение CatOwner
+     */
+    @PutMapping("/cat/put")
+    public void updateCatOwner(@RequestBody CatOwner catOwner) {
+        ownerService.updateDogOwner(catOwner.getId(), catOwner.getChatId(), catOwner.getFirstName(),
+                catOwner.getLastName(), catOwner.getPhoneNumber(), catOwner.getProbation());
+    }
+
+    /**
+     * Удаление DogOwner
+     */
+    @DeleteMapping("/dog/del")
+    public void deleteDogOwner(Long id) {
+        ownerService.deleteDogOwner(id);
+    }
+
+    /**
+     * Удаление CatOwner
+     */
+    @DeleteMapping("/cat/del")
+    public void deleteCatOwner(Long id) {
+        ownerService.deleteCatOwner(id);
+    }
+
 }

@@ -43,19 +43,19 @@ class DogControllerTest {
     @Test
     @DisplayName("Проверка получения питомца по id")
     void getDog() throws Exception {
-        when(dogService.getPet(0L)).thenReturn(dogDto);
+        when(dogService.getDog(0L)).thenReturn(dogDto);
         mockMvc.perform(get("/dog/get").param("id", "0"))
                 .andExpect(status().isOk());
-        verify(dogService).getPet(0L);
+        verify(dogService).getDog(0L);
     }
 
     @Test
     @DisplayName("Проверка получения всех питомцев")
     void getAll() throws Exception {
-        when(dogService.getAllPets()).thenReturn(List.of(dogDto));
+        when(dogService.getAllDogs()).thenReturn(List.of(dogDto));
         mockMvc.perform(get("/dog/all"))
                 .andExpect(status().isOk());
-        verify(dogService).getAllPets();
+        verify(dogService).getAllDogs();
     }
 
     @Test
@@ -63,6 +63,6 @@ class DogControllerTest {
     void deleteDog() throws Exception {
         mockMvc.perform(delete("/dog/del").param("id", "0"))
                 .andExpect(status().isOk());
-        verify(dogService).deletePet(0L);
+        verify(dogService).deleteDog(0L);
     }
 }

@@ -1,11 +1,14 @@
 package seventeam.tgbot.dto;
 
-import seventeam.tgbot.model.Pet;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class DogDto implements Pet {
+@Getter
+@Setter
+public class DogDto {
     private Long id;
     private String name;
     private String breed;
@@ -22,60 +25,6 @@ public class DogDto implements Pet {
     }
 
     public DogDto() {
-    }
-
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String getBreed() {
-        return breed;
-    }
-
-    public void setBreed(String breed) {
-        this.breed = breed;
-    }
-
-    @Override
-    public LocalDate getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(LocalDate dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    @Override
-    public String getSuit() {
-        return suit;
-    }
-
-    public void setSuit(String suit) {
-        this.suit = suit;
-    }
-
-    @Override
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
     }
 
     @Override

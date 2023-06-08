@@ -35,7 +35,7 @@ class VolunteerServiceTest {
     @Test
     @DisplayName("Проверка создания волонтёра")
     void createUser() {
-        verify(volunteerRepository, verificationData -> volunteerService.createUser(volunteer.getId(),
+        verify(volunteerRepository, verificationData -> volunteerService.createVolunteer(volunteer.getId(),
                 volunteer.getChatId(),
                 volunteer.getFirstName(), volunteer.getLastName(), volunteer.getPhoneNumber())).saveAndFlush(volunteer);
     }
@@ -65,13 +65,13 @@ class VolunteerServiceTest {
     @DisplayName("Проверка обновления волонтёра")
     void updateUser() {
         when(volunteerRepository.getById(0L)).thenReturn(volunteer);
-        verify(volunteerRepository, verificationData -> volunteerService.updateUser(volunteer)).saveAndFlush(volunteer);
+        verify(volunteerRepository, verificationData -> volunteerService.updateVolunteer(volunteer)).saveAndFlush(volunteer);
     }
 
     @Test
     @DisplayName("Проверка удаления волонтёра")
     void deleteUser() {
-        verify(volunteerRepository, verificationData -> volunteerService.deleteUser(0L)).deleteById(volunteer.getId());
+        verify(volunteerRepository, verificationData -> volunteerService.deleteVolunteer(0L)).deleteById(volunteer.getId());
     }
 
     @Test

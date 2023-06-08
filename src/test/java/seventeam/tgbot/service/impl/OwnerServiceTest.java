@@ -6,7 +6,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import seventeam.tgbot.dto.OwnerDto;
+import seventeam.tgbot.dto.OwnerCatDto;
+import seventeam.tgbot.dto.OwnerDogDto;
 import seventeam.tgbot.model.Cat;
 import seventeam.tgbot.model.CatOwner;
 import seventeam.tgbot.model.Dog;
@@ -44,47 +45,49 @@ class OwnerServiceTest {
     @Mock
     DogOwner dogOwner = new DogOwner(0L, 0L, "firstName", "lastName", "7_xxx_xxx_xx_xx", List.of(dog), LocalDateTime.now());
     @Mock
-    OwnerDto ownerDto = new OwnerDto(0L, 0L, "firstName", "lastName", "7_xxx_xxx_xx_xx", List.of(dog), LocalDateTime.now());
+    OwnerDogDto ownerDogDto = new OwnerDogDto(0L, 0L, "firstName", "lastName", "7_xxx_xxx_xx_xx", List.of(dog),
+            LocalDateTime.now());
+    @Mock
+    OwnerCatDto ownerCatDto = new OwnerCatDto(0L, 0L, "firstName", "lastName", "7_xxx_xxx_xx_xx", List.of(cat),
+            LocalDateTime.now());
     @Mock
     CatOwner catOwner = new CatOwner(0L, 0L, "firstName", "lastName", "7_xxx_xxx_xx_xx", List.of(cat), LocalDateTime.now());
 
     @Test
     @DisplayName("Проверка создания владельца")
     void createOwner() {
-        verify(dogOwnerRepository, verificationData -> ownerService.createOwner(dogOwner.getId(), dogOwner.getChatId(),
-                dogOwner.getFirstName(), dogOwner.getLastName(), dogOwner.getPhoneNumber(), 1L, dog)).saveAndFlush(dogOwner);
-        verify(catOwnerRepository, verificationData -> ownerService.createOwner(catOwner.getId(), catOwner.getChatId(),
-                catOwner.getFirstName(), catOwner.getLastName(), catOwner.getPhoneNumber(), 2L, cat)).saveAndFlush(catOwner);
+
     }
 
     @Test
     @DisplayName("Проверка получения владельца")
     void getOwner() {
         when(dogOwnerRepository.getReferenceById(0L)).thenReturn(dogOwner);
-        when(mappingUtils.mapToOwnerDto(dogOwner)).thenReturn(ownerDto);
-        assertEquals(ownerDto, ownerService.getOwner(0L, 1L));
+        when(mappingUtils.mapToDogOwnerDto(dogOwner)).thenReturn(ownerDogDto);
+        assertEquals(ownerDogDto, ownerService.getDogOwner(0L));
         when(catOwnerRepository.getReferenceById(0L)).thenReturn(catOwner);
-        when(mappingUtils.mapToOwnerDto(catOwner)).thenReturn(ownerDto);
-        assertEquals(ownerDto, ownerService.getOwner(0L, 2L));
+        when(mappingUtils.mapToCatOwnerDto(catOwner)).thenReturn(ownerCatDto);
+        assertEquals(ownerCatDto, ownerService.getCatOwner(0L));
     }
 
     @Test
     @DisplayName("Проверка обновления владельца")
     void updateOwner() {
         when(dogOwnerRepository.getReferenceById(0L)).thenReturn(dogOwner);
-        verify(dogOwnerRepository, verificationData -> ownerService.updateOwner(dogOwner.getId(), dogOwner.getChatId(),
-                dogOwner.getFirstName(), dogOwner.getLastName(), dogOwner.getPhoneNumber(), 1L,
+        verify(dogOwnerRepository, verificationData -> ownerService.updateDogOwner(dogOwner.getId(), dogOwner.getChatId(),
+                dogOwner.getFirstName(), dogOwner.getLastName(), dogOwner.getPhoneNumber(),
                 dogOwner.getProbation())).saveAndFlush(dogOwner);
         when(catOwnerRepository.getReferenceById(0L)).thenReturn(catOwner);
-        verify(catOwnerRepository, verificationData -> ownerService.updateOwner(catOwner.getId(), catOwner.getChatId(),
-                catOwner.getFirstName(), catOwner.getLastName(), catOwner.getPhoneNumber(), 2L,
+        verify(catOwnerRepository, verificationData -> ownerService.updateCatOwner(catOwner.getId(),
+                catOwner.getChatId(),
+                catOwner.getFirstName(), catOwner.getLastName(), catOwner.getPhoneNumber(),
                 catOwner.getProbation())).saveAndFlush(catOwner);
     }
 
     @Test
     @DisplayName("Проверка удаления владельца")
     void deleteOwner() {
-        verify(dogOwnerRepository, verificationData -> ownerService.deleteOwner(0L, 1L)).deleteById(0L);
-        verify(catOwnerRepository, verificationData -> ownerService.deleteOwner(0L, 2L)).deleteById(0L);
+        verify(dogOwnerRepository, verificationData -> ownerService.deleteDogOwner(0L)).deleteById(0L);
+        verify(catOwnerRepository, verificationData -> ownerService.deleteDogOwner(0L)).deleteById(0L);
     }
 }

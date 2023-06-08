@@ -29,11 +29,11 @@ class ClientControllerTest {
     @Test
     @DisplayName("Проверка получения клиента по chatId")
     void getClient() throws Exception {
-        when(clientService.getUserByChatId(0L)).thenReturn(client);
+        when(clientService.getClientByChatId(0L)).thenReturn(client);
         mockMvc.perform(get("/c/get").param("chatId", "0"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(0L));
-        verify(clientService).getUserByChatId(0L);
+        verify(clientService).getClientByChatId(0L);
     }
 
     @Test
@@ -48,7 +48,7 @@ class ClientControllerTest {
     @Test
     @DisplayName("Проверка обновления клиента")
     void updateClient() throws Exception {
-        when(clientService.getUserByChatId(0L)).thenReturn(client);
+        when(clientService.getClientByChatId(0L)).thenReturn(client);
         mockMvc.perform(put("/c/put")
                         .param("id", "0")
                         .param("chatId", "0")
@@ -56,7 +56,7 @@ class ClientControllerTest {
                         .param("lastName", "LastName")
                         .param("phoneNumber", "7_xxx_xxx_xx_xx"))
                 .andExpect(status().isOk());
-        verify(clientService).updateUser(client);
+        verify(clientService).updateClient(client);
     }
 
     @Test
@@ -65,6 +65,6 @@ class ClientControllerTest {
         mockMvc.perform(delete("/c/del")
                         .param("id", "0"))
                 .andExpect(status().isOk());
-        verify(clientService).deleteUser(0L);
+        verify(clientService).deleteClient(0L);
     }
 }

@@ -3,16 +3,14 @@ package seventeam.tgbot.utils;
 import org.springframework.stereotype.Service;
 import seventeam.tgbot.dto.CatDto;
 import seventeam.tgbot.dto.DogDto;
-import seventeam.tgbot.dto.OwnerDto;
+import seventeam.tgbot.dto.OwnerCatDto;
+import seventeam.tgbot.dto.OwnerDogDto;
 import seventeam.tgbot.model.*;
 
 @Service
 public class MappingUtils {
-    private final ShelterCat shelterCat = new ShelterCat();
-    private final ShelterDog shelterDog = new ShelterDog();
     public CatDto mapToCatDto(Cat entity) {
         CatDto dto = new CatDto();
-        dto.setId(entity.getId());
         dto.setName(entity.getName());
         dto.setBreed(entity.getBreed());
         dto.setDateOfBirth(entity.getDateOfBirth());
@@ -28,14 +26,12 @@ public class MappingUtils {
         entity.setDateOfBirth(dto.getDateOfBirth());
         entity.setSuit(dto.getSuit());
         entity.setGender(dto.getGender());
-        entity.setShelterCat(shelterCat);
         entity.setCatOwner(null);
         return entity;
     }
 
     public DogDto mapToDogDto(Dog entity) {
         DogDto dto = new DogDto();
-        dto.setId(entity.getId());
         dto.setName(entity.getName());
         dto.setBreed(entity.getBreed());
         dto.setDateOfBirth(entity.getDateOfBirth());
@@ -51,14 +47,21 @@ public class MappingUtils {
         entity.setDateOfBirth(dto.getDateOfBirth());
         entity.setSuit(dto.getSuit());
         entity.setGender(dto.getGender());
-        entity.setShelterDog(shelterDog);
         entity.setDogOwner(null);
         return entity;
     }
 
-    public OwnerDto mapToOwnerDto(Owner entity) {
-        OwnerDto dto = new OwnerDto();
-        dto.setChatId(entity.getChatId());
+    public OwnerDogDto mapToDogOwnerDto(DogOwner entity) {
+        OwnerDogDto dto = new OwnerDogDto();
+        dto.setFirstName(entity.getFirstName());
+        dto.setLastName(entity.getLastName());
+        dto.setPhoneNumber(entity.getPhoneNumber());
+        dto.setPets(entity.getPets());
+        dto.setProbation(entity.getProbation());
+        return dto;
+    }
+    public OwnerCatDto mapToCatOwnerDto(CatOwner entity) {
+        OwnerCatDto dto = new OwnerCatDto();
         dto.setFirstName(entity.getFirstName());
         dto.setLastName(entity.getLastName());
         dto.setPhoneNumber(entity.getPhoneNumber());
@@ -67,19 +70,22 @@ public class MappingUtils {
         return dto;
     }
 
-    public Owner mapToOwner(OwnerDto dto) {
-        if (dto.getPets() != null && dto.getPets().contains(Cat.class)){
-            CatOwner entity = new CatOwner();
-            entity.setId(dto.getId());
+    public DogOwner mapToDogOwner(OwnerDogDto dto) {
+        if (dto.getPets() != null) {
+            DogOwner entity = new DogOwner();
             entity.setFirstName(dto.getFirstName());
             entity.setLastName(dto.getLastName());
             entity.setPhoneNumber(dto.getPhoneNumber());
             entity.setPets(dto.getPets());
             entity.setProbation(dto.getProbation());
             return entity;
-        } else if (dto.getPets() != null && dto.getPets().contains(Dog.class)) {
-            DogOwner entity = new DogOwner();
-            entity.setId(dto.getId());
+        }
+        return null;
+    }
+
+    public CatOwner mapToCatOwner(OwnerCatDto dto) {
+        if (dto.getPets() != null) {
+            CatOwner entity = new CatOwner();
             entity.setFirstName(dto.getFirstName());
             entity.setLastName(dto.getLastName());
             entity.setPhoneNumber(dto.getPhoneNumber());

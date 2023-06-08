@@ -6,9 +6,7 @@ import org.springframework.stereotype.Service;
 import seventeam.tgbot.exceptions.ClientNotFoundException;
 import seventeam.tgbot.exceptions.NothingToReadException;
 import seventeam.tgbot.model.Client;
-import seventeam.tgbot.model.User;
 import seventeam.tgbot.repository.ClientRepository;
-import seventeam.tgbot.service.UserService;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -17,7 +15,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 @Service
-public class ClientServiceImpl implements UserService {
+public class ClientServiceImpl {
     private final ClientRepository clientRepository;
     private final TelegramBot telegramBot;
     private final VolunteerService volunteerService;
@@ -28,15 +26,15 @@ public class ClientServiceImpl implements UserService {
         this.volunteerService = volunteerService;
     }
 
-    @Override
-    public void createUser(Long id, Long chatId, String firstName, String lastName, String phoneNumber) {
+    public Client createClient(Long id, Long chatId, String firstName, String lastName, String phoneNumber) {
         Client client = new Client(id, chatId, firstName, lastName, phoneNumber);
         if (clientRepository.getByChatId(chatId) == null && volunteerService.getVolunteer(chatId) == null) {
             clientRepository.saveAndFlush(client);
         } else telegramBot.execute(new SendMessage(chatId, "Вы уже зарегистрированы!"));
+        return client;
     }
 
-    public Client getUserByChatId(Long chatId) {
+    public Client getClientByChatId(Long chatId) {
         return clientRepository.getByChatId(chatId);
     }
 
@@ -44,21 +42,20 @@ public class ClientServiceImpl implements UserService {
         return clientRepository.findAll();
     }
 
-    @Override
-    public void updateUser(User user) {
+    public Client updateClient(Client client) {
         try {
-            Client toUpdate = clientRepository.getReferenceById(user.getId());
-            toUpdate.setFirstName(user.getFirstName());
-            toUpdate.setLastName(user.getLastName());
-            toUpdate.setPhoneNumber(user.getPhoneNumber());
+            Client toUpdate = clientRepository.getReferenceById(client.getId());
+            toUpdate.setFirstName(client.getFirstName());
+            toUpdate.setLastName(client.getLastName());
+            toUpdate.setPhoneNumber(client.getPhoneNumber());
             clientRepository.saveAndFlush(toUpdate);
+            return toUpdate;
         } catch (RuntimeException e) {
             throw new ClientNotFoundException();
         }
     }
 
-    @Override
-    public void deleteUser(Long id) {
+    public void deleteClient(Long id) {
         clientRepository.deleteById(id);
     }
 

@@ -12,7 +12,7 @@ import java.util.Objects;
 @Setter
 @Entity
 @Table(name = "cats")
-public class Cat implements Pet {
+public class Cat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -27,18 +27,13 @@ public class Cat implements Pet {
     private String suit;
     @Column(name = "gender", nullable = false)
     private String gender;
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id")
     @Nullable
     private CatOwner catOwner;
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "shelter_id")
-    @Nullable
-    private ShelterCat shelterCat;
 
     public Cat(Long id, String name, String breed, LocalDate dateOfBirth, String suit, String gender,
-               @org.jetbrains.annotations.Nullable CatOwner catOwner,
-               @org.jetbrains.annotations.Nullable ShelterCat shelterCat) {
+               @org.jetbrains.annotations.Nullable CatOwner catOwner) {
         this.id = id;
         this.name = name;
         this.breed = breed;
@@ -46,7 +41,6 @@ public class Cat implements Pet {
         this.suit = suit;
         this.gender = gender;
         this.catOwner = catOwner;
-        this.shelterCat = shelterCat;
     }
 
     public Cat() {
@@ -74,12 +68,12 @@ public class Cat implements Pet {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Cat cat = (Cat) o;
-        return Objects.equals(id, cat.id) && Objects.equals(name, cat.name) && Objects.equals(breed, cat.breed) && Objects.equals(dateOfBirth, cat.dateOfBirth) && Objects.equals(suit, cat.suit) && Objects.equals(gender, cat.gender) && Objects.equals(catOwner, cat.catOwner) && Objects.equals(shelterCat, cat.shelterCat);
+        return Objects.equals(id, cat.id) && Objects.equals(name, cat.name) && Objects.equals(breed, cat.breed) && Objects.equals(dateOfBirth, cat.dateOfBirth) && Objects.equals(suit, cat.suit) && Objects.equals(gender, cat.gender) && Objects.equals(catOwner, cat.catOwner);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, breed, dateOfBirth, suit, gender, catOwner, shelterCat);
+        return Objects.hash(id, name, breed, dateOfBirth, suit, gender, catOwner);
     }
 
     @Override

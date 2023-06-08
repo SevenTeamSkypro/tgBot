@@ -1,13 +1,15 @@
 package seventeam.tgbot.model;
 
-import org.springframework.transaction.annotation.Transactional;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Objects;
-
+@Getter
+@Setter
 @Entity
 @Table(name = "clients")
-public class Client implements User {
+public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -30,55 +32,6 @@ public class Client implements User {
     }
 
     public Client() {
-    }
-
-    @Override
-    @Transactional
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @Override
-    @Transactional
-    public Long getChatId() {
-        return chatId;
-    }
-
-    @Override
-    @Transactional
-    public String getFirstName() {
-        return firstName;
-    }
-
-    @Override
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    @Override
-    @Transactional
-    public String getLastName() {
-        return lastName;
-    }
-
-    @Override
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    @Override
-    @Transactional
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    @Override
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
     }
 
     @Override

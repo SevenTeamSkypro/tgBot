@@ -49,7 +49,7 @@ class ClientServiceImplTest {
     @Test
     @DisplayName("Проверка создания клиента")
     void createUser() {
-        verify(clientRepository, verificationData -> clientService.createUser(client.getId(), client.getChatId(),
+        verify(clientRepository, verificationData -> clientService.createClient(client.getId(), client.getChatId(),
                 client.getFirstName(), client.getLastName(), client.getPhoneNumber())).saveAndFlush(client);
     }
 
@@ -57,7 +57,7 @@ class ClientServiceImplTest {
     @DisplayName("Проверка получения клиента по chatId")
     void getUserByChatId() {
         when(clientRepository.getByChatId(0L)).thenReturn(client);
-        assertEquals(client, clientService.getUserByChatId(0L));
+        assertEquals(client, clientService.getClientByChatId(0L));
     }
 
     @Test
@@ -71,13 +71,13 @@ class ClientServiceImplTest {
     @DisplayName("Проверка обновления клиента")
     void updateUser() {
         when(clientRepository.getReferenceById(0L)).thenReturn(client);
-        verify(clientRepository, verificationData -> clientService.updateUser(client)).saveAndFlush(client);
+        verify(clientRepository, verificationData -> clientService.updateClient(client)).saveAndFlush(client);
     }
 
     @Test
     @DisplayName("Проверка удаления клиента")
     void deleteUser() {
-        verify(clientRepository, verificationData -> clientService.deleteUser(0L)).deleteById(0L);
+        verify(clientRepository, verificationData -> clientService.deleteClient(0L)).deleteById(0L);
     }
 
     @Test
@@ -85,7 +85,7 @@ class ClientServiceImplTest {
     public void getClientNotFoundExceptionTest() {
         when(clientRepository.getByChatId(0L)).thenThrow(ClientNotFoundException.class);
         assertThrows(ClientNotFoundException.class,
-                () -> when(clientService.getUserByChatId(0L)).thenThrow(ClientNotFoundException.class));
+                () -> when(clientService.getClientByChatId(0L)).thenThrow(ClientNotFoundException.class));
     }
 
     @Test

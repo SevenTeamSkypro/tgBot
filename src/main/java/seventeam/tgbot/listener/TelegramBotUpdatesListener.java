@@ -72,7 +72,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                         if (message.contact() != null) {
                             Contact contact = message.contact();
                             String phoneNumber = contact.phoneNumber();
-                            clientService.createUser(contact.userId(), chatId, firstName, lastName, phoneNumber);
+                            clientService.createClient(contact.userId(), chatId, firstName, lastName, phoneNumber);
                             keyBoardService.chooseMenu(chatId);
                         }
                         //Проверка статуса отправки id питомца и валидация ввода целого числа
@@ -80,7 +80,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                             Pattern pattern = Pattern.compile("\\d+");
                             Matcher matcher = pattern.matcher(text);
                             if (matcher.find()) {
-                                Client client = clientService.getUserByChatId(chatId);
+                                Client client = clientService.getClientByChatId(chatId);
                                 volunteerService.sendToVolunteer(client, Integer.parseInt(matcher.group()));
                                 sendMassage(chatId, "Заявка отправлена!");
                                 statuses.remove(chatId);
@@ -130,8 +130,8 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
                                 case "Взять питомца" -> {
                                     if (isCat) {
-                                        sendMassage(chatId, catService.getAllPets().toString());
-                                    } else sendMassage(chatId, dogService.getAllPets().toString());
+                                        sendMassage(chatId, catService.getAllCats().toString());
+                                    } else sendMassage(chatId, dogService.getAllDogs().toString());
                                     sendMassage(chatId, "Введите id питомца");
                                     statuses.put(chatId, Status.PET_ID_NOT_GET);
                                 }
@@ -140,19 +140,19 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                                     sendMassage(chatId, "Отправьте фото и отчёт одним сообщением");
                                 }
                                 case "Позвать волонтера" -> {
-                                    if (volunteerService.getVolunteer(chatId) == null && clientService.getUserByChatId(chatId) != null) {
-                                        volunteerService.callVolunteer(clientService.getUserByChatId(chatId).getPhoneNumber());
+                                    if (volunteerService.getVolunteer(chatId) == null && clientService.getClientByChatId(chatId) != null) {
+                                        volunteerService.callVolunteer(clientService.getClientByChatId(chatId).getPhoneNumber());
                                         sendMassage(chatId, "Скоро с вами свяжутся");
                                     } else sendMassage(chatId, "Забыл? Ты же сам волонтёр)");
                                 }
                                 case "Правила ухода за животными" -> sendMassage(chatId,
                                         clientService.readFile("src/main/resources/draw/care_of_animals.txt"));
                                 case PASSWORD -> { //Сюда попадают желающие стать волонтёром
-                                    if (clientService.getUserByChatId(chatId) != null && volunteerService.getVolunteer(chatId) == null) {
-                                        Client client = clientService.getUserByChatId(chatId);
-                                        volunteerService.createUser(client.getId(), chatId, client.getFirstName(),
+                                    if (clientService.getClientByChatId(chatId) != null && volunteerService.getVolunteer(chatId) == null) {
+                                        Client client = clientService.getClientByChatId(chatId);
+                                        volunteerService.createVolunteer(client.getId(), chatId, client.getFirstName(),
                                                 client.getLastName(), client.getPhoneNumber());
-                                        clientService.deleteUser(client.getId());
+                                        clientService.deleteClient(client.getId());
                                     }
                                     keyBoardService.volunteerMenu(chatId);
                                 }

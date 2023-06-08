@@ -1,14 +1,17 @@
 package seventeam.tgbot.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-
+@Getter
+@Setter
 @Entity
 @Table(name = "dog_owners")
-public class DogOwner implements Owner {
+public class DogOwner {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "owner_id")
@@ -47,70 +50,6 @@ public class DogOwner implements Owner {
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.pets = pets;
-        this.probation = probation;
-    }
-
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @Override
-    public Long getChatId() {
-        return chatId;
-    }
-
-    public void setChatId(Long chatId) {
-        this.chatId = chatId;
-    }
-
-    @Override
-    public String getFirstName() {
-        return firstName;
-    }
-
-    @Override
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    @Override
-    public String getLastName() {
-        return lastName;
-    }
-
-    @Override
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    @Override
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    @Override
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public List<Pet> getPets() {
-        return Collections.singletonList((Dog) pets);
-    }
-
-    public void setPets(List<Pet> pets) {
-        this.pets = Collections.singletonList((Dog) pets);
-    }
-
-    public LocalDateTime getProbation() {
-        return probation;
-    }
-
-    public void setProbation(LocalDateTime probation) {
         this.probation = probation;
     }
 

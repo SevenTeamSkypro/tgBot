@@ -38,12 +38,8 @@ public class VolunteerController {
      * Изменение экземпляра класса Volunteer
      */
     @PutMapping("/put")
-    public void updateVolunteer(@RequestParam(required = false, name = "id") Long id,
-                                @RequestParam(required = false, name = "chatId") Long chatId,
-                                @RequestParam(required = false, name = "firstName") String firstName,
-                                @RequestParam(required = false, name = "lastName") String lastName,
-                                @RequestParam(required = false, name = "phoneNumber") String phoneNumber) {
-        volunteerService.updateUser(new Volunteer(id, chatId, firstName, lastName, phoneNumber));
+    public void updateVolunteer(@RequestBody Volunteer volunteer) {
+        volunteerService.updateVolunteer(volunteer);
     }
 
     /**
@@ -51,6 +47,6 @@ public class VolunteerController {
      */
     @DeleteMapping("/del")
     public void deleteVolunteer(@RequestParam(required = false, name = "id") Long id) {
-        volunteerService.deleteUser(id);
+        volunteerService.deleteVolunteer(id);
     }
 }

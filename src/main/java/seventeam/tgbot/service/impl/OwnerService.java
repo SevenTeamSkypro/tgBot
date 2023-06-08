@@ -1,7 +1,8 @@
 package seventeam.tgbot.service.impl;
 
 import org.springframework.stereotype.Service;
-import seventeam.tgbot.dto.OwnerDto;
+import seventeam.tgbot.dto.OwnerCatDto;
+import seventeam.tgbot.dto.OwnerDogDto;
 import seventeam.tgbot.exceptions.OwnerNotFoundException;
 import seventeam.tgbot.model.*;
 import seventeam.tgbot.repository.CatOwnerRepository;
@@ -18,82 +19,102 @@ public class OwnerService {
     private final CatOwnerRepository catOwnerRepository;
     private final DogServiceImpl dogService;
     private final CatServiceImpl catService;
+    private final ClientServiceImpl clientService;
     private final MappingUtils mappingUtils;
 
-    public OwnerService(DogOwnerRepository dogOwnerRepository, CatOwnerRepository catOwnerRepository, DogServiceImpl dogService, CatServiceImpl catService, MappingUtils mappingUtils) {
+    public OwnerService(DogOwnerRepository dogOwnerRepository, CatOwnerRepository catOwnerRepository, DogServiceImpl dogService, CatServiceImpl catService, ClientServiceImpl clientService, MappingUtils mappingUtils) {
         this.dogOwnerRepository = dogOwnerRepository;
         this.catOwnerRepository = catOwnerRepository;
         this.catService = catService;
         this.dogService = dogService;
+        this.clientService = clientService;
         this.mappingUtils = mappingUtils;
     }
 
-    public void createOwner(Long id, Long chatId, String firstName, String lastName, String phoneNumber, Long SHELTER_ID, Pet pet) {
+    public DogOwner createDogOwner(Long clientChatId, Long dogId) {
         List<Dog> dogs = new ArrayList<>();
-        List<Cat> cats = new ArrayList<>();
-        if (SHELTER_ID == 1) {
-            Dog dog = (Dog) dogService.getPet(pet.getId());
-            dogs.add(dog);
-            DogOwner dogOwner = new DogOwner(id, chatId, firstName, lastName, phoneNumber, dogs, ReportService.reportingPeriod);
-            dogOwnerRepository.save(dogOwner);
-            dogService.deletePet(pet.getId());
-        } else {
-            Cat cat = (Cat) catService.getPet(pet.getId());
-            cats.add(cat);
-            CatOwner catOwner = new CatOwner(id, chatId, firstName, lastName, phoneNumber, cats, ReportService.reportingPeriod);
-            catOwnerRepository.save(catOwner);
-            catService.deletePet(pet.getId());
-        }
+        Dog dog = mappingUtils.mapToDog(dogService.getDog(dogId));
+        Client client = clientService.getClientByChatId(clientChatId);
+        dogs.add(dog);
+        DogOwner dogOwner = new DogOwner(client.getId(), client.getChatId(), client.getFirstName(),
+                client.getLastName(), client.getPhoneNumber(), dogs, ReportService.reportingPeriod);
+        dog.setDogOwner(dogOwner);
+        dogOwnerRepository.saveAndFlush(dogOwner);
+        dogService.deleteDog(dogId);
+        return dogOwner;
     }
 
-    public OwnerDto getOwner(Long id, Long shelterId) {
+    public CatOwner createCatOwner(Long clientChatId, Long catId) {
+        List<Cat> cats = new ArrayList<>();
+        Cat cat = mappingUtils.mapToCat(catService.getCat(catId));
+        Client client = clientService.getClientByChatId(clientChatId);
+        cats.add(cat);
+        CatOwner catOwner = new CatOwner(client.getId(), client.getChatId(), client.getFirstName(),
+                client.getLastName(), client.getPhoneNumber(), cats, ReportService.reportingPeriod);
+        cat.setCatOwner(catOwner);
+        catOwnerRepository.saveAndFlush(catOwner);
+        catService.deleteCat(catId);
+        return catOwner;
+    }
+
+    public OwnerDogDto getDogOwner(Long id) {
         try {
-            if (shelterId == 1) {
-                return mappingUtils.mapToOwnerDto(dogOwnerRepository.getReferenceById(id));
-            } else {
-                return mappingUtils.mapToOwnerDto(catOwnerRepository.getReferenceById(id));
-            }
+            return mappingUtils.mapToDogOwnerDto(dogOwnerRepository.getReferenceById(id));
         } catch (RuntimeException e) {
             throw new OwnerNotFoundException();
         }
     }
 
-    public void updateOwner(Long id, Long chatId, String firstName, String lastName, String phoneNumber,
-                            Long SHELTER_ID, LocalDateTime probation) {
-        if (SHELTER_ID == 1) {
-            try {
-                DogOwner toUpdate = dogOwnerRepository.getReferenceById(id);
-                toUpdate.setChatId(chatId);
-                toUpdate.setFirstName(firstName);
-                toUpdate.setLastName(lastName);
-                toUpdate.setPhoneNumber(phoneNumber);
-                toUpdate.setProbation(probation);
-                dogOwnerRepository.saveAndFlush(toUpdate);
-            } catch (RuntimeException e) {
-                throw new OwnerNotFoundException();
-            }
-        } else {
-            try {
-                CatOwner toUpdate = catOwnerRepository.getReferenceById(id);
-                toUpdate.setChatId(chatId);
-                toUpdate.setFirstName(firstName);
-                toUpdate.setLastName(lastName);
-                toUpdate.setPhoneNumber(phoneNumber);
-                toUpdate.setProbation(probation);
-                catOwnerRepository.saveAndFlush(toUpdate);
-            } catch (RuntimeException e) {
-                throw new OwnerNotFoundException();
-            }
+    public OwnerCatDto getCatOwner(Long id) {
+        try {
+            return mappingUtils.mapToCatOwnerDto(catOwnerRepository.getReferenceById(id));
+        } catch (RuntimeException e) {
+            throw new OwnerNotFoundException();
         }
     }
 
-    public void deleteOwner(Long id, Long shelterId) {
+    public DogOwner updateDogOwner(Long id, Long chatId, String firstName, String lastName, String phoneNumber,
+                                   LocalDateTime probation) {
         try {
-            if (shelterId == 1) {
-                dogOwnerRepository.deleteById(id);
-            } else {
-                catOwnerRepository.deleteById(id);
-            }
+            DogOwner toUpdate = dogOwnerRepository.getReferenceById(id);
+            toUpdate.setChatId(chatId);
+            toUpdate.setFirstName(firstName);
+            toUpdate.setLastName(lastName);
+            toUpdate.setPhoneNumber(phoneNumber);
+            toUpdate.setProbation(probation);
+            dogOwnerRepository.saveAndFlush(toUpdate);
+            return toUpdate;
+        } catch (RuntimeException e) {
+            throw new OwnerNotFoundException();
+        }
+    }
+public CatOwner updateCatOwner(Long id, Long chatId, String firstName, String lastName, String phoneNumber,
+                                   LocalDateTime probation) {
+        try {
+            CatOwner toUpdate = catOwnerRepository.getReferenceById(id);
+            toUpdate.setChatId(chatId);
+            toUpdate.setFirstName(firstName);
+            toUpdate.setLastName(lastName);
+            toUpdate.setPhoneNumber(phoneNumber);
+            toUpdate.setProbation(probation);
+            catOwnerRepository.saveAndFlush(toUpdate);
+            return toUpdate;
+        } catch (RuntimeException e) {
+            throw new OwnerNotFoundException();
+        }
+    }
+
+    public void deleteDogOwner(Long id) {
+        try {
+            dogOwnerRepository.deleteById(id);
+        } catch (RuntimeException e) {
+            throw new OwnerNotFoundException();
+        }
+    }
+
+    public void deleteCatOwner(Long id) {
+        try {
+            catOwnerRepository.deleteById(id);
         } catch (RuntimeException e) {
             throw new OwnerNotFoundException();
         }

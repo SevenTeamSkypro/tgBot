@@ -1,8 +1,10 @@
 package seventeam.tgbot.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-import javax.persistence.*;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -13,22 +15,15 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-@Entity
-@Table(name = "shelter_cat")
-public class ShelterCat extends Shelter {
-    @Id
-    @Column(name = "shelter_id", nullable = false)
-    private Long SHELTER_ID = 2L;
-    @Transient
-    private transient List<Cat> pets;
-    @Transient
-    private transient List<CatOwner> users;
+public class ShelterCat {
+    private Long shelterId;
+    private transient List<Cat> cats;
+    private transient List<CatOwner> catOwners;
 
     public ShelterCat() {
     }
 
-    @Override
-    public String getAddress() {
+    public String address() {
         try {
             return Files.readString(Paths.get("src/main/resources/draw/shelter_cat_address.txt"),
                     StandardCharsets.UTF_8);

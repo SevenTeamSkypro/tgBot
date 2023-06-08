@@ -43,9 +43,9 @@ class DogServiceImplTest {
     @Test
     @DisplayName("Проверка исключения при получении несуществующего питомца")
     void getPetNotFoundExceptionTest() {
-        when(dogService.getPet(0L)).thenThrow(PetNotFoundException.class);
+        when(dogService.getDog(0L)).thenThrow(PetNotFoundException.class);
         assertThrows(PetNotFoundException.class,
-                () -> when(dogService.getPet(0L)).thenThrow(PetNotFoundException.class));
+                () -> when(dogService.getDog(0L)).thenThrow(PetNotFoundException.class));
     }
 
     @Test
@@ -53,7 +53,7 @@ class DogServiceImplTest {
     void getAllPets() {
         when(mappingUtils.mapToDogDto(dog)).thenReturn(dogDto);
         when(shelterDogRepository.findAll()).thenReturn(List.of(dog));
-        assertEquals(List.of(dogDto), dogService.getAllPets());
+        assertEquals(List.of(dogDto), dogService.getAllDogs());
     }
 
     @Test
@@ -61,12 +61,12 @@ class DogServiceImplTest {
     void getPet() {
         when(mappingUtils.mapToDogDto(dog)).thenReturn(dogDto);
         when(shelterDogRepository.getReferenceById(0L)).thenReturn(dog);
-        assertEquals(dogDto, dogService.getPet(0L));
+        assertEquals(dogDto, dogService.getDog(0L));
     }
 
     @Test
     @DisplayName("Проверка удаления питомца")
     void deletePet() {
-        verify(shelterDogRepository, verificationData -> dogService.deletePet(0L)).deleteById(0L);
+        verify(shelterDogRepository, verificationData -> dogService.deleteDog(0L)).deleteById(0L);
     }
 }
