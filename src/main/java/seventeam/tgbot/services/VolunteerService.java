@@ -1,4 +1,4 @@
-package seventeam.tgbot.service.impl;
+package seventeam.tgbot.services;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.request.SendMessage;
@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import seventeam.tgbot.exceptions.VolunteerNotFoundException;
 import seventeam.tgbot.model.Client;
 import seventeam.tgbot.model.Volunteer;
-import seventeam.tgbot.repository.VolunteerRepository;
+import seventeam.tgbot.repositories.VolunteerRepository;
 
 import java.util.List;
 

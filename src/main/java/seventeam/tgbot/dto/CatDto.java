@@ -9,7 +9,6 @@ import java.util.Objects;
 @Getter
 @Setter
 public class CatDto {
-    private Long id;
     private String name;
     private String breed;
     private LocalDate dateOfBirth;
@@ -32,18 +31,17 @@ public class CatDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CatDto dto = (CatDto) o;
-        return Objects.equals(id, dto.id) && Objects.equals(name, dto.name) && Objects.equals(breed, dto.breed) && Objects.equals(dateOfBirth, dto.dateOfBirth) && Objects.equals(suit, dto.suit) && Objects.equals(gender, dto.gender);
+        return Objects.equals(name, dto.name) && Objects.equals(breed, dto.breed) && Objects.equals(dateOfBirth, dto.dateOfBirth) && Objects.equals(suit, dto.suit) && Objects.equals(gender, dto.gender);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, breed, dateOfBirth, suit, gender);
+        return Objects.hash(name, breed, dateOfBirth, suit, gender);
     }
 
     @Override
     public String toString() {
         return " " + gender +
-                " id: " + id +
                 ", кличка: " + name +
                 ", порода: " + breed +
                 ", дата рождения: " + dateOfBirth +

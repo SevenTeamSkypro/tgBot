@@ -1,12 +1,12 @@
-package seventeam.tgbot.service.impl;
+package seventeam.tgbot.services;
 
 import org.springframework.stereotype.Service;
-import seventeam.tgbot.dto.OwnerCatDto;
-import seventeam.tgbot.dto.OwnerDogDto;
+import seventeam.tgbot.dto.CatOwnerDto;
+import seventeam.tgbot.dto.DogOwnerDto;
 import seventeam.tgbot.exceptions.OwnerNotFoundException;
 import seventeam.tgbot.model.*;
-import seventeam.tgbot.repository.CatOwnerRepository;
-import seventeam.tgbot.repository.DogOwnerRepository;
+import seventeam.tgbot.repositories.CatOwnerRepository;
+import seventeam.tgbot.repositories.DogOwnerRepository;
 import seventeam.tgbot.utils.MappingUtils;
 
 import java.time.LocalDateTime;
@@ -17,12 +17,12 @@ import java.util.List;
 public class OwnerService {
     private final DogOwnerRepository dogOwnerRepository;
     private final CatOwnerRepository catOwnerRepository;
-    private final DogServiceImpl dogService;
-    private final CatServiceImpl catService;
-    private final ClientServiceImpl clientService;
+    private final DogService dogService;
+    private final CatService catService;
+    private final ClientService clientService;
     private final MappingUtils mappingUtils;
 
-    public OwnerService(DogOwnerRepository dogOwnerRepository, CatOwnerRepository catOwnerRepository, DogServiceImpl dogService, CatServiceImpl catService, ClientServiceImpl clientService, MappingUtils mappingUtils) {
+    public OwnerService(DogOwnerRepository dogOwnerRepository, CatOwnerRepository catOwnerRepository, DogService dogService, CatService catService, ClientService clientService, MappingUtils mappingUtils) {
         this.dogOwnerRepository = dogOwnerRepository;
         this.catOwnerRepository = catOwnerRepository;
         this.catService = catService;
@@ -59,7 +59,7 @@ public class OwnerService {
         return catOwner;
     }
 
-    public OwnerDogDto getDogOwner(Long id) {
+    public DogOwnerDto getDogOwner(Long id) {
         try {
             return mappingUtils.mapToDogOwnerDto(dogOwnerRepository.getReferenceById(id));
         } catch (RuntimeException e) {
@@ -67,7 +67,7 @@ public class OwnerService {
         }
     }
 
-    public OwnerCatDto getCatOwner(Long id) {
+    public CatOwnerDto getCatOwner(Long id) {
         try {
             return mappingUtils.mapToCatOwnerDto(catOwnerRepository.getReferenceById(id));
         } catch (RuntimeException e) {

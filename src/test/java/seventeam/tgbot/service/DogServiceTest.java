@@ -1,4 +1,4 @@
-package seventeam.tgbot.service.impl;
+package seventeam.tgbot.service;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,7 +9,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import seventeam.tgbot.dto.DogDto;
 import seventeam.tgbot.exceptions.PetNotFoundException;
 import seventeam.tgbot.model.Dog;
-import seventeam.tgbot.repository.ShelterDogRepository;
+import seventeam.tgbot.repositories.ShelterDogRepository;
+import seventeam.tgbot.services.DogService;
 import seventeam.tgbot.utils.MappingUtils;
 
 import java.time.LocalDate;
@@ -21,9 +22,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class DogServiceImplTest {
+class DogServiceTest {
     @InjectMocks
-    private DogServiceImpl dogService;
+    private DogService dogService;
     @Mock
     private ShelterDogRepository shelterDogRepository;
     @Mock

@@ -10,7 +10,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import seventeam.tgbot.dto.CatDto;
-import seventeam.tgbot.service.impl.CatServiceImpl;
+import seventeam.tgbot.services.CatService;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -28,7 +28,7 @@ class CatControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
     @MockBean
-    private CatServiceImpl catService;
+    private CatService catService;
     CatDto catDto = new CatDto("Name", "breed", LocalDate.of(2000, 12, 31), "suit", "gender");
 
     @Test

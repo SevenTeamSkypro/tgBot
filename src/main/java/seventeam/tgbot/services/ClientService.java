@@ -1,4 +1,4 @@
-package seventeam.tgbot.service.impl;
+package seventeam.tgbot.services;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.request.SendMessage;
@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import seventeam.tgbot.exceptions.ClientNotFoundException;
 import seventeam.tgbot.exceptions.NothingToReadException;
 import seventeam.tgbot.model.Client;
-import seventeam.tgbot.repository.ClientRepository;
+import seventeam.tgbot.repositories.ClientRepository;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -15,12 +15,12 @@ import java.nio.file.Paths;
 import java.util.List;
 
 @Service
-public class ClientServiceImpl {
+public class ClientService {
     private final ClientRepository clientRepository;
     private final TelegramBot telegramBot;
     private final VolunteerService volunteerService;
 
-    public ClientServiceImpl(ClientRepository clientRepository, TelegramBot telegramBot, VolunteerService volunteerService) {
+    public ClientService(ClientRepository clientRepository, TelegramBot telegramBot, VolunteerService volunteerService) {
         this.clientRepository = clientRepository;
         this.telegramBot = telegramBot;
         this.volunteerService = volunteerService;

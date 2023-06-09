@@ -1,11 +1,11 @@
 package seventeam.tgbot.controllers;
 
 import org.springframework.web.bind.annotation.*;
-import seventeam.tgbot.dto.OwnerCatDto;
-import seventeam.tgbot.dto.OwnerDogDto;
+import seventeam.tgbot.dto.CatOwnerDto;
+import seventeam.tgbot.dto.DogOwnerDto;
 import seventeam.tgbot.model.CatOwner;
 import seventeam.tgbot.model.DogOwner;
-import seventeam.tgbot.service.impl.OwnerService;
+import seventeam.tgbot.services.OwnerService;
 
 @RestController
 @RequestMapping("/owner")
@@ -38,7 +38,7 @@ public class OwnerController {
      * @return DogOwner
      */
     @GetMapping("/dog/get")
-    public OwnerDogDto getDogOwner(@RequestParam(required = false, name = "id") Long id) {
+    public DogOwnerDto getDogOwner(@RequestParam(required = false, name = "id") Long id) {
         return ownerService.getDogOwner(id);
     }
 
@@ -48,7 +48,7 @@ public class OwnerController {
      * @return CatOwner
      */
     @GetMapping("/cat/get")
-    public OwnerCatDto getCatOwner(@RequestParam(required = false, name = "id") Long id) {
+    public CatOwnerDto getCatOwner(@RequestParam(required = false, name = "id") Long id) {
         return ownerService.getCatOwner(id);
     }
 

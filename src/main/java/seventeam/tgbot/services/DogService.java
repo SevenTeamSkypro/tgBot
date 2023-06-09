@@ -1,10 +1,10 @@
-package seventeam.tgbot.service.impl;
+package seventeam.tgbot.services;
 
 import org.springframework.stereotype.Service;
 import seventeam.tgbot.dto.DogDto;
 import seventeam.tgbot.exceptions.PetNotFoundException;
 import seventeam.tgbot.model.Dog;
-import seventeam.tgbot.repository.ShelterDogRepository;
+import seventeam.tgbot.repositories.ShelterDogRepository;
 import seventeam.tgbot.utils.MappingUtils;
 
 import java.time.LocalDate;
@@ -13,12 +13,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class DogServiceImpl {
+public class DogService {
     private final ShelterDogRepository shelterDogRepository;
     private final MappingUtils mappingUtils;
     private List<Dog> dogs = new ArrayList<>();
 
-    public DogServiceImpl(ShelterDogRepository shelterDogRepository, MappingUtils mappingUtils) {
+    public DogService(ShelterDogRepository shelterDogRepository, MappingUtils mappingUtils) {
         this.shelterDogRepository = shelterDogRepository;
         this.mappingUtils = mappingUtils;
     }

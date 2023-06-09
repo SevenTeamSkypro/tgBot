@@ -1,4 +1,4 @@
-package seventeam.tgbot.service.impl;
+package seventeam.tgbot.service;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -6,14 +6,17 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import seventeam.tgbot.dto.OwnerCatDto;
-import seventeam.tgbot.dto.OwnerDogDto;
+import seventeam.tgbot.dto.CatOwnerDto;
+import seventeam.tgbot.dto.DogOwnerDto;
 import seventeam.tgbot.model.Cat;
 import seventeam.tgbot.model.CatOwner;
 import seventeam.tgbot.model.Dog;
 import seventeam.tgbot.model.DogOwner;
-import seventeam.tgbot.repository.CatOwnerRepository;
-import seventeam.tgbot.repository.DogOwnerRepository;
+import seventeam.tgbot.repositories.CatOwnerRepository;
+import seventeam.tgbot.repositories.DogOwnerRepository;
+import seventeam.tgbot.services.CatService;
+import seventeam.tgbot.services.DogService;
+import seventeam.tgbot.services.OwnerService;
 import seventeam.tgbot.utils.MappingUtils;
 
 import java.time.LocalDate;
@@ -31,9 +34,9 @@ class OwnerServiceTest {
     @Mock
     private CatOwnerRepository catOwnerRepository;
     @Mock
-    private DogServiceImpl dogService;
+    private DogService dogService;
     @Mock
-    private CatServiceImpl catService;
+    private CatService catService;
     @InjectMocks
     private OwnerService ownerService;
     @Mock
@@ -45,10 +48,10 @@ class OwnerServiceTest {
     @Mock
     DogOwner dogOwner = new DogOwner(0L, 0L, "firstName", "lastName", "7_xxx_xxx_xx_xx", List.of(dog), LocalDateTime.now());
     @Mock
-    OwnerDogDto ownerDogDto = new OwnerDogDto(0L, 0L, "firstName", "lastName", "7_xxx_xxx_xx_xx", List.of(dog),
+    DogOwnerDto dogOwnerDto = new DogOwnerDto(0L, 0L, "firstName", "lastName", "7_xxx_xxx_xx_xx", List.of(dog),
             LocalDateTime.now());
     @Mock
-    OwnerCatDto ownerCatDto = new OwnerCatDto(0L, 0L, "firstName", "lastName", "7_xxx_xxx_xx_xx", List.of(cat),
+    CatOwnerDto catOwnerDto = new CatOwnerDto(0L, 0L, "firstName", "lastName", "7_xxx_xxx_xx_xx", List.of(cat),
             LocalDateTime.now());
     @Mock
     CatOwner catOwner = new CatOwner(0L, 0L, "firstName", "lastName", "7_xxx_xxx_xx_xx", List.of(cat), LocalDateTime.now());
@@ -63,11 +66,11 @@ class OwnerServiceTest {
     @DisplayName("Проверка получения владельца")
     void getOwner() {
         when(dogOwnerRepository.getReferenceById(0L)).thenReturn(dogOwner);
-        when(mappingUtils.mapToDogOwnerDto(dogOwner)).thenReturn(ownerDogDto);
-        assertEquals(ownerDogDto, ownerService.getDogOwner(0L));
+        when(mappingUtils.mapToDogOwnerDto(dogOwner)).thenReturn(dogOwnerDto);
+        assertEquals(dogOwnerDto, ownerService.getDogOwner(0L));
         when(catOwnerRepository.getReferenceById(0L)).thenReturn(catOwner);
-        when(mappingUtils.mapToCatOwnerDto(catOwner)).thenReturn(ownerCatDto);
-        assertEquals(ownerCatDto, ownerService.getCatOwner(0L));
+        when(mappingUtils.mapToCatOwnerDto(catOwner)).thenReturn(catOwnerDto);
+        assertEquals(catOwnerDto, ownerService.getCatOwner(0L));
     }
 
     @Test

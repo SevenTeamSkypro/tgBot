@@ -12,8 +12,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import seventeam.tgbot.enums.Status;
-import seventeam.tgbot.model.*;
-import seventeam.tgbot.service.impl.*;
+import seventeam.tgbot.model.Client;
+import seventeam.tgbot.model.Report;
+import seventeam.tgbot.services.*;
 
 import javax.annotation.PostConstruct;
 import java.util.HashMap;
@@ -28,16 +29,16 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     private final String START = "/start";
     private final String PASSWORD = "Password";
     private final TelegramBot telegramBot;
-    private final DogServiceImpl dogService;
-    private final CatServiceImpl catService;
-    private final ClientServiceImpl clientService;
+    private final DogService dogService;
+    private final CatService catService;
+    private final ClientService clientService;
     private final KeyBoardService keyBoardService;
     private final ReportService reportService;
     private final VolunteerService volunteerService;
     private final Map<Long, Status> statuses = new HashMap<>();
     private boolean isCat = true;
 
-    public TelegramBotUpdatesListener(TelegramBot telegramBot, DogServiceImpl dogService, CatServiceImpl catService, ClientServiceImpl clientService, KeyBoardService keyBoardService, ReportService reportService, VolunteerService volunteerService) {
+    public TelegramBotUpdatesListener(TelegramBot telegramBot, DogService dogService, CatService catService, ClientService clientService, KeyBoardService keyBoardService, ReportService reportService, VolunteerService volunteerService) {
         this.telegramBot = telegramBot;
         this.dogService = dogService;
         this.catService = catService;

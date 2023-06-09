@@ -10,7 +10,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import seventeam.tgbot.model.Client;
-import seventeam.tgbot.service.impl.ClientServiceImpl;
+import seventeam.tgbot.services.ClientService;
 
 import java.util.List;
 
@@ -28,7 +28,7 @@ class ClientControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
     @MockBean
-    private ClientServiceImpl clientService;
+    private ClientService clientService;
     Client client = new Client(0L, 0L, "FirstName", "LastName", "7_xxx_xxx_xx_xx");
 
     @Test

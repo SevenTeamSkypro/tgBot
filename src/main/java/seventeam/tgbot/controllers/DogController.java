@@ -3,16 +3,16 @@ package seventeam.tgbot.controllers;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.web.bind.annotation.*;
 import seventeam.tgbot.dto.DogDto;
-import seventeam.tgbot.service.impl.DogServiceImpl;
+import seventeam.tgbot.services.DogService;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/dog")
 public class DogController {
-    private final DogServiceImpl dogService;
+    private final DogService dogService;
 
-    public DogController(DogServiceImpl dogService) {
+    public DogController(DogService dogService) {
         this.dogService = dogService;
     }
 

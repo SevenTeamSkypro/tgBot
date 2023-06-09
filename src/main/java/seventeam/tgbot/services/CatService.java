@@ -1,10 +1,10 @@
-package seventeam.tgbot.service.impl;
+package seventeam.tgbot.services;
 
 import org.springframework.stereotype.Service;
 import seventeam.tgbot.dto.CatDto;
 import seventeam.tgbot.exceptions.PetNotFoundException;
 import seventeam.tgbot.model.Cat;
-import seventeam.tgbot.repository.ShelterCatRepository;
+import seventeam.tgbot.repositories.ShelterCatRepository;
 import seventeam.tgbot.utils.MappingUtils;
 
 import java.time.LocalDate;
@@ -13,12 +13,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class CatServiceImpl {
+public class CatService {
     private final ShelterCatRepository shelterCatRepository;
     private final MappingUtils mappingUtils;
     private List<Cat> cats = new ArrayList<>();
 
-    public CatServiceImpl(ShelterCatRepository shelterCatRepository, MappingUtils mappingUtils) {
+    public CatService(ShelterCatRepository shelterCatRepository, MappingUtils mappingUtils) {
         this.shelterCatRepository = shelterCatRepository;
         this.mappingUtils = mappingUtils;
     }

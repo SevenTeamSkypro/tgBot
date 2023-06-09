@@ -11,13 +11,13 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import seventeam.tgbot.dto.CatDto;
 import seventeam.tgbot.dto.DogDto;
-import seventeam.tgbot.dto.OwnerCatDto;
-import seventeam.tgbot.dto.OwnerDogDto;
+import seventeam.tgbot.dto.CatOwnerDto;
+import seventeam.tgbot.dto.DogOwnerDto;
 import seventeam.tgbot.model.*;
-import seventeam.tgbot.service.impl.CatServiceImpl;
-import seventeam.tgbot.service.impl.ClientServiceImpl;
-import seventeam.tgbot.service.impl.DogServiceImpl;
-import seventeam.tgbot.service.impl.OwnerService;
+import seventeam.tgbot.services.CatService;
+import seventeam.tgbot.services.ClientService;
+import seventeam.tgbot.services.DogService;
+import seventeam.tgbot.services.OwnerService;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -38,22 +38,22 @@ class OwnerControllerTest {
     @MockBean
     private OwnerService ownerService;
     @MockBean
-    private DogServiceImpl dogService;
+    private DogService dogService;
     @MockBean
-    private CatServiceImpl catService;
+    private CatService catService;
     @MockBean
-    private ClientServiceImpl clientService;
+    private ClientService clientService;
 
     DogDto dogDto = new DogDto("Name", "breed", LocalDate.of(2000, 12, 31), "suit", "gender");
     Dog dog = new Dog(0L, "Name", "breed", LocalDate.of(2000, 12, 31), "suit", "gender");
     CatDto catDto = new CatDto("Name", "breed", LocalDate.of(2000, 12, 31), "suit", "gender");
     Cat cat = new Cat(0L, "Name", "breed", LocalDate.of(2000, 12, 31), "suit", "gender");
     Client client = new Client(0L, 0L, "FirstName", "LastName", "7_xxx_xxx_xx_xx");
-    OwnerDogDto ownerDogDto = new OwnerDogDto(0L, 0L, "FirstName", "LastName", "7_xxx_xxx_xx_xx", List.of(dog),
+    DogOwnerDto dogOwnerDto = new DogOwnerDto(0L, 0L, "FirstName", "LastName", "7_xxx_xxx_xx_xx", List.of(dog),
             LocalDateTime.now());
     DogOwner dogOwner = new DogOwner(0L, 0L, "FirstName", "LastName", "7_xxx_xxx_xx_xx", List.of(dog),
             LocalDateTime.now());
-    OwnerCatDto ownerCatDto = new OwnerCatDto(0L, 0L, "FirstName", "LastName", "7_xxx_xxx_xx_xx", List.of(cat),
+    CatOwnerDto catOwnerDto = new CatOwnerDto(0L, 0L, "FirstName", "LastName", "7_xxx_xxx_xx_xx", List.of(cat),
             LocalDateTime.now());
     CatOwner catOwner = new CatOwner(0L, 0L, "FirstName", "LastName", "7_xxx_xxx_xx_xx", List.of(cat),
             LocalDateTime.now());
@@ -85,7 +85,7 @@ class OwnerControllerTest {
     @Test
     @DisplayName("Проверка получения владельца собаки по id")
     void getDogOwner() throws Exception {
-        when(ownerService.getDogOwner(0L)).thenReturn(ownerDogDto);
+        when(ownerService.getDogOwner(0L)).thenReturn(dogOwnerDto);
         mockMvc.perform(get("/owner/dog/get").param("id", "0"))
                 .andExpect(status().isOk());
         verify(ownerService).getDogOwner(0L);
@@ -94,7 +94,7 @@ class OwnerControllerTest {
     @Test
     @DisplayName("Проверка получения владельца кошки по id")
     void getCatOwner() throws Exception {
-        when(ownerService.getCatOwner(0L)).thenReturn(ownerCatDto);
+        when(ownerService.getCatOwner(0L)).thenReturn(catOwnerDto);
         mockMvc.perform(get("/owner/cat/get").param("id", "0"))
                 .andExpect(status().isOk());
         verify(ownerService).getCatOwner(0L);

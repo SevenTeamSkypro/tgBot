@@ -1,4 +1,4 @@
-package seventeam.tgbot.service.impl;
+package seventeam.tgbot.service;
 
 import com.pengrad.telegrambot.TelegramBot;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,8 +12,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import seventeam.tgbot.exceptions.ClientNotFoundException;
 import seventeam.tgbot.model.Client;
 import seventeam.tgbot.model.Volunteer;
-import seventeam.tgbot.repository.ClientRepository;
-import seventeam.tgbot.repository.VolunteerRepository;
+import seventeam.tgbot.repositories.ClientRepository;
+import seventeam.tgbot.repositories.VolunteerRepository;
+import seventeam.tgbot.services.ClientService;
+import seventeam.tgbot.services.VolunteerService;
 
 import java.util.List;
 
@@ -23,11 +25,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class ClientServiceImplTest {
+class ClientServiceTest {
     @InjectMocks
     private VolunteerService volunteerService;
     @InjectMocks
-    private ClientServiceImpl clientService;
+    private ClientService clientService;
     @Mock
     private VolunteerRepository volunteerRepository;
     @Mock
@@ -42,7 +44,7 @@ class ClientServiceImplTest {
     @BeforeEach
     public void init() {
         telegramBot = Mockito.mock(TelegramBot.class);
-        clientService = new ClientServiceImpl(clientRepository, telegramBot, volunteerService);
+        clientService = new ClientService(clientRepository, telegramBot, volunteerService);
     }
 
     @Test

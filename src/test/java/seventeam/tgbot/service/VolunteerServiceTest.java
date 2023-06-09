@@ -1,4 +1,4 @@
-package seventeam.tgbot.service.impl;
+package seventeam.tgbot.service;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.request.SendMessage;
@@ -10,7 +10,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import seventeam.tgbot.model.Client;
 import seventeam.tgbot.model.Volunteer;
-import seventeam.tgbot.repository.VolunteerRepository;
+import seventeam.tgbot.repositories.VolunteerRepository;
+import seventeam.tgbot.services.VolunteerService;
 
 import java.util.List;
 

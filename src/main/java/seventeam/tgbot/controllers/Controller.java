@@ -2,13 +2,13 @@ package seventeam.tgbot.controllers;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import seventeam.tgbot.service.impl.ClientServiceImpl;
+import seventeam.tgbot.services.ClientService;
 
 @RestController
 public class Controller {
-    private final ClientServiceImpl clientService;
+    private final ClientService clientService;
 
-    public Controller(ClientServiceImpl clientService) {
+    public Controller(ClientService clientService) {
         this.clientService = clientService;
     }
 

@@ -1,4 +1,4 @@
-package seventeam.tgbot.repository;
+package seventeam.tgbot.repositories;
 
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;

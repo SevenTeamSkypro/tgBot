@@ -1,4 +1,4 @@
-package seventeam.tgbot.service.impl;
+package seventeam.tgbot.service;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Chat;
@@ -12,7 +12,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import seventeam.tgbot.model.Report;
-import seventeam.tgbot.repository.ReportRepository;
+import seventeam.tgbot.repositories.ReportRepository;
+import seventeam.tgbot.services.ReportService;
 
 import java.util.List;
 

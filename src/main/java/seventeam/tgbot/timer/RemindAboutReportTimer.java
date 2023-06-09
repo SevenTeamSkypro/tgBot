@@ -4,8 +4,8 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import seventeam.tgbot.repository.CatOwnerRepository;
-import seventeam.tgbot.repository.DogOwnerRepository;
+import seventeam.tgbot.repositories.CatOwnerRepository;
+import seventeam.tgbot.repositories.DogOwnerRepository;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;

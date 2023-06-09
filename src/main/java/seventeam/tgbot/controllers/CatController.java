@@ -2,16 +2,16 @@ package seventeam.tgbot.controllers;
 
 import org.springframework.web.bind.annotation.*;
 import seventeam.tgbot.dto.CatDto;
-import seventeam.tgbot.service.impl.CatServiceImpl;
+import seventeam.tgbot.services.CatService;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/cat")
 public class CatController {
-    private final CatServiceImpl catService;
+    private final CatService catService;
 
-    public CatController(CatServiceImpl catService) {
+    public CatController(CatService catService) {
         this.catService = catService;
     }
 

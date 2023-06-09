@@ -2,7 +2,7 @@ package seventeam.tgbot.controllers;
 
 import org.springframework.web.bind.annotation.*;
 import seventeam.tgbot.model.Volunteer;
-import seventeam.tgbot.service.impl.VolunteerService;
+import seventeam.tgbot.services.VolunteerService;
 
 import java.util.List;
 

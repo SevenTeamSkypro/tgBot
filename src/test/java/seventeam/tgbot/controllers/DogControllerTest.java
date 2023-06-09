@@ -10,7 +10,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import seventeam.tgbot.dto.DogDto;
-import seventeam.tgbot.service.impl.DogServiceImpl;
+import seventeam.tgbot.services.DogService;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -28,7 +28,7 @@ class DogControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
     @MockBean
-    private DogServiceImpl dogService;
+    private DogService dogService;
     DogDto dogDto = new DogDto("Name", "breed", LocalDate.of(2000, 12, 31), "suit", "gender");
 
     @Test

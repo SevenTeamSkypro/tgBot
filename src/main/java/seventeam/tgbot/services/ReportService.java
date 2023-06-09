@@ -1,4 +1,4 @@
-package seventeam.tgbot.service.impl;
+package seventeam.tgbot.services;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.File;
@@ -9,7 +9,7 @@ import com.pengrad.telegrambot.request.SendMessage;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import seventeam.tgbot.model.Report;
-import seventeam.tgbot.repository.ReportRepository;
+import seventeam.tgbot.repositories.ReportRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
