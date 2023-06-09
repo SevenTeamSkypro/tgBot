@@ -42,14 +42,13 @@ public class VolunteerService {
         }
     }
 
-    public Volunteer updateVolunteer(@NotNull Volunteer volunteer) {
+    public void updateVolunteer(@NotNull Volunteer volunteer) {
         try {
             Volunteer toUpdate = volunteerRepository.getById(volunteer.getId());
             toUpdate.setFirstName(volunteer.getFirstName());
             toUpdate.setLastName(volunteer.getLastName());
             toUpdate.setPhoneNumber(volunteer.getPhoneNumber());
             volunteerRepository.saveAndFlush(toUpdate);
-            return toUpdate;
         } catch (RuntimeException e) {
             throw new VolunteerNotFoundException();
         }

@@ -23,14 +23,13 @@ public class CatService {
         this.mappingUtils = mappingUtils;
     }
 
-    public CatDto createCat(String name, String breed, LocalDate dateOfBirth, String suit, String gender) {
+    public void createCat(String name, String breed, LocalDate dateOfBirth, String suit, String gender) {
         CatDto dto = new CatDto(name, breed, dateOfBirth, suit, gender);
         Cat cat = mappingUtils.mapToCat(dto);
         cats = shelterCatRepository.findAll();
         if (!cats.contains(cat)) {
             shelterCatRepository.saveAndFlush(cat);
         }
-        return dto;
     }
 
     public List<CatDto> getAllCats() {

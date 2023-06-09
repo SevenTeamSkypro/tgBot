@@ -31,7 +31,7 @@ public class OwnerService {
         this.mappingUtils = mappingUtils;
     }
 
-    public DogOwner createDogOwner(Long clientChatId, Long dogId) {
+    public void createDogOwner(Long clientChatId, Long dogId) {
         List<Dog> dogs = new ArrayList<>();
         Dog dog = mappingUtils.mapToDog(dogService.getDog(dogId));
         Client client = clientService.getClientByChatId(clientChatId);
@@ -42,10 +42,9 @@ public class OwnerService {
         dogOwnerRepository.saveAndFlush(dogOwner);
         dogService.deleteDog(dogId);
         clientService.deleteClient(client.getId());
-        return dogOwner;
     }
 
-    public CatOwner createCatOwner(Long clientChatId, Long catId) {
+    public void createCatOwner(Long clientChatId, Long catId) {
         List<Cat> cats = new ArrayList<>();
         Cat cat = mappingUtils.mapToCat(catService.getCat(catId));
         Client client = clientService.getClientByChatId(clientChatId);
@@ -56,7 +55,6 @@ public class OwnerService {
         catOwnerRepository.saveAndFlush(catOwner);
         catService.deleteCat(catId);
         clientService.deleteClient(client.getId());
-        return catOwner;
     }
 
     public DogOwnerDto getDogOwner(Long id) {
@@ -75,8 +73,8 @@ public class OwnerService {
         }
     }
 
-    public DogOwner updateDogOwner(Long id, Long chatId, String firstName, String lastName, String phoneNumber,
-                                   LocalDateTime probation) {
+    public void updateDogOwner(Long id, Long chatId, String firstName, String lastName, String phoneNumber,
+                               LocalDateTime probation) {
         try {
             DogOwner toUpdate = dogOwnerRepository.getReferenceById(id);
             toUpdate.setChatId(chatId);
@@ -85,13 +83,13 @@ public class OwnerService {
             toUpdate.setPhoneNumber(phoneNumber);
             toUpdate.setProbation(probation);
             dogOwnerRepository.saveAndFlush(toUpdate);
-            return toUpdate;
         } catch (RuntimeException e) {
             throw new OwnerNotFoundException();
         }
     }
-public CatOwner updateCatOwner(Long id, Long chatId, String firstName, String lastName, String phoneNumber,
-                                   LocalDateTime probation) {
+
+    public void updateCatOwner(Long id, Long chatId, String firstName, String lastName, String phoneNumber,
+                               LocalDateTime probation) {
         try {
             CatOwner toUpdate = catOwnerRepository.getReferenceById(id);
             toUpdate.setChatId(chatId);
@@ -100,7 +98,6 @@ public CatOwner updateCatOwner(Long id, Long chatId, String firstName, String la
             toUpdate.setPhoneNumber(phoneNumber);
             toUpdate.setProbation(probation);
             catOwnerRepository.saveAndFlush(toUpdate);
-            return toUpdate;
         } catch (RuntimeException e) {
             throw new OwnerNotFoundException();
         }

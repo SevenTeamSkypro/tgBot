@@ -26,12 +26,11 @@ public class ClientService {
         this.volunteerService = volunteerService;
     }
 
-    public Client createClient(Long id, Long chatId, String firstName, String lastName, String phoneNumber) {
+    public void createClient(Long id, Long chatId, String firstName, String lastName, String phoneNumber) {
         Client client = new Client(id, chatId, firstName, lastName, phoneNumber);
         if (clientRepository.getByChatId(chatId) == null && volunteerService.getVolunteer(chatId) == null) {
             clientRepository.saveAndFlush(client);
         } else telegramBot.execute(new SendMessage(chatId, "Вы уже зарегистрированы!"));
-        return client;
     }
 
     public Client getClientByChatId(Long chatId) {
@@ -42,14 +41,13 @@ public class ClientService {
         return clientRepository.findAll();
     }
 
-    public Client updateClient(Client client) {
+    public void updateClient(Client client) {
         try {
             Client toUpdate = clientRepository.getReferenceById(client.getId());
             toUpdate.setFirstName(client.getFirstName());
             toUpdate.setLastName(client.getLastName());
             toUpdate.setPhoneNumber(client.getPhoneNumber());
             clientRepository.saveAndFlush(toUpdate);
-            return toUpdate;
         } catch (RuntimeException e) {
             throw new ClientNotFoundException();
         }

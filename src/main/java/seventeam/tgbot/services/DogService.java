@@ -23,14 +23,13 @@ public class DogService {
         this.mappingUtils = mappingUtils;
     }
 
-    public DogDto createDog(String name, String breed, LocalDate dateOfBirth, String suit, String gender) {
+    public void createDog(String name, String breed, LocalDate dateOfBirth, String suit, String gender) {
         DogDto dto = new DogDto(name, breed, dateOfBirth, suit, gender);
         Dog dog = mappingUtils.mapToDog(dto);
         dogs = shelterDogRepository.findAll();
         if (!dogs.contains(dog)) {
             shelterDogRepository.saveAndFlush(dog);
         }
-        return dto;
     }
 
     public List<DogDto> getAllDogs() {
