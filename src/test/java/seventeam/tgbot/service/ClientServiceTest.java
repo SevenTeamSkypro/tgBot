@@ -11,7 +11,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import seventeam.tgbot.exceptions.ClientNotFoundException;
 import seventeam.tgbot.model.Client;
-import seventeam.tgbot.model.Volunteer;
 import seventeam.tgbot.repositories.ClientRepository;
 import seventeam.tgbot.repositories.VolunteerRepository;
 import seventeam.tgbot.services.ClientService;
@@ -36,10 +35,7 @@ class ClientServiceTest {
     private ClientRepository clientRepository;
     @Mock
     private TelegramBot telegramBot;
-    @Mock
     Client client = new Client(0L, 0L, "FirstName", "LastName", "7_xxx_xxx_xx_xx");
-    @Mock
-    Volunteer volunteer = new Volunteer(0L, 0L, "FirstName", "LastName", "7_xxx_xxx_xx_xx");
 
     @BeforeEach
     public void init() {

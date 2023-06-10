@@ -2,10 +2,13 @@ package seventeam.tgbot.utils;
 
 import org.springframework.stereotype.Service;
 import seventeam.tgbot.dto.CatDto;
-import seventeam.tgbot.dto.DogDto;
 import seventeam.tgbot.dto.CatOwnerDto;
+import seventeam.tgbot.dto.DogDto;
 import seventeam.tgbot.dto.DogOwnerDto;
-import seventeam.tgbot.model.*;
+import seventeam.tgbot.model.Cat;
+import seventeam.tgbot.model.CatOwner;
+import seventeam.tgbot.model.Dog;
+import seventeam.tgbot.model.DogOwner;
 
 @Service
 public class MappingUtils {
@@ -56,7 +59,6 @@ public class MappingUtils {
         dto.setFirstName(entity.getFirstName());
         dto.setLastName(entity.getLastName());
         dto.setPhoneNumber(entity.getPhoneNumber());
-        dto.setPets(entity.getPets());
         dto.setProbation(entity.getProbation());
         return dto;
     }
@@ -65,34 +67,25 @@ public class MappingUtils {
         dto.setFirstName(entity.getFirstName());
         dto.setLastName(entity.getLastName());
         dto.setPhoneNumber(entity.getPhoneNumber());
-        dto.setPets(entity.getPets());
         dto.setProbation(entity.getProbation());
         return dto;
     }
 
     public DogOwner mapToDogOwner(DogOwnerDto dto) {
-        if (dto.getPets() != null) {
             DogOwner entity = new DogOwner();
             entity.setFirstName(dto.getFirstName());
             entity.setLastName(dto.getLastName());
             entity.setPhoneNumber(dto.getPhoneNumber());
-            entity.setPets(dto.getPets());
             entity.setProbation(dto.getProbation());
             return entity;
-        }
-        return null;
     }
 
     public CatOwner mapToCatOwner(CatOwnerDto dto) {
-        if (dto.getPets() != null) {
             CatOwner entity = new CatOwner();
             entity.setFirstName(dto.getFirstName());
             entity.setLastName(dto.getLastName());
             entity.setPhoneNumber(dto.getPhoneNumber());
-            entity.setPets(dto.getPets());
             entity.setProbation(dto.getProbation());
             return entity;
-        }
-        return null;
     }
 }

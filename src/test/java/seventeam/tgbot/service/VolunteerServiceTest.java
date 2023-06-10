@@ -27,9 +27,7 @@ class VolunteerServiceTest {
     private VolunteerRepository volunteerRepository;
     @Mock
     private TelegramBot telegramBot;
-    @Mock
     Volunteer volunteer = new Volunteer(0L, 0L, "FirstName", "LastName", "7_xxx_xxx_xx_xx");
-    @Mock
     Client client = new Client(0L, 0L, "FirstName", "LastName", "7_xxx_xxx_xx_xx");
 
 

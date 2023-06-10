@@ -60,6 +60,15 @@ class DogControllerTest {
     }
 
     @Test
+    @DisplayName("Проверка получения всех питомцев владельца")
+    void getAllDogsByOwnerId() throws Exception {
+        when(dogService.getAllDogs(0L)).thenReturn(List.of(dogDto));
+        mockMvc.perform(get("/dog/oid").param("ownerId", "0"))
+                .andExpect(status().isOk());
+        verify(dogService).getAllDogs(0L);
+    }
+
+    @Test
     @DisplayName("Проверка удаления питомца по id")
     void deleteDog() throws Exception {
         mockMvc.perform(delete("/dog/del").param("id", "0"))

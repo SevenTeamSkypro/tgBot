@@ -10,6 +10,7 @@ import seventeam.tgbot.utils.MappingUtils;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,6 +36,17 @@ public class CatService {
     public List<CatDto> getAllCats() {
         cats = shelterCatRepository.findAll();
         return cats.stream().map(mappingUtils::mapToCatDto).collect(Collectors.toList());
+    }
+
+    public List<CatDto> getAllCats(Long ownerId) {
+        cats = shelterCatRepository.findAll();
+        for (int i = 0; i < cats.size(); i++) {
+            if (Objects.equals(Objects.requireNonNull(cats.get(i).getCatOwner()).getId(), ownerId)) {
+                return cats.stream().map(mappingUtils::mapToCatDto).collect(Collectors.toList());
+            }
+        }
+        //Этого никогда не может быть
+        throw new PetNotFoundException();
     }
 
     public CatDto getCat(Long id) {

@@ -10,8 +10,6 @@ import seventeam.tgbot.repositories.DogOwnerRepository;
 import seventeam.tgbot.utils.MappingUtils;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class OwnerService {
@@ -32,28 +30,22 @@ public class OwnerService {
     }
 
     public void createDogOwner(Long clientChatId, Long dogId) {
-        List<Dog> dogs = new ArrayList<>();
         Dog dog = mappingUtils.mapToDog(dogService.getDog(dogId));
         Client client = clientService.getClientByChatId(clientChatId);
-        dogs.add(dog);
         DogOwner dogOwner = new DogOwner(client.getId(), client.getChatId(), client.getFirstName(),
-                client.getLastName(), client.getPhoneNumber(), dogs, ReportService.reportingPeriod);
+                client.getLastName(), client.getPhoneNumber(), ReportService.reportingPeriod);
         dog.setDogOwner(dogOwner);
         dogOwnerRepository.saveAndFlush(dogOwner);
-        dogService.deleteDog(dogId);
         clientService.deleteClient(client.getId());
     }
 
     public void createCatOwner(Long clientChatId, Long catId) {
-        List<Cat> cats = new ArrayList<>();
         Cat cat = mappingUtils.mapToCat(catService.getCat(catId));
         Client client = clientService.getClientByChatId(clientChatId);
-        cats.add(cat);
         CatOwner catOwner = new CatOwner(client.getId(), client.getChatId(), client.getFirstName(),
-                client.getLastName(), client.getPhoneNumber(), cats, ReportService.reportingPeriod);
+                client.getLastName(), client.getPhoneNumber(), ReportService.reportingPeriod);
         cat.setCatOwner(catOwner);
         catOwnerRepository.saveAndFlush(catOwner);
-        catService.deleteCat(catId);
         clientService.deleteClient(client.getId());
     }
 

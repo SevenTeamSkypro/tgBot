@@ -60,6 +60,15 @@ class CatControllerTest {
     }
 
     @Test
+    @DisplayName("Проверка получения всех питомцев владельца")
+    void getAllCatsByOwnerId() throws Exception {
+        when(catService.getAllCats(0L)).thenReturn(List.of(catDto));
+        mockMvc.perform(get("/cat/oid").param("ownerId", "0"))
+                .andExpect(status().isOk());
+        verify(catService).getAllCats(0L);
+    }
+
+    @Test
     @DisplayName("Проверка удаления питомца по id")
     void deleteCat() throws Exception {
         mockMvc.perform(delete("/cat/del").param("id", "0"))

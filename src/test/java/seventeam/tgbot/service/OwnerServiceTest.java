@@ -6,22 +6,21 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import seventeam.tgbot.dto.CatDto;
 import seventeam.tgbot.dto.CatOwnerDto;
+import seventeam.tgbot.dto.DogDto;
 import seventeam.tgbot.dto.DogOwnerDto;
-import seventeam.tgbot.model.Cat;
-import seventeam.tgbot.model.CatOwner;
-import seventeam.tgbot.model.Dog;
-import seventeam.tgbot.model.DogOwner;
+import seventeam.tgbot.model.*;
 import seventeam.tgbot.repositories.CatOwnerRepository;
 import seventeam.tgbot.repositories.DogOwnerRepository;
 import seventeam.tgbot.services.CatService;
+import seventeam.tgbot.services.ClientService;
 import seventeam.tgbot.services.DogService;
 import seventeam.tgbot.services.OwnerService;
 import seventeam.tgbot.utils.MappingUtils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
@@ -37,29 +36,34 @@ class OwnerServiceTest {
     private DogService dogService;
     @Mock
     private CatService catService;
+    @Mock
+    private ClientService clientService;
     @InjectMocks
     private OwnerService ownerService;
     @Mock
     private MappingUtils mappingUtils;
-    @Mock
+    DogDto dogDto = new DogDto("Name", "breed", LocalDate.of(2000, 12, 31), "suit", "gender");
     Dog dog = new Dog("Name", "breed", LocalDate.of(2000, 12, 31), "suit", "gender");
-    @Mock
+    CatDto catDto = new CatDto("Name", "breed", LocalDate.of(2000, 12, 31), "suit", "gender");
     Cat cat = new Cat("Name", "breed", LocalDate.of(2000, 12, 31), "suit", "gender");
-    @Mock
-    DogOwner dogOwner = new DogOwner(0L, 0L, "firstName", "lastName", "7_xxx_xxx_xx_xx", List.of(dog), LocalDateTime.now());
-    @Mock
-    DogOwnerDto dogOwnerDto = new DogOwnerDto(0L, 0L, "firstName", "lastName", "7_xxx_xxx_xx_xx", List.of(dog),
+    DogOwner dogOwner = new DogOwner(0L, 0L, "firstName", "lastName", "7_xxx_xxx_xx_xx", LocalDateTime.now());
+    DogOwnerDto dogOwnerDto = new DogOwnerDto(0L, "firstName", "lastName", "7_xxx_xxx_xx_xx",
             LocalDateTime.now());
-    @Mock
-    CatOwnerDto catOwnerDto = new CatOwnerDto(0L, 0L, "firstName", "lastName", "7_xxx_xxx_xx_xx", List.of(cat),
+    CatOwnerDto catOwnerDto = new CatOwnerDto(0L, 0L, "firstName", "lastName", "7_xxx_xxx_xx_xx",
             LocalDateTime.now());
-    @Mock
-    CatOwner catOwner = new CatOwner(0L, 0L, "firstName", "lastName", "7_xxx_xxx_xx_xx", List.of(cat), LocalDateTime.now());
+    CatOwner catOwner = new CatOwner(0L, 0L, "firstName", "lastName", "7_xxx_xxx_xx_xx", LocalDateTime.now());
+    Client client = new Client(0L, 0L, "FirstName", "LastName", "7_xxx_xxx_xx_xx");
 
     @Test
     @DisplayName("Проверка создания владельца")
     void createOwner() {
-
+        when(clientService.getClientByChatId(0L)).thenReturn(client);
+        when(dogService.getDog(0L)).thenReturn(dogDto);
+        when(mappingUtils.mapToDog(dogDto)).thenReturn(dog);
+        verify(dogOwnerRepository, verificationData -> ownerService.createDogOwner(0L, 0L)).saveAndFlush(dogOwner);
+        when(catService.getCat(0L)).thenReturn(catDto);
+        when(mappingUtils.mapToCat(catDto)).thenReturn(cat);
+        verify(catOwnerRepository, verificationData -> ownerService.createCatOwner(0L, 0L)).saveAndFlush(catOwner);
     }
 
     @Test

@@ -9,6 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import seventeam.tgbot.dto.DogDto;
 import seventeam.tgbot.exceptions.PetNotFoundException;
 import seventeam.tgbot.model.Dog;
+import seventeam.tgbot.model.DogOwner;
 import seventeam.tgbot.repositories.ShelterDogRepository;
 import seventeam.tgbot.services.DogService;
 import seventeam.tgbot.utils.MappingUtils;
@@ -29,9 +30,7 @@ class DogServiceTest {
     private ShelterDogRepository shelterDogRepository;
     @Mock
     private MappingUtils mappingUtils;
-    @Mock
     Dog dog = new Dog("Name", "breed", LocalDate.of(2000, 12, 31), "suit", "gender");
-    @Mock
     DogDto dogDto = new DogDto("Name", "breed", LocalDate.of(2000, 12, 31), "suit", "gender");
 
     @Test
@@ -55,6 +54,17 @@ class DogServiceTest {
         when(mappingUtils.mapToDogDto(dog)).thenReturn(dogDto);
         when(shelterDogRepository.findAll()).thenReturn(List.of(dog));
         assertEquals(List.of(dogDto), dogService.getAllDogs());
+    }
+
+    @Test
+    @DisplayName("Проверка получения всех питомцев владельца")
+    void getAllDogsByOwnerIdTest() {
+        DogOwner dogOwner = new DogOwner();
+        dogOwner.setId(0L);
+        Dog test = new Dog(0L, "Name", "breed", LocalDate.of(2000, 12, 31), "suit", "gender", dogOwner);
+        when(shelterDogRepository.findAll()).thenReturn(List.of(test));
+        when(mappingUtils.mapToDogDto(test)).thenReturn(dogDto);
+        assertEquals(List.of(dogDto), dogService.getAllDogs(0L));
     }
 
     @Test

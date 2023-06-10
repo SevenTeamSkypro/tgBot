@@ -9,6 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import seventeam.tgbot.dto.CatDto;
 import seventeam.tgbot.exceptions.PetNotFoundException;
 import seventeam.tgbot.model.Cat;
+import seventeam.tgbot.model.CatOwner;
 import seventeam.tgbot.repositories.ShelterCatRepository;
 import seventeam.tgbot.services.CatService;
 import seventeam.tgbot.utils.MappingUtils;
@@ -29,9 +30,7 @@ class CatServiceTest {
     private ShelterCatRepository shelterCatRepository;
     @Mock
     private MappingUtils mappingUtils;
-    @Mock
     Cat cat = new Cat("Name", "breed", LocalDate.of(2000, 12, 31), "suit", "gender");
-    @Mock
     CatDto catDto = new CatDto("Name", "breed", LocalDate.of(2000, 12, 31), "suit", "gender");
 
     @Test
@@ -51,15 +50,26 @@ class CatServiceTest {
 
     @Test
     @DisplayName("Проверка получения всех питомцев")
-    void getAllPetsTest() {
+    void getAllCatsTest() {
         when(mappingUtils.mapToCatDto(cat)).thenReturn(catDto);
         when(shelterCatRepository.findAll()).thenReturn(List.of(cat));
         assertEquals(List.of(catDto), catService.getAllCats());
     }
 
     @Test
+    @DisplayName("Проверка получения всех питомцев владельца")
+    void getAllCatsByOwnerIdTest() {
+        CatOwner catOwner = new CatOwner();
+        catOwner.setId(0L);
+        Cat test = new Cat(0L, "Name", "breed", LocalDate.of(2000, 12, 31), "suit", "gender", catOwner);
+        when(shelterCatRepository.findAll()).thenReturn(List.of(test));
+        when(mappingUtils.mapToCatDto(test)).thenReturn(catDto);
+        assertEquals(List.of(catDto), catService.getAllCats(0L));
+    }
+
+    @Test
     @DisplayName("Проверка получения питомца по id")
-    void getPet() {
+    void getCat() {
         when(mappingUtils.mapToCatDto(cat)).thenReturn(catDto);
         when(shelterCatRepository.getReferenceById(0L)).thenReturn(cat);
         assertEquals(catDto, catService.getCat(0L));
@@ -67,7 +77,7 @@ class CatServiceTest {
 
     @Test
     @DisplayName("Проверка удаления питомца")
-    void deletePet() {
+    void deleteCat() {
         verify(shelterCatRepository, verificationData -> catService.deleteCat(0L)).deleteById(0L);
     }
 }

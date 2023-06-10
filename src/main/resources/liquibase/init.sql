@@ -44,7 +44,6 @@ CREATE TABLE cat_owners
     first_name   TEXT,
     last_name    TEXT,
     phone_number TEXT,
-    pets         cats,
     probation    timestamp,
     chat_id      BIGINT
 );
@@ -55,7 +54,6 @@ CREATE TABLE dog_owners
     first_name   TEXT,
     last_name    TEXT,
     phone_number TEXT,
-    pets         dogs,
     probation    timestamp,
     chat_id      BIGINT
 );
@@ -68,3 +66,4 @@ CREATE TABLE volunteers
     phone_number TEXT NOT NULL,
     chat_id      BIGINT
 );
+

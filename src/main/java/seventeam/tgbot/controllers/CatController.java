@@ -44,6 +44,16 @@ public class CatController {
     }
 
     /**
+     * Получение всех питомцев владельца
+     *
+     * @return List of CatDto
+     */
+    @GetMapping("/oid")
+    public List<CatDto> getAllCatsByOwnerId(Long ownerId) {
+        return catService.getAllCats(ownerId);
+    }
+
+    /**
      * Удаление Cat instance
      */
     @DeleteMapping("/del")

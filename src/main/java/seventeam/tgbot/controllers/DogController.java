@@ -45,6 +45,16 @@ public class DogController {
     }
 
     /**
+     * Получение всех питомцев владельца
+     *
+     * @return List of DogDto
+     */
+    @GetMapping("/oid")
+    public List<DogDto> getAllDogsByOwnerId(Long ownerId) {
+        return dogService.getAllDogs(ownerId);
+    }
+
+    /**
      * Удаление Dog instance
      */
     @DeleteMapping("/del")
