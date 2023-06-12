@@ -9,11 +9,21 @@ import java.util.Objects;
 @Getter
 @Setter
 public class DogDto {
+    private Long id;
     private String name;
     private String breed;
     private LocalDate dateOfBirth;
     private String suit;
     private String gender;
+
+    public DogDto(Long id, String name, String breed, LocalDate dateOfBirth, String suit, String gender) {
+        this.id = id;
+        this.name = name;
+        this.breed = breed;
+        this.dateOfBirth = dateOfBirth;
+        this.suit = suit;
+        this.gender = gender;
+    }
 
     public DogDto(String name, String breed, LocalDate dateOfBirth, String suit, String gender) {
         this.name = name;
@@ -45,6 +55,6 @@ public class DogDto {
                 ", кличка: " + name +
                 ", порода: " + breed +
                 ", дата рождения: " + dateOfBirth +
-                ", окрас: " + suit;
+                ", окрас: " + suit + " id " + id;
     }
 }

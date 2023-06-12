@@ -14,6 +14,7 @@ import seventeam.tgbot.model.DogOwner;
 public class MappingUtils {
     public CatDto mapToCatDto(Cat entity) {
         CatDto dto = new CatDto();
+        dto.setId(entity.getId());
         dto.setName(entity.getName());
         dto.setBreed(entity.getBreed());
         dto.setDateOfBirth(entity.getDateOfBirth());
@@ -35,6 +36,7 @@ public class MappingUtils {
 
     public DogDto mapToDogDto(Dog entity) {
         DogDto dto = new DogDto();
+        dto.setId(entity.getId());
         dto.setName(entity.getName());
         dto.setBreed(entity.getBreed());
         dto.setDateOfBirth(entity.getDateOfBirth());
