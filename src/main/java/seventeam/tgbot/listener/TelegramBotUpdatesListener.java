@@ -157,12 +157,15 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                                     if (volunteerService.getVolunteer(chatId) == null) {
                                         if (clientService.getClientByChatId(chatId) != null) {
                                             volunteerService.callVolunteer(clientService.getClientByChatId(chatId).getPhoneNumber());
+                                            return;
                                         }
                                         if (ownerService.getCatOwner(chatId) != null) {
                                             volunteerService.callVolunteer(ownerService.getCatOwner(chatId).getPhoneNumber());
+                                            return;
                                         }
                                         if (ownerService.getDogOwner(chatId) != null) {
                                             volunteerService.callVolunteer(ownerService.getDogOwner(chatId).getPhoneNumber());
+                                            return;
                                         }
                                         sendMassage(chatId, "Скоро с вами свяжутся");
                                     } else sendMassage(chatId, "Забыл? Ты же сам волонтёр)");
