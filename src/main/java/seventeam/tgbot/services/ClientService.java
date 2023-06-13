@@ -19,16 +19,21 @@ public class ClientService {
     private final ClientRepository clientRepository;
     private final TelegramBot telegramBot;
     private final VolunteerService volunteerService;
+    private final OwnerService ownerService;
 
-    public ClientService(ClientRepository clientRepository, TelegramBot telegramBot, VolunteerService volunteerService) {
+    public ClientService(ClientRepository clientRepository, TelegramBot telegramBot, VolunteerService volunteerService, OwnerService ownerService) {
         this.clientRepository = clientRepository;
         this.telegramBot = telegramBot;
         this.volunteerService = volunteerService;
+        this.ownerService = ownerService;
     }
 
     public void createClient(Long id, Long chatId, String firstName, String lastName, String phoneNumber) {
         Client client = new Client(id, chatId, firstName, lastName, phoneNumber);
-        if (clientRepository.getByChatId(chatId) == null && volunteerService.getVolunteer(chatId) == null) {
+        if (clientRepository.getByChatId(chatId) == null
+                && volunteerService.getVolunteer(chatId) == null
+                && ownerService.getDogOwner(chatId) == null
+                && ownerService.getCatOwner(chatId) == null) {
             clientRepository.saveAndFlush(client);
         } else telegramBot.execute(new SendMessage(chatId, "Вы уже зарегистрированы!"));
     }

@@ -14,6 +14,7 @@ import seventeam.tgbot.model.Client;
 import seventeam.tgbot.repositories.ClientRepository;
 import seventeam.tgbot.repositories.VolunteerRepository;
 import seventeam.tgbot.services.ClientService;
+import seventeam.tgbot.services.OwnerService;
 import seventeam.tgbot.services.VolunteerService;
 
 import java.util.List;
@@ -29,6 +30,8 @@ class ClientServiceTest {
     private VolunteerService volunteerService;
     @InjectMocks
     private ClientService clientService;
+    @InjectMocks
+    private OwnerService ownerService;
     @Mock
     private VolunteerRepository volunteerRepository;
     @Mock
@@ -40,7 +43,7 @@ class ClientServiceTest {
     @BeforeEach
     public void init() {
         telegramBot = Mockito.mock(TelegramBot.class);
-        clientService = new ClientService(clientRepository, telegramBot, volunteerService);
+        clientService = new ClientService(clientRepository, telegramBot, volunteerService, ownerService);
     }
 
     @Test
