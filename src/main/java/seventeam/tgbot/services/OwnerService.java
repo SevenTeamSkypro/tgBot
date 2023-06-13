@@ -49,17 +49,17 @@ public class OwnerService {
         clientService.deleteClient(client.getId());
     }
 
-    public DogOwnerDto getDogOwner(Long id) {
+    public DogOwnerDto getDogOwner(Long chatId) {
         try {
-            return mappingUtils.mapToDogOwnerDto(dogOwnerRepository.getReferenceById(id));
+            return mappingUtils.mapToDogOwnerDto(dogOwnerRepository.getByChatId(chatId));
         } catch (RuntimeException e) {
             throw new OwnerNotFoundException();
         }
     }
 
-    public CatOwnerDto getCatOwner(Long id) {
+    public CatOwnerDto getCatOwner(Long chatId) {
         try {
-            return mappingUtils.mapToCatOwnerDto(catOwnerRepository.getReferenceById(id));
+            return mappingUtils.mapToCatOwnerDto(catOwnerRepository.getByChatId(chatId));
         } catch (RuntimeException e) {
             throw new OwnerNotFoundException();
         }

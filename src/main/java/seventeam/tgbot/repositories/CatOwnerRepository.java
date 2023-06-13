@@ -11,6 +11,7 @@ import java.util.List;
 @Repository
 public interface CatOwnerRepository extends JpaRepository<CatOwner, Long> {
     List<CatOwner> findAllByProbation(LocalDateTime probation);
-
     void deleteById(@NotNull Long id);
+
+    CatOwner getByChatId(Long chatId);
 }

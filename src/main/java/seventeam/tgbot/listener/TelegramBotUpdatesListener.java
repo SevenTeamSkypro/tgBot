@@ -38,11 +38,12 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     private final KeyBoardService keyBoardService;
     private final ReportService reportService;
     private final VolunteerService volunteerService;
+    private final OwnerService ownerService;
     private final MappingUtils mappingUtils;
     private final Map<Long, Status> statuses = new HashMap<>();
     private boolean isCat = true;
 
-    public TelegramBotUpdatesListener(TelegramBot telegramBot, DogService dogService, CatService catService, ClientService clientService, KeyBoardService keyBoardService, ReportService reportService, VolunteerService volunteerService, MappingUtils mappingUtils) {
+    public TelegramBotUpdatesListener(TelegramBot telegramBot, DogService dogService, CatService catService, ClientService clientService, KeyBoardService keyBoardService, ReportService reportService, VolunteerService volunteerService, OwnerService ownerService, MappingUtils mappingUtils) {
         this.telegramBot = telegramBot;
         this.dogService = dogService;
         this.catService = catService;
@@ -50,6 +51,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         this.keyBoardService = keyBoardService;
         this.reportService = reportService;
         this.volunteerService = volunteerService;
+        this.ownerService = ownerService;
         this.mappingUtils = mappingUtils;
     }
 
@@ -153,7 +155,15 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                                 }
                                 case "Позвать волонтера" -> {
                                     if (volunteerService.getVolunteer(chatId) == null) {
-                                        volunteerService.callVolunteer(clientService.getClientByChatId(chatId).getPhoneNumber());
+                                        if (clientService.getClientByChatId(chatId) != null) {
+                                            volunteerService.callVolunteer(clientService.getClientByChatId(chatId).getPhoneNumber());
+                                        }
+                                        if (ownerService.getCatOwner(chatId) != null) {
+                                            volunteerService.callVolunteer(ownerService.getCatOwner(chatId).getPhoneNumber());
+                                        }
+                                        if (ownerService.getDogOwner(chatId) != null) {
+                                            volunteerService.callVolunteer(ownerService.getDogOwner(chatId).getPhoneNumber());
+                                        }
                                         sendMassage(chatId, "Скоро с вами свяжутся");
                                     } else sendMassage(chatId, "Забыл? Ты же сам волонтёр)");
                                 }
