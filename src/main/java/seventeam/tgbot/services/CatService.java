@@ -1,6 +1,7 @@
 package seventeam.tgbot.services;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import seventeam.tgbot.dto.CatDto;
 import seventeam.tgbot.exceptions.PetNotFoundException;
 import seventeam.tgbot.model.Cat;
@@ -49,6 +50,7 @@ public class CatService {
         throw new PetNotFoundException();
     }
 
+    @Transactional
     public CatDto getCat(Long id) {
         try {
             return mappingUtils.mapToCatDto(shelterCatRepository.getReferenceById(id));

@@ -3,7 +3,6 @@ package seventeam.tgbot.model;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.lang.Nullable;
-import seventeam.tgbot.services.Pet;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -35,7 +34,7 @@ public class Dog extends Pet {
 
     public Dog(Long id, String name, String breed, LocalDate dateOfBirth, String suit, String gender,
                @org.jetbrains.annotations.Nullable DogOwner dogOwner) {
-        this.id = id;
+        super(id);
         this.name = name;
         this.breed = breed;
         this.dateOfBirth = dateOfBirth;
@@ -56,17 +55,12 @@ public class Dog extends Pet {
     }
 
     public Dog(Long id, String name, String breed, LocalDate dateOfBirth, String suit, String gender) {
-        this.id = id;
+        super(id);
         this.name = name;
         this.breed = breed;
         this.dateOfBirth = dateOfBirth;
         this.suit = suit;
         this.gender = gender;
-    }
-
-    @Override
-    public Long petId() {
-        return id;
     }
 
     @Override

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import seventeam.tgbot.exceptions.VolunteerNotFoundException;
 import seventeam.tgbot.model.Client;
+import seventeam.tgbot.model.Pet;
 import seventeam.tgbot.model.Volunteer;
 import seventeam.tgbot.repositories.VolunteerRepository;
 
@@ -76,7 +77,7 @@ public class VolunteerService {
         if (client != null) {
             for (Volunteer v : volunteers) {
                 SendMessage sendMessage = new SendMessage(v.getChatId(),
-                        client + ", id питомца " + pet.petId());
+                        client + ", питомец: " + pet);
                 telegramBot.execute(sendMessage);
             }
         }

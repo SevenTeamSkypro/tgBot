@@ -25,6 +25,7 @@ public class MappingUtils {
 
     public Cat mapToCat(CatDto dto) {
         Cat entity = new Cat();
+        entity.setId(dto.getId());
         entity.setName(dto.getName());
         entity.setBreed(dto.getBreed());
         entity.setDateOfBirth(dto.getDateOfBirth());
@@ -47,6 +48,7 @@ public class MappingUtils {
 
     public Dog mapToDog(DogDto dto) {
         Dog entity = new Dog();
+        entity.setId(dto.getId());
         entity.setName(dto.getName());
         entity.setBreed(dto.getBreed());
         entity.setDateOfBirth(dto.getDateOfBirth());

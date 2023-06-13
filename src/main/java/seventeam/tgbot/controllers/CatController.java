@@ -1,5 +1,6 @@
 package seventeam.tgbot.controllers;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.web.bind.annotation.*;
 import seventeam.tgbot.dto.CatDto;
 import seventeam.tgbot.services.CatService;
@@ -19,7 +20,7 @@ public class CatController {
      * Создание нового питомца типа Cat
      */
     @PostMapping("/new")
-    public void createCat(@RequestBody CatDto catDto) {
+    public void createCat(@NotNull @RequestBody CatDto catDto) {
         catService.createCat(catDto.getName(), catDto.getBreed(), catDto.getDateOfBirth(), catDto.getSuit(), catDto.getGender());
     }
 

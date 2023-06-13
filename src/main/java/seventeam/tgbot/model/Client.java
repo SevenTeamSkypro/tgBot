@@ -50,9 +50,9 @@ public class Client {
     @Override
     public String toString() {
         return "Клиент: " +
-                "id " + id +
+                "chatId " + chatId +
                 ", Имя " + firstName +
                 ", Фамилия " + lastName +
-                ", номер телефона +" + phoneNumber;
+                ", номер телефона " + phoneNumber;
     }
 }
