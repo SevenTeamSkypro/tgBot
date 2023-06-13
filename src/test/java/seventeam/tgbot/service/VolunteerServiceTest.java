@@ -8,6 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import seventeam.tgbot.model.Cat;
 import seventeam.tgbot.model.Client;
 import seventeam.tgbot.model.Volunteer;
 import seventeam.tgbot.repositories.VolunteerRepository;
@@ -82,7 +83,7 @@ class VolunteerServiceTest {
     @Test
     @DisplayName("Проверка отправки заявки волонтёру")
     void sendToVolunteer() {
-        verify(telegramBot, verificationData -> volunteerService.sendToVolunteer(client, 0)).execute(new SendMessage(0L,
+        verify(telegramBot, verificationData -> volunteerService.sendToVolunteer(client, new Cat())).execute(new SendMessage(0L,
                 "test"));
     }
 }

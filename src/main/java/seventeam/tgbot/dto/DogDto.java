@@ -2,13 +2,14 @@ package seventeam.tgbot.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import seventeam.tgbot.model.Dog;
 
 import java.time.LocalDate;
 import java.util.Objects;
 
 @Getter
 @Setter
-public class DogDto {
+public class DogDto extends Dog {
     private Long id;
     private String name;
     private String breed;

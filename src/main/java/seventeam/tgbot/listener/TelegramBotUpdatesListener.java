@@ -12,9 +12,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import seventeam.tgbot.enums.Status;
+import seventeam.tgbot.model.Cat;
 import seventeam.tgbot.model.Client;
+import seventeam.tgbot.model.Dog;
 import seventeam.tgbot.model.Report;
 import seventeam.tgbot.services.*;
+import seventeam.tgbot.utils.MappingUtils;
 
 import javax.annotation.PostConstruct;
 import java.util.HashMap;
@@ -35,10 +38,11 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     private final KeyBoardService keyBoardService;
     private final ReportService reportService;
     private final VolunteerService volunteerService;
+    private final MappingUtils mappingUtils;
     private final Map<Long, Status> statuses = new HashMap<>();
     private boolean isCat = true;
 
-    public TelegramBotUpdatesListener(TelegramBot telegramBot, DogService dogService, CatService catService, ClientService clientService, KeyBoardService keyBoardService, ReportService reportService, VolunteerService volunteerService) {
+    public TelegramBotUpdatesListener(TelegramBot telegramBot, DogService dogService, CatService catService, ClientService clientService, KeyBoardService keyBoardService, ReportService reportService, VolunteerService volunteerService, MappingUtils mappingUtils) {
         this.telegramBot = telegramBot;
         this.dogService = dogService;
         this.catService = catService;
@@ -46,6 +50,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         this.keyBoardService = keyBoardService;
         this.reportService = reportService;
         this.volunteerService = volunteerService;
+        this.mappingUtils = mappingUtils;
     }
 
     @PostConstruct
@@ -82,7 +87,13 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                             Matcher matcher = pattern.matcher(text);
                             if (matcher.find()) {
                                 Client client = clientService.getClientByChatId(chatId);
-                                volunteerService.sendToVolunteer(client, Integer.parseInt(matcher.group()));
+                                if (isCat) {
+                                    Cat cat = mappingUtils.mapToCat(catService.getCat(Long.parseLong(matcher.group())));
+                                    volunteerService.sendToVolunteer(client, cat);
+                                } else {
+                                    Dog dog = mappingUtils.mapToDog(dogService.getDog(Long.parseLong(matcher.group())));
+                                    volunteerService.sendToVolunteer(client, dog);
+                                }
                                 sendMassage(chatId, "Заявка отправлена!");
                                 statuses.remove(chatId);
                             } else {
@@ -141,7 +152,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                                     sendMassage(chatId, "Отправьте фото и отчёт одним сообщением");
                                 }
                                 case "Позвать волонтера" -> {
-                                    if (volunteerService.getVolunteer(chatId) == null && clientService.getClientByChatId(chatId) != null) {
+                                    if (volunteerService.getVolunteer(chatId) == null) {
                                         volunteerService.callVolunteer(clientService.getClientByChatId(chatId).getPhoneNumber());
                                         sendMassage(chatId, "Скоро с вами свяжутся");
                                     } else sendMassage(chatId, "Забыл? Ты же сам волонтёр)");

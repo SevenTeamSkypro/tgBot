@@ -71,12 +71,12 @@ public class VolunteerService {
         }
     }
 
-    public void sendToVolunteer(Client client, Integer petId) {
+    public void sendToVolunteer(Client client, Pet pet) {
         List<Volunteer> volunteers = volunteerRepository.findAll();
         if (client != null) {
             for (Volunteer v : volunteers) {
                 SendMessage sendMessage = new SendMessage(v.getChatId(),
-                        client + ", id питомца " + petId.toString());
+                        client + ", id питомца " + pet.petId());
                 telegramBot.execute(sendMessage);
             }
         }

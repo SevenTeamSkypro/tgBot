@@ -3,6 +3,7 @@ package seventeam.tgbot.model;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.lang.Nullable;
+import seventeam.tgbot.services.Pet;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -12,7 +13,7 @@ import java.util.Objects;
 @Setter
 @Entity
 @Table(name = "dogs")
-public class Dog {
+public class Dog extends Pet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -61,6 +62,11 @@ public class Dog {
         this.dateOfBirth = dateOfBirth;
         this.suit = suit;
         this.gender = gender;
+    }
+
+    @Override
+    public Long petId() {
+        return id;
     }
 
     @Override
