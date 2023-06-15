@@ -10,7 +10,6 @@ import java.util.List;
 @RequestMapping("/v")
 public class VolunteerController {
     private final VolunteerService volunteerService;
-
     public VolunteerController(VolunteerService volunteerService) {
         this.volunteerService = volunteerService;
     }

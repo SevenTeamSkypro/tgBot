@@ -43,4 +43,9 @@ public class ReportService {
     public List<Report> getAll() {
         return reportRepository.findAll();
     }
+
+    public void deleteByChatId(Long chatId) {
+        reportRepository.deleteByChatId(chatId);
+    }
+
 }

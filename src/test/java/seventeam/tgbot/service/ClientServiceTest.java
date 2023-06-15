@@ -1,21 +1,17 @@
 package seventeam.tgbot.service;
 
 import com.pengrad.telegrambot.TelegramBot;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import seventeam.tgbot.exceptions.ClientNotFoundException;
 import seventeam.tgbot.model.Client;
 import seventeam.tgbot.repositories.ClientRepository;
 import seventeam.tgbot.repositories.VolunteerRepository;
 import seventeam.tgbot.services.ClientService;
-import seventeam.tgbot.services.OwnerService;
-import seventeam.tgbot.services.VolunteerService;
 
 import java.util.List;
 
@@ -27,11 +23,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class ClientServiceTest {
     @InjectMocks
-    private VolunteerService volunteerService;
-    @InjectMocks
     private ClientService clientService;
-    @InjectMocks
-    private OwnerService ownerService;
     @Mock
     private VolunteerRepository volunteerRepository;
     @Mock
@@ -40,15 +32,9 @@ class ClientServiceTest {
     private TelegramBot telegramBot;
     Client client = new Client(0L, 0L, "FirstName", "LastName", "7_xxx_xxx_xx_xx");
 
-    @BeforeEach
-    public void init() {
-        telegramBot = Mockito.mock(TelegramBot.class);
-        clientService = new ClientService(clientRepository, telegramBot, volunteerService, ownerService);
-    }
-
     @Test
     @DisplayName("Проверка создания клиента")
-    void createUser() {
+    void createClient() {
         verify(clientRepository, verificationData -> clientService.createClient(client.getId(), client.getChatId(),
                 client.getFirstName(), client.getLastName(), client.getPhoneNumber())).saveAndFlush(client);
     }

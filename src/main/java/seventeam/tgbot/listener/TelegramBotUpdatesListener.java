@@ -80,7 +80,12 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                         if (message.contact() != null) {
                             Contact contact = message.contact();
                             String phoneNumber = contact.phoneNumber();
-                            clientService.createClient(contact.userId(), chatId, firstName, lastName, phoneNumber);
+                            if (clientService.getClientByChatId(chatId) == null
+                                    && volunteerService.getVolunteer(chatId) == null
+                                    && ownerService.getCatOwner(chatId) == null
+                                    && ownerService.getDogOwner(chatId) == null) {
+                                clientService.createClient(contact.userId(), chatId, firstName, lastName, phoneNumber);
+                            } else sendMassage(chatId, "Вы уже зарегистрированы!");
                             keyBoardService.chooseMenu(chatId);
                         }
                         //Проверка статуса отправки id питомца и валидация ввода целого числа

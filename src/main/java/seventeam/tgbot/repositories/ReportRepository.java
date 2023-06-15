@@ -6,4 +6,7 @@ import seventeam.tgbot.model.Report;
 
 @Repository
 public interface ReportRepository extends JpaRepository<Report, Long> {
+    void deleteByChatId(Long chatId);
+
+    Report getByChatId(Long chatId);
 }

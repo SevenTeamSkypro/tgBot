@@ -1,6 +1,7 @@
 package seventeam.tgbot.services;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import seventeam.tgbot.dto.CatOwnerDto;
 import seventeam.tgbot.dto.DogOwnerDto;
 import seventeam.tgbot.exceptions.OwnerNotFoundException;
@@ -49,6 +50,7 @@ public class OwnerService {
         clientService.deleteClient(client.getId());
     }
 
+    @Transactional
     public DogOwnerDto getDogOwner(Long chatId) {
         try {
             return mappingUtils.mapToDogOwnerDto(dogOwnerRepository.getByChatId(chatId));
@@ -57,6 +59,7 @@ public class OwnerService {
         }
     }
 
+    @Transactional
     public CatOwnerDto getCatOwner(Long chatId) {
         try {
             return mappingUtils.mapToCatOwnerDto(catOwnerRepository.getByChatId(chatId));

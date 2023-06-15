@@ -34,7 +34,7 @@ class ReportServiceTest {
 
     @Test
     @DisplayName("Проверка создания отчёта")
-    void createReport() {
+    void createReportTest() {
         Update update = Mockito.mock(Update.class);
         Message message = Mockito.mock(Message.class);
         Chat chat = Mockito.mock(Chat.class);
@@ -45,8 +45,14 @@ class ReportServiceTest {
 
     @Test
     @DisplayName("Проверка получения всех отчётов")
-    void getAll() {
+    void getAllTest() {
         when(reportRepository.findAll()).thenReturn(List.of(report));
         assertEquals(List.of(report), reportService.getAll());
+    }
+    @Test
+    @DisplayName("Проверка удаления отчёта")
+    void deleteByChatIdTest() {
+        when(reportRepository.getByChatId(0L)).thenReturn(report);
+        verify(reportRepository, verificationData -> reportService.deleteByChatId(0L)).deleteByChatId(0L);
     }
 }

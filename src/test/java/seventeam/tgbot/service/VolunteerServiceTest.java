@@ -34,7 +34,7 @@ class VolunteerServiceTest {
 
     @Test
     @DisplayName("Проверка создания волонтёра")
-    void createUser() {
+    void createUserTest() {
         verify(volunteerRepository, verificationData -> volunteerService.createVolunteer(volunteer.getId(),
                 volunteer.getChatId(),
                 volunteer.getFirstName(), volunteer.getLastName(), volunteer.getPhoneNumber())).saveAndFlush(volunteer);
@@ -42,47 +42,47 @@ class VolunteerServiceTest {
 
     @Test
     @DisplayName("Проверка получения всех волонтёров")
-    void getAll() {
+    void getAllTest() {
         when(volunteerRepository.findAll()).thenReturn(List.of(volunteer));
         assertEquals(List.of(volunteer), volunteerService.getAll());
     }
 
     @Test
     @DisplayName("Проверка получения волонтёра по номеру телефона")
-    void getVolunteerByPhoneNumber() {
+    void getVolunteerByPhoneNumberTest() {
         when(volunteerRepository.findFirstByPhoneNumber(volunteer.getPhoneNumber())).thenReturn(volunteer);
         assertEquals(volunteer, volunteerService.getVolunteer(volunteer.getPhoneNumber()));
     }
 
     @Test
     @DisplayName("Проверка получения волонтёра по chatId")
-    void getVolunteerByChatId() {
+    void getVolunteerByChatIdTest() {
         when(volunteerRepository.getByChatId(0L)).thenReturn(volunteer);
         assertEquals(volunteer, volunteerService.getVolunteer(0L));
     }
 
     @Test
     @DisplayName("Проверка обновления волонтёра")
-    void updateUser() {
+    void updateUserTest() {
         when(volunteerRepository.getById(0L)).thenReturn(volunteer);
         verify(volunteerRepository, verificationData -> volunteerService.updateVolunteer(volunteer)).saveAndFlush(volunteer);
     }
 
     @Test
     @DisplayName("Проверка удаления волонтёра")
-    void deleteUser() {
+    void deleteUserTest() {
         verify(volunteerRepository, verificationData -> volunteerService.deleteVolunteer(0L)).deleteById(volunteer.getId());
     }
 
     @Test
     @DisplayName("Проверка вызова волонтёра")
-    void callVolunteer() {
+    void callVolunteerTest() {
         verify(telegramBot, verificationData -> volunteerService.callVolunteer(volunteer.getPhoneNumber())).execute(new SendMessage(0L, "test"));
     }
 
     @Test
     @DisplayName("Проверка отправки заявки волонтёру")
-    void sendToVolunteer() {
+    void sendToVolunteerTest() {
         verify(telegramBot, verificationData -> volunteerService.sendToVolunteer(client, new Cat())).execute(new SendMessage(0L,
                 "test"));
     }

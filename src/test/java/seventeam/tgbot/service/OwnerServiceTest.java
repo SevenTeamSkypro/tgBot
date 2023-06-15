@@ -69,11 +69,9 @@ class OwnerServiceTest {
     @Test
     @DisplayName("Проверка получения владельца")
     void getOwner() {
-        when(dogOwnerRepository.getReferenceById(0L)).thenReturn(dogOwner);
-        when(mappingUtils.mapToDogOwnerDto(dogOwner)).thenReturn(dogOwnerDto);
+        when(ownerService.getDogOwner(0L)).thenReturn(dogOwnerDto);
         assertEquals(dogOwnerDto, ownerService.getDogOwner(0L));
-        when(catOwnerRepository.getReferenceById(0L)).thenReturn(catOwner);
-        when(mappingUtils.mapToCatOwnerDto(catOwner)).thenReturn(catOwnerDto);
+        when(ownerService.getCatOwner(0L)).thenReturn(catOwnerDto);
         assertEquals(catOwnerDto, ownerService.getCatOwner(0L));
     }
 
