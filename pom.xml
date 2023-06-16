@@ -10,7 +10,7 @@
     </parent>
     <groupId>sevenTeam</groupId>
     <artifactId>tgBot</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0</version>
     <name>tgBot</name>
     <description>tgBot</description>
     <properties>
@@ -100,11 +100,6 @@
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
             <version>3.24.2</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
